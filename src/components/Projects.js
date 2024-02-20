@@ -2,12 +2,12 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProjectArt from "../assets/project_art.png";
-import RapidCraft from "../assets/rapidcraft.png";
-import Desire from "../assets/desire.png";
-import Searcher from "../assets/searcher.png";
-import Calculator from "../assets/calculator.png";
-import Bookkeepr from "../assets/bookkeepr.png";
-import MuuTube from "../assets/muutube.png";
+import RapidCraft from "../assets/rapidcraft.jpg";
+import Desire from "../assets/desire.jpg";
+import Searcher from "../assets/searcher.jpg";
+import Calculator from "../assets/calculator.jpg";
+import Bookkeepr from "../assets/bookkeepr.jpg";
+import MuuTube from "../assets/muutube.jpg";
 
 function Projects() {
   const project = [
