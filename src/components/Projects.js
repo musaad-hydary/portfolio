@@ -64,7 +64,7 @@ function Projects() {
         }
         style={{ backgroundImage: `url(${ProjectArt})` }}
       >
-        <div className="max-w-[1640px] mx-auto p-6 grid md:grid-cols-3 gap-6">
+        <div className="max-w-[1640px] mx-auto p-6 grid md:grid-cols-2 gap-6">
           {project.map(({ text, description, image, link }) => {
             return (
               <div className="relative" key={text}>
@@ -86,7 +86,7 @@ function Projects() {
                   </a>
                 </div>
                 <img
-                  className="max-h-[300px] md:max-h-[400px] w-full object-cover"
+                  className="max-h-[250px] w-full object-cover"
                   src={image}
                   alt={text}
                 />
