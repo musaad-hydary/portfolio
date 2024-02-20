@@ -42,7 +42,7 @@ function Projects() {
     {
       text: "searcher",
       description:
-        "full-stack React app that integrates the OpenSplash API for comprehensive image searches.",
+        "full-stack React app that uses the OpenSplash API for image searches.",
       image: Searcher,
       link: "https://github.com/musaad-hydary/imageSearch",
     },
