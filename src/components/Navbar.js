@@ -8,24 +8,25 @@ import { FaShareAltSquare } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaPenSquare } from "react-icons/fa";
 import { FaEnvelopeSquare } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
 
 function Navbar() {
-  const location = useLocation()
+  const location = useLocation();
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <div className="sticky z-10 top-0  bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 pb-[1px] border-b-4 border-white">
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-[#19147A] mb-3">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-              <a className="text-lg font-extrabold leading-relaxed inline-block mr-4 py-2 -mx-4 whitespace-nowrap text-white">
+            <a className="text-lg font-extrabold leading-relaxed inline-block mr-4 py-2 -mx-4 whitespace-nowrap text-white">
               ./musaad-hydary{location.pathname}
-              </a>
+            </a>
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
               type="button"
               onClick={() => setNavbarOpen(!navbarOpen)}
             >
-              <GiHamburgerMenu />
+              {navbarOpen ? <FaXmark /> : <GiHamburgerMenu />}
             </button>
           </div>
           <div
@@ -37,9 +38,7 @@ function Navbar() {
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="nav-item">
                 <Link to="/projects">
-                  <a
-                    className="py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
-                  >
+                  <a className="py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250">
                     <FaShareAltSquare />
                     <p className="p-2 md:invisible text-sm">./projects</p>
                   </a>
@@ -75,9 +74,7 @@ function Navbar() {
               </li>
               <li className="nav-item">
                 <Link to="/contact">
-                  <a
-                    className="py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
-                  >
+                  <a className="py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250">
                     <FaEnvelopeSquare />
                     <p className="p-2 md:invisible text-sm">./contact</p>
                   </a>
