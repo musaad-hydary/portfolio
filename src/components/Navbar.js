@@ -13,7 +13,7 @@ function Navbar() {
   const location = useLocation()
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
-    <div className="sticky z-10 top-0 border bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 pb-[1px] border-b-2 border-white">
+    <div className="sticky z-10 top-0  bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 pb-[1px] border-b-4 border-white">
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-[#19147A] mb-3">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
