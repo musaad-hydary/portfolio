@@ -17,8 +17,8 @@ function Navbar() {
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-[#19147A] mb-3">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-              <a className="text-2xl font-extrabold leading-relaxed inline-block mr-4 py-2 -mx-4 whitespace-nowrap text-white">
-              .{location.pathname}
+              <a className="text-lg font-extrabold leading-relaxed inline-block mr-4 py-2 -mx-4 whitespace-nowrap text-white">
+              ./musaad-hydary{location.pathname}
               </a>
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
@@ -38,7 +38,7 @@ function Navbar() {
               <li className="nav-item">
                 <Link to="/projects">
                   <a
-                    className="px-3 py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
+                    className="py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
                   >
                     <FaShareAltSquare />
                     <p className="p-2 md:invisible text-sm">./projects</p>
@@ -47,7 +47,7 @@ function Navbar() {
               </li>
               <li className="nav-item">
                 <a
-                  className="px-3 py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
+                  className="py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
                   href={Resume}
                 >
                   <FaPenSquare />
@@ -56,7 +56,7 @@ function Navbar() {
               </li>
               <li className="nav-item">
                 <Link target="_blank" to="https://github.com/musaad-hydary">
-                  <a className="px-3 py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250">
+                  <a className="py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250">
                     <FaGithubSquare />
                     <p className="p-2 md:invisible text-sm">./github</p>
                   </a>
@@ -67,7 +67,7 @@ function Navbar() {
                   target="_blank"
                   to="https://www.linkedin.com/in/musaad-hydary/"
                 >
-                  <a className="px-3 py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250">
+                  <a className="py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250">
                     <FaLinkedin />
                     <p className="p-2 md:invisible text-sm">./linkedin</p>
                   </a>
@@ -76,7 +76,7 @@ function Navbar() {
               <li className="nav-item">
                 <Link to="/contact">
                   <a
-                    className="px-3 py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
+                    className="py-2 flex items-center text-4xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
                   >
                     <FaEnvelopeSquare />
                     <p className="p-2 md:invisible text-sm">./contact</p>
