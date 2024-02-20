@@ -13,11 +13,11 @@ function Navbar() {
   const location = useLocation()
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
-    <div className="border bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 pb-[1px] border-b-2 border-white">
+    <div className="sticky z-10 top-0 border bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 pb-[1px] border-b-2 border-white">
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-[#19147A] mb-3">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-              <a className="text-2xl leading-relaxed inline-block mr-4 py-2 -mx-4 whitespace-nowrap text-white">
+              <a className="text-2xl font-extrabold leading-relaxed inline-block mr-4 py-2 -mx-4 whitespace-nowrap text-white">
               .{location.pathname}
               </a>
             <button
@@ -41,7 +41,7 @@ function Navbar() {
                     className="px-3 py-2 flex items-center text-3xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
                   >
                     <FaShareAltSquare />
-                    <p className="p-2 md:invisible text-sm">projects</p>
+                    <p className="p-2 md:invisible text-sm">./projects</p>
                   </a>
                 </Link>
               </li>
@@ -51,14 +51,14 @@ function Navbar() {
                   href={Resume}
                 >
                   <FaPenSquare />
-                  <p className="p-2 md:invisible text-sm">resume</p>
+                  <p className="p-2 md:invisible text-sm">./resume</p>
                 </a>
               </li>
               <li className="nav-item">
                 <Link target="_blank" to="https://github.com/musaad-hydary">
                   <a className="px-3 py-2 flex items-center text-3xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250">
                     <FaGithubSquare />
-                    <p className="p-2 md:invisible text-sm">github</p>
+                    <p className="p-2 md:invisible text-sm">./github</p>
                   </a>
                 </Link>
               </li>
@@ -69,7 +69,7 @@ function Navbar() {
                 >
                   <a className="px-3 py-2 flex items-center text-3xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250">
                     <FaLinkedin />
-                    <p className="p-2 md:invisible text-sm">linkedin</p>
+                    <p className="p-2 md:invisible text-sm">./linkedin</p>
                   </a>
                 </Link>
               </li>
@@ -79,7 +79,7 @@ function Navbar() {
                     className="px-3 py-2 flex items-center text-3xl font-bold leading-snug text-white hover:opacity-75 transition ease-linear duration-250"
                   >
                     <FaEnvelopeSquare />
-                    <p className="p-2 md:invisible text-sm">contact</p>
+                    <p className="p-2 md:invisible text-sm">./contact</p>
                   </a>
                 </Link>
               </li>

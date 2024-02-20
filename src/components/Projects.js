@@ -42,7 +42,7 @@ function Projects() {
     {
       text: "searcher",
       description:
-        "full-stack React app integrates OpenSplash API for comprehensive image searches.",
+        "full-stack React app that integrates the OpenSplash API for comprehensive image searches.",
       image: Searcher,
       link: "https://github.com/musaad-hydary/imageSearch",
     },
@@ -86,7 +86,7 @@ function Projects() {
                   </a>
                 </div>
                 <img
-                  className="max-h-[200px] md:max-h-[400px] w-full object-cover"
+                  className="max-h-[300px] md:max-h-[400px] w-full object-cover"
                   src={image}
                   alt={text}
                 />
