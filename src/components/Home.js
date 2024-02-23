@@ -15,7 +15,7 @@ function Home() {
   return (
     <div>
       {loading ? (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-screen translate-y-[-5%]">
           <ClipLoader
             color={"#FFFFFF"}
             loading={loading}
