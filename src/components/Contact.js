@@ -9,11 +9,10 @@ function Contact() {
       <Navbar />
       <div
         className={
-          "min-h-screen bg-no-repeat bg-cover bg-center bg-fixed h-full"
+          "min-h-screen bg-no-repeat bg-cover bg-center bg-fixed h-full "
         }
         style={{ backgroundImage: `url(${ContactArt})` }}
       >
-
     <h1 class="pt-8 px-8 text-lg text-white">
       send me a message and i'll get back to you soon
           <span class="animate-pulse text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">

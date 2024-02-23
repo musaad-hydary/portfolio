@@ -64,6 +64,13 @@ function Projects() {
         }
         style={{ backgroundImage: `url(${ProjectArt})` }}
       >
+        <h1 class="pt-4 px-8 text-lg text-white selection:text-purple-400">
+          as a full-stack software developer and digital systems engineer, feel
+          free to explore some of my projects
+          <span class="animate-pulse text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
+            ...
+          </span>
+        </h1>
         <div className="max-w-[1640px] mx-auto p-6 grid md:grid-cols-2 gap-6">
           {project.map(({ text, description, image, link }) => {
             return (
