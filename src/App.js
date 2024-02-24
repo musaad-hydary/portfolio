@@ -2,10 +2,10 @@ import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ClipLoader from "react-spinners/ClimbingBoxLoader";
 
-const Home = lazy(() => import("./components/Home"));
-const Projects = lazy(() => import("./components/Projects"));
-const Contact = lazy(() => import("./components/Contact"));
-const NotFound = lazy(() => import("./components/NotFound"));
+const Home = lazy(() => import("./components/Home.js"));
+const Projects = lazy(() => import("./components/Projects.js"));
+const Contact = lazy(() => import("./components/Contact.js"));
+const NotFound = lazy(() => import("./components/NotFound.js"));
 
 function App() {
   return (

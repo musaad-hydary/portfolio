@@ -11,6 +11,7 @@ function Home() {
         }
         style={{ backgroundImage: `url(${HomeArt})` }}
       >
+
         <h1 className="mb-8 px-8 pt-48 text-3xl font-extrabold text-white lg:pt-60 md:text-5xl lg:text-6xl">
           welcome to <br />
           my world
@@ -29,6 +30,7 @@ function Home() {
           </a>
         </Link>
       </div>
+      
     </div>
   );
 }

@@ -103,7 +103,9 @@ function Projects() {
           })}
         </div>
       </div>
+      
       <Footer />
+      
     </div>
   );
 }
