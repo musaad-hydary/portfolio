@@ -64,7 +64,7 @@ function Projects() {
         }
         style={{ backgroundImage: `url(${ProjectArt})` }}
       >
-        <h1 class="pt-4 px-8 text-md text-white">
+        <h1 class="pt-8 px-8 pb-2 text-md text-white">
           as a full-stack software developer and digital systems engineer, feel
           free to explore some of my projects
           <span class="animate-pulse text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
