@@ -13,7 +13,7 @@ function Contact() {
         }
         style={{ backgroundImage: `url(${ContactArt})` }}
       >
-    <h1 class="pt-8 px-8 text-lg text-white">
+    <h1 class="pt-8 px-8 text-md text-white">
       send me a message and i'll get back to you soon
           <span class="animate-pulse text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
             ...
