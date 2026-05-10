@@ -10,16 +10,17 @@
 
 :root {
   --gd: #2a3b1e;
-  --c: #e0d9bc;
-  --cd: #8a8468;
+  --c: #e8e2c8;
+  --cd: #b0a882;
 }
 
 html,
 body {
+  background-color: #2a3b1e;
+  color: #ddd8b8;
   overflow-x: hidden;
   width: 100%;
 }
-
 a,
 button {
   cursor: pointer !important;
