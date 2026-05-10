@@ -8,7 +8,7 @@ const links = [
   },
   {
     label: "linkedin",
-    href: "https://linkedin.com/in/musaadhydary",
+    href: "https://linkedin.com/in/musaad-hydary",
     external: true,
   },
   { label: "resume", href: "/resume.pdf", external: true },
