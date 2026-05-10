@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap");
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Dreamer";
+  src: url("/fonts/Dreamer-TM-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --gd: #2a3b1e;
+  --c: #e0d9bc;
+  --cd: #8a8468;
+}
+
+/* substack post content */
+.prose h1,
+.prose h2,
+.prose h3 {
+  font-family: "Dreamer", serif;
+  color: var(--c);
+  margin: 2rem 0 1rem;
+  line-height: 1.1;
+}
+.prose h1 {
+  font-size: 2rem;
+}
+.prose h2 {
+  font-size: 1.5rem;
+}
+.prose h3 {
+  font-size: 1.2rem;
+}
+.prose p {
+  font-size: 0.9rem;
+  line-height: 2;
+  color: var(--c);
+  opacity: 0.75;
+  margin-bottom: 1.25rem;
+  font-family: "DM Mono", monospace;
+  font-weight: 300;
+}
+.prose a {
+  color: var(--c);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose img {
+  width: 100%;
+  margin: 2rem 0;
+}
+.prose strong {
+  font-weight: 400;
+  color: var(--c);
+  opacity: 1;
+}
+.prose pre,
+.prose code {
+  font-family: "DM Mono", monospace;
+  font-size: 0.75rem;
+  background: rgba(224, 217, 188, 0.06);
+  padding: 0.2rem 0.4rem;
+}
+
+*,
+*::before,
+*::after {
+  cursor:
+    url("/cursor.png") 0 0,
+    auto !important;
+}
