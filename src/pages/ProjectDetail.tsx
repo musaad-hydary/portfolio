@@ -26,7 +26,7 @@ export default function ProjectDetail() {
 
   return (
     <div
-      className="min-h-screen"
+      className="min-h-screen w-full"
       style={{ background: "var(--gd)", color: "var(--c)" }}
     >
       <div className="max-w-[800px] mx-auto px-7">
