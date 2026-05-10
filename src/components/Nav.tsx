@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 
 const links = [
   {
-    label: "github ↗",
+    label: "github",
     href: "https://github.com/musaad-hydary",
     external: true,
   },
   {
-    label: "linkedin ↗",
+    label: "linkedin",
     href: "https://linkedin.com/in/musaadhydary",
     external: true,
   },
@@ -26,14 +26,14 @@ export default function Nav() {
         style={{
           fontFamily: "Dreamer, serif",
           color: "var(--c)",
-          fontSize: "1.5rem",
+          fontSize: "1.4rem",
           letterSpacing: "0.01em",
         }}
       >
         m
       </Link>
 
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-6">
         {links.map((l) => (
           <a
             key={l.label}
