@@ -15,7 +15,7 @@ const SUBSTACK_URL = "https://musaadh.substack.com";
 // uses rss2json as a middleman to handle CORS and convert XML to JSON
 export async function fetchPosts(): Promise<SubstackPost[]> {
   const res = await fetch(
-    `https://api.rss2json.com/v1/api.json?rss_url=${SUBSTACK_URL}/feed`,
+    `https://api.rss2json.com/v1/api.json?rss_url=${SUBSTACK_URL}/feed&count=10&t=${Date.now()}`,
   );
   const data = await res.json();
 
