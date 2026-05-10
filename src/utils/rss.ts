@@ -9,23 +9,24 @@ export interface SubstackPost {
 }
 
 const SUBSTACK_URL = "https://musaadh.substack.com";
+const RSS2JSON_KEY = import.meta.env.VITE_RSS2JSON_KEY;
 
 export async function fetchPosts(): Promise<SubstackPost[]> {
   const res = await fetch(
-    `https://corsproxy.io/?${encodeURIComponent(`${SUBSTACK_URL}/api/v1/posts?limit=50`)}`,
+    `https://api.rss2json.com/v1/api.json?rss_url=${SUBSTACK_URL}/feed&api_key=${RSS2JSON_KEY}&count=50&t=${Date.now()}`,
   );
   const data = await res.json();
 
-  if (!Array.isArray(data)) return [];
+  if (data.status !== "ok" || !data.items) return [];
 
-  return data.map((item: any) => ({
+  return data.items.map((item: any) => ({
     title: item.title,
-    slug: item.slug,
-    url: `${SUBSTACK_URL}/p/${item.slug}`,
-    date: item.post_date,
-    description: item.subtitle || "",
-    image: item.cover_image || "",
-    content: item.body_html || "",
+    slug: item.link.split("/p/")[1],
+    url: item.link,
+    date: item.pubDate,
+    description: item.description.replace(/<[^>]+>/g, "").slice(0, 120) + "...",
+    image: item.thumbnail || item.enclosure?.link || "",
+    content: item.content,
   }));
 }
 
