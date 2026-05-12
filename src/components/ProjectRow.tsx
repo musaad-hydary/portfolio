@@ -48,7 +48,7 @@ export default function ProjectRow({ post, index }: Props) {
         {String(index + 1).padStart(2, "0")}
       </span>
 
-      {/* Title + description */}
+      {/* title + description */}
       <div className="px-4 py-4">
         <div
           className="leading-tight mb-1.5"
