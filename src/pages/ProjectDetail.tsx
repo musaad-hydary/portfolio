@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { fetchPostBySlug, readingTime, type SubstackPost } from '../utils/rss'
+import Nav from '../components/Nav'
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -18,48 +19,36 @@ export default function ProjectDetail() {
 
   return (
     <div className="min-h-screen w-full" style={{ background: 'var(--gd)', color: 'var(--c)' }}>
-      <div className="max-w-[800px] mx-auto px-7">
+      <Nav />
+      <div className="max-w-[800px] mx-auto px-7 pt-24">
 
-        {/* Nav */}
-        <nav className="flex justify-between items-center py-5 border-b border-[rgba(224,217,188,0.1)]">
-          <Link
-            to="/"
-            className="text-[0.6rem] uppercase tracking-widest transition-colors duration-150"
-            style={{ color: 'var(--cd)', fontFamily: 'DM Mono, monospace' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--c)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--cd)')}
-          >
-            back
-          </Link>
-        </nav>
-
-        {/* Loading */}
+        {/* loading posts */}
         {loading && (
           <p className="py-10 text-[0.62rem]" style={{ color: 'var(--cd)', fontFamily: 'DM Mono, monospace' }}>
             fetching post...
           </p>
         )}
 
-        {/* Error */}
+        {/* error */}
         {error && (
           <p className="py-10 text-[0.62rem]" style={{ color: 'var(--cd)', fontFamily: 'DM Mono, monospace' }}>
-            could not load this post
+            could not load this post, please try again later
           </p>
         )}
 
-        {/* Not found */}
+        {/* not found */}
         {!loading && !error && !post && (
           <p className="py-10 text-[0.62rem]" style={{ color: 'var(--cd)', fontFamily: 'DM Mono, monospace' }}>
             post not found, please try again later
           </p>
         )}
 
-        {/* Post */}
+        {/* post from substack */}
         {post && (
           <div>
             <div className="py-8 border-b border-[rgba(224,217,188,0.1)]">
 
-              {/* Date · reading time */}
+              {/* date · reading time */}
               <div className="flex items-center gap-2 mb-4">
                 <p
                   className="text-[0.55rem] uppercase tracking-widest"
@@ -80,7 +69,7 @@ export default function ProjectDetail() {
                 </p>
               </div>
 
-              {/* Title */}
+              {/* title */}
               <h1
                 className="leading-tight mb-6"
                 style={{ fontFamily: 'Times New Roman, serif', color: 'var(--c)', fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
@@ -88,7 +77,7 @@ export default function ProjectDetail() {
                 {post.title}
               </h1>
 
-              {/* Link to Substack */}
+              {/* link to Substack */}
               <a
                 href={post.url}
                 target="_blank"
@@ -102,7 +91,7 @@ export default function ProjectDetail() {
               </a>
             </div>
 
-            {/* Post body */}
+            {/* post body */}
             <div
               className="py-8 prose"
               style={{ color: 'var(--c)', fontFamily: 'DM Mono, monospace' }}
