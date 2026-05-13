@@ -20,7 +20,7 @@ export default function ProjectRow({ post, index }: Props) {
       }
       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
     >
-      {/* Thumbnail */}
+      {/* thumbnail */}
       <div
         className="overflow-hidden border-r"
         style={{
@@ -37,7 +37,7 @@ export default function ProjectRow({ post, index }: Props) {
         />
       </div>
 
-      {/* Number */}
+      {/* number */}
       <span
         className="text-center text-[0.52rem] tracking-wider"
         style={{
@@ -68,7 +68,7 @@ export default function ProjectRow({ post, index }: Props) {
         </div>
       </div>
 
-      {/* Arrow */}
+      {/* arrow */}
       <span
         className="pr-4 text-sm transition-opacity duration-150"
         style={{

@@ -1,50 +1,35 @@
 const STACK = [
-  "TypeScript",
-  "JavaScript",
-  "Node.js",
-  "Python",
-  "C/C++",
-  "Java",
-  "HTML5",
-  "Tailwind CSS",
-  "SQL",
-  "Verilog",
-  "React",
-  "React Native",
-  "GraphQL",
-  "Redux",
-  "Arduino",
-  "Figma",
-];
+  'TypeScript', 'JavaScript', 'Node.js', 'Python',
+  'C/C++', 'Java', 'HTML5', 'Tailwind CSS',
+  'SQL', 'Verilog', 'React', 'React Native',
+  'GraphQL', 'Redux', 'Arduino', 'Figma',
+]
 
 export default function About() {
   return (
     <div
-      className="grid py-12 border-b"
+      className="flex flex-col gap-8 py-12 border-b sm:grid sm:gap-0"
       style={{
-        gridTemplateColumns: "1fr 1fr",
-        borderColor: "rgba(224,217,188,0.1)",
+        borderColor: 'rgba(224,217,188,0.1)',
+        gridTemplateColumns: '1fr 1fr',
       }}
     >
-      {/* Left */}
+      {/* left side */}
       <div
-        className="border-r pr-10"
-        style={{ borderColor: "rgba(224,217,188,0.07)" }}
+        className="sm:border-r sm:pr-10"
+        style={{ borderColor: 'rgba(224,217,188,0.07)' }}
       >
         <p
           className="text-[0.65rem] uppercase tracking-[0.15em] mb-4"
-          style={{
-            color: "rgba(224,217,188,0.3)",
-            fontFamily: "DM Mono, monospace",
-          }}
+          style={{ color: 'rgba(224,217,188,0.3)', fontFamily: 'DM Mono, monospace' }}
         >
           about
         </p>
-        <h2
+        <p
           style={{
-            fontFamily: "DM Mono, serif",
-            color: "var(--cd)",
-            fontSize: "0.7rem",
+            fontFamily: 'DM Mono, monospace',
+            color: 'var(--cd)',
+            fontSize: '0.7rem',
             lineHeight: 1.6,
           }}
         >
@@ -53,38 +38,25 @@ export default function About() {
           level of the stack, from firmware up to the user interface. in my free
           time i make lofi beats with Ableton, read slice-of-life novels, and
           play Balatro.
-        </h2>
+        </p>
       </div>
 
-      {/* right */}
-      <div className="pl-10">
+      {/* right side */}
+      <div className="sm:pl-10">
         <p
           className="text-[0.65rem] uppercase tracking-[0.15em] mb-4"
-          style={{
-            color: "rgba(224,217,188,0.3)",
-            fontFamily: "DM Mono, monospace",
-          }}
+          style={{ color: 'rgba(224,217,188,0.3)', fontFamily: 'DM Mono, monospace' }}
         >
           stack
         </p>
         <div className="flex flex-wrap gap-1.5">
-          {STACK.map((s) => (
+          {STACK.map(s => (
             <span
               key={s}
               className="text-[0.58rem] tracking-wider px-2.5 py-1 border cursor-default transition-all duration-150"
-              style={{
-                color: "var(--cd)",
-                borderColor: "rgba(224,217,188,0.1)",
-                fontFamily: "DM Mono, monospace",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--c)";
-                e.currentTarget.style.borderColor = "rgba(224,217,188,0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "var(--cd)";
-                e.currentTarget.style.borderColor = "rgba(224,217,188,0.1)";
-              }}
+              style={{ color: 'var(--cd)', borderColor: 'rgba(224,217,188,0.1)', fontFamily: 'DM Mono, monospace' }}
+              onMouseEnter={e => { e.currentTarget.style.color = 'var(--c)'; e.currentTarget.style.borderColor = 'rgba(224,217,188,0.3)' }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'var(--cd)'; e.currentTarget.style.borderColor = 'rgba(224,217,188,0.1)' }}
             >
               {s}
             </span>
@@ -92,5 +64,5 @@ export default function About() {
         </div>
       </div>
     </div>
-  );
+  )
 }

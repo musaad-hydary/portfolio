@@ -31,7 +31,7 @@ export default function ProjectList() {
 
   return (
     <div>
-      {/* Search */}
+      {/* search bar */}
       <div
         className="border-b"
         style={{ borderColor: "rgba(224,217,188,0.07)" }}
@@ -68,7 +68,7 @@ export default function ProjectList() {
         </span>
       </div>
 
-      {/* States */}
+      {/* states */}
       {loading && (
         <p
           className="py-8"
@@ -113,7 +113,7 @@ export default function ProjectList() {
           <ProjectRow key={post.slug} post={post} index={i} />
         ))}
 
-      {/* No results */}
+      {/* null results */}
       {!loading && !error && filtered.length === 0 && posts.length > 0 && (
         <p
           className="py-8"

@@ -36,3 +36,10 @@ export async function fetchPostBySlug(
   const posts = await fetchPosts();
   return posts.find((p) => p.slug === slug) ?? null;
 }
+
+// estimates reading time based on average 200 words per minute
+export function readingTime(content: string): string {
+  const words = content.replace(/<[^>]+>/g, '').split(/\s+/).length
+  const minutes = Math.ceil(words / 200)
+  return `${minutes} min read`
+}
