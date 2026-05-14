@@ -8,7 +8,7 @@ export default function Hero() {
       }}
     >
       {/* left side */}
-      <div className="flex flex-col gap-6 sm:pr-12">
+      <div className="flex flex-col gap-4 sm:pr-12">
         <h1
           style={{
             fontFamily: "Dreamer, serif",
