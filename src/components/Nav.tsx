@@ -22,6 +22,8 @@ const links = [
   },
 ];
 
+const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
+
 export default function Nav() {
   return (
     <nav
@@ -29,7 +31,7 @@ export default function Nav() {
       style={{ borderColor: "rgba(224,217,188,0.1)", background: "var(--gd)" }}
     >
       <div className="max-w-[800px] mx-auto px-7 flex justify-between items-center py-6">
-        {/* text logo — hidden on mobile */}
+        {/* Text logo — hidden on mobile */}
         <Link
           to="/"
           className="hidden sm:block"
@@ -38,13 +40,18 @@ export default function Nav() {
             color: "var(--c)",
             fontSize: "1.4rem",
             letterSpacing: "0.01em",
+            cursor: pointerCursor,
           }}
         >
           m
         </Link>
 
-        {/* gif logo — mobile only */}
-        <Link to="/" className="block sm:hidden">
+        {/* Gif logo — mobile only */}
+        <Link
+          to="/"
+          className="block sm:hidden"
+          style={{ cursor: pointerCursor }}
+        >
           <img
             src="/cpu.gif"
             alt="logo"
@@ -65,7 +72,11 @@ export default function Nav() {
               target={l.external ? "_blank" : undefined}
               rel={l.external ? "noreferrer" : undefined}
               className="transition-colors duration-150"
-              style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace" }}
+              style={{
+                color: "var(--cd)",
+                fontFamily: "DM Mono, monospace",
+                cursor: pointerCursor,
+              }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "var(--cd)")}
             >

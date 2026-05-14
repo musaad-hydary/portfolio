@@ -14,12 +14,17 @@
   --cd: #b0a882;
 }
 
-*,
-*::before,
-*::after {
+* {
   cursor:
     url("/cursor.png") 0 0,
     auto !important;
+}
+
+a,
+button {
+  cursor:
+    url("/cursor-pointer.png") 0 0,
+    pointer !important;
 }
 
 html,
@@ -29,12 +34,7 @@ body {
   overflow-x: hidden;
   width: 100%;
 }
-a,
-button {
-  cursor: pointer !important;
-}
 
-/* substack post content */
 .prose h1,
 .prose h2,
 .prose h3 {
@@ -81,12 +81,4 @@ button {
   font-size: 0.75rem;
   background: rgba(224, 217, 188, 0.06);
   padding: 0.2rem 0.4rem;
-}
-
-*,
-*::before,
-*::after {
-  cursor:
-    url("/cursor.png") 0 0,
-    auto !important;
 }
