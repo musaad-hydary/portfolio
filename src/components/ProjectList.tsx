@@ -4,11 +4,12 @@ import type { SubstackPost } from "../utils/rss";
 import ProjectRow from "./ProjectRow";
 
 const INITIAL_COUNT = 5;
+const LOAD_MORE_COUNT = 5;
 
 export default function ProjectList() {
   const [posts, setPosts] = useState<SubstackPost[]>([]);
   const [search, setSearch] = useState("");
-  const [showAll, setShowAll] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -27,11 +28,12 @@ export default function ProjectList() {
   const filtered = posts.filter((post) =>
     post.title.toLowerCase().includes(search.toLowerCase()),
   );
-  const visible = showAll ? filtered : filtered.slice(0, INITIAL_COUNT);
+  const visible = filtered.slice(0, visibleCount);
+  const remaining = filtered.length - visibleCount;
 
   return (
     <div>
-      {/* search bar */}
+      {/* search */}
       <div
         className="border-b"
         style={{ borderColor: "rgba(224,217,188,0.07)" }}
@@ -42,7 +44,7 @@ export default function ProjectList() {
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
-            setShowAll(false);
+            setVisibleCount(INITIAL_COUNT);
           }}
           className="w-full bg-transparent border-none outline-none py-4"
           style={{
@@ -113,7 +115,7 @@ export default function ProjectList() {
           <ProjectRow key={post.slug} post={post} index={i} />
         ))}
 
-      {/* null results */}
+      {/* No results */}
       {!loading && !error && filtered.length === 0 && posts.length > 0 && (
         <p
           className="py-8"
@@ -127,14 +129,14 @@ export default function ProjectList() {
         </p>
       )}
 
-      {/* load more substack articles */}
-      {!showAll && filtered.length > INITIAL_COUNT && (
+      {/* load more */}
+      {!loading && !error && remaining > 0 && (
         <div
           className="py-4 border-b"
           style={{ borderColor: "rgba(224,217,188,0.07)" }}
         >
           <button
-            onClick={() => setShowAll(true)}
+            onClick={() => setVisibleCount((v) => v + LOAD_MORE_COUNT)}
             className="uppercase tracking-wider px-3 py-1.5 border transition-all duration-150"
             style={{
               fontFamily: "DM Mono, monospace",
@@ -152,7 +154,7 @@ export default function ProjectList() {
               e.currentTarget.style.color = "var(--cd)";
             }}
           >
-            + {filtered.length - INITIAL_COUNT} more
+            + more
           </button>
         </div>
       )}
