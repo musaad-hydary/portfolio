@@ -27,6 +27,13 @@ button {
     pointer !important;
 }
 
+input,
+textarea {
+  cursor:
+    url("/cursor-text.png") 0 0,
+    text !important;
+}
+
 html,
 body {
   background-color: #2a3b1e;
