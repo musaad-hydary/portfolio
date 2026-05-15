@@ -48,7 +48,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
 
       {/* modal */}
       <div
-        className="fixed z-50 border"
+        className="fixed z-50 border relative"
         style={{
           top: "50%",
           left: "50%",
