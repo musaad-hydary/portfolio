@@ -15,7 +15,6 @@ export default function Footer() {
           { label: "github", href: "https://github.com/musaad-hydary" },
           { label: "linkedin", href: "https://linkedin.com/in/musaadhydary" },
           { label: "substack", href: "https://substack.com/@musaadh/posts" },
-          { label: "contact", href: "mailto:musaadhydary@gmail.com" },
         ].map((l) => (
           <a
             key={l.label}
