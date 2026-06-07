@@ -10,6 +10,26 @@ import Nav from "../components/Nav";
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 
+// scores posts by title word overlap + category match
+function getRelated(
+  current: SubstackPost,
+  all: SubstackPost[],
+): SubstackPost[] {
+  const currentWords = current.title.toLowerCase().split(/\s+/);
+
+  return all
+    .filter((p) => p.slug !== current.slug)
+    .map((p) => {
+      const words = p.title.toLowerCase().split(/\s+/);
+      const overlap = currentWords.filter((w) => words.includes(w)).length;
+      const categoryBoost = p.category === current.category ? 2 : 0;
+      return { post: p, score: overlap + categoryBoost };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map((r) => r.post);
+}
+
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
 
@@ -33,14 +53,11 @@ export default function ProjectDetail() {
       });
   }, [slug]);
 
-  // fetch related posts
+  // fetch related posts using scoring
   useEffect(() => {
     if (!post) return;
     fetchPosts().then((all) => {
-      const related = all
-        .filter((p) => p.slug !== post.slug && p.category === post.category)
-        .slice(0, 3);
-      setRelatedPosts(related);
+      setRelatedPosts(getRelated(post, all));
     });
   }, [post]);
 
