@@ -80,13 +80,15 @@ export default function ProjectDetail() {
       className="min-h-screen w-full"
       style={{ background: "var(--gd)", color: "var(--c)" }}
     >
-      {/* Scroll progress bar */}
+      {/* Scroll progress bar — GPU composited, no transition-all */}
       <div
-        className="fixed top-0 left-0 z-[60] h-[2px] transition-all duration-100"
+        className="fixed top-0 left-0 z-[60] h-[2px]"
         style={{
           width: `${scrollProgress}%`,
           background: "var(--c)",
           opacity: 0.4,
+          willChange: "width",
+          transition: "width 0.1s linear",
         }}
       />
 
