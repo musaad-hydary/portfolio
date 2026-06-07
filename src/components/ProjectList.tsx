@@ -1,206 +1,279 @@
 import { useEffect, useState } from "react";
-import { fetchPosts } from "../utils/rss";
-import type { SubstackPost } from "../utils/rss";
-import ProjectRow from "./ProjectRow";
-
-const INITIAL_COUNT = 5;
-const LOAD_MORE_COUNT = 5;
-const FILTERS = ["all", "engineering", "music"] as const;
-type Filter = (typeof FILTERS)[number];
+import { useParams } from "react-router-dom";
+import {
+  fetchPostBySlug,
+  fetchPosts,
+  readingTime,
+  type SubstackPost,
+} from "../utils/rss";
+import Nav from "../components/Nav";
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 
-export default function ProjectList() {
-  const [posts, setPosts] = useState<SubstackPost[]>([]);
-  const [search, setSearch] = useState("");
-  const [activeFilter, setActiveFilter] = useState<Filter>("all");
-  const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+export default function ProjectDetail() {
+  const { slug } = useParams<{ slug: string }>();
+
+  const [post, setPost] = useState<SubstackPost | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<SubstackPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
-    fetchPosts()
+    if (!slug) return;
+    fetchPostBySlug(slug)
       .then((data) => {
-        setPosts(data);
+        setPost(data);
         setLoading(false);
       })
       .catch(() => {
         setError(true);
         setLoading(false);
       });
+  }, [slug]);
+
+  // fetch related posts
+  useEffect(() => {
+    if (!post) return;
+    fetchPosts().then((all) => {
+      const related = all
+        .filter((p) => p.slug !== post.slug && p.category === post.category)
+        .slice(0, 3);
+      setRelatedPosts(related);
+    });
+  }, [post]);
+
+  // scroll progress + back to top
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+      setShowBackToTop(scrollTop > 400);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const filtered = posts.filter((post) => {
-    const matchesSearch = post.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesFilter =
-      activeFilter === "all" || post.category === activeFilter;
-    return matchesSearch && matchesFilter;
-  });
-
-  const visible = filtered.slice(0, visibleCount);
-  const remaining = filtered.length - visibleCount;
-
-  function handleFilterChange(f: Filter) {
-    setActiveFilter(f);
-    setVisibleCount(INITIAL_COUNT);
-  }
-
-  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
-    setSearch(e.target.value);
-    setVisibleCount(INITIAL_COUNT);
-  }
-
   return (
-    <div>
-      {/* Search */}
+    <div
+      className="min-h-screen w-full"
+      style={{ background: "var(--gd)", color: "var(--c)" }}
+    >
+      {/* Scroll progress bar */}
       <div
-        className="border-b"
-        style={{ borderColor: "rgba(224,217,188,0.07)" }}
-      >
-        <input
-          type="text"
-          placeholder="> search projects..."
-          value={search}
-          onChange={handleSearch}
-          className="w-full bg-transparent border-none outline-none py-4"
-          style={{
-            color: "var(--c)",
-            fontFamily: "DM Mono, monospace",
-            fontWeight: 300,
-            fontSize: "0.75rem",
-            letterSpacing: "0.04em",
-          }}
-        />
+        className="fixed top-0 left-0 z-[60] h-[2px] transition-all duration-100"
+        style={{
+          width: `${scrollProgress}%`,
+          background: "var(--c)",
+          opacity: 0.4,
+        }}
+      />
+
+      <Nav />
+
+      <div className="max-w-[800px] mx-auto px-7 pt-24">
+        {/* Loading */}
+        {loading && (
+          <p
+            className="py-10 text-[0.62rem]"
+            style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace" }}
+          >
+            fetching post...
+          </p>
+        )}
+
+        {/* Error */}
+        {error && (
+          <p
+            className="py-10 text-[0.62rem]"
+            style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace" }}
+          >
+            could not load this post, please try again later
+          </p>
+        )}
+
+        {/* Not found */}
+        {!loading && !error && !post && (
+          <p
+            className="py-10 text-[0.62rem]"
+            style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace" }}
+          >
+            post not found, please try again later
+          </p>
+        )}
+
+        {/* Post */}
+        {post && (
+          <div>
+            <div className="py-8 border-b border-[rgba(224,217,188,0.1)]">
+              {/* Date · reading time */}
+              <div className="flex items-center gap-2 mb-4">
+                <p
+                  className="text-[0.55rem] uppercase tracking-widest"
+                  style={{
+                    color: "rgba(224,217,188,0.3)",
+                    fontFamily: "DM Mono, monospace",
+                  }}
+                >
+                  {new Date(post.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+                <span
+                  style={{
+                    color: "rgba(224,217,188,0.2)",
+                    fontFamily: "DM Mono, monospace",
+                    fontSize: "0.55rem",
+                  }}
+                >
+                  ·
+                </span>
+                <p
+                  className="text-[0.55rem] uppercase tracking-widest"
+                  style={{
+                    color: "rgba(224,217,188,0.3)",
+                    fontFamily: "DM Mono, monospace",
+                  }}
+                >
+                  {readingTime(post.content)}
+                </p>
+              </div>
+
+              {/* Title */}
+              <h1
+                className="leading-tight mb-6"
+                style={{
+                  fontFamily: "Times New Roman, serif",
+                  color: "var(--c)",
+                  fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                }}
+              >
+                {post.title}
+              </h1>
+
+              {/* Link to Substack */}
+              <a
+                href={post.url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-[0.6rem] uppercase tracking-widest transition-colors duration-150"
+                style={{
+                  color: "var(--cd)",
+                  fontFamily: "DM Mono, monospace",
+                  cursor: pointerCursor,
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "var(--cd)")
+                }
+              >
+                read on substack ↗
+              </a>
+            </div>
+
+            {/* Post body */}
+            <div
+              className="py-8 prose"
+              style={{
+                color: "var(--c)",
+                fontFamily: "DM Mono, monospace",
+                overflowX: "auto",
+              }}
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
+
+            {/* Related posts */}
+            {relatedPosts.length > 0 && (
+              <div className="border-t border-[rgba(224,217,188,0.1)] py-8">
+                <p
+                  className="text-[0.55rem] uppercase tracking-widest mb-6"
+                  style={{
+                    color: "rgba(224,217,188,0.3)",
+                    fontFamily: "DM Mono, monospace",
+                  }}
+                >
+                  related posts
+                </p>
+                <div className="flex flex-col gap-4">
+                  {relatedPosts.map((related) => (
+                    <a
+                      key={related.slug}
+                      href={`/projects/${related.slug}`}
+                      className="flex items-center gap-4 transition-colors duration-150"
+                      style={{ cursor: pointerCursor }}
+                    >
+                      <div
+                        className="overflow-hidden flex-shrink-0"
+                        style={{ width: "52px", height: "40px" }}
+                      >
+                        <img
+                          src={related.image}
+                          alt={related.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover"
+                          style={{
+                            filter: "saturate(0.2) brightness(0.45) sepia(0.4)",
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <p
+                          className="text-[0.75rem] leading-tight mb-1"
+                          style={{
+                            color: "var(--c)",
+                            fontFamily: "DM Mono, monospace",
+                            opacity: 0.85,
+                          }}
+                        >
+                          {related.title}
+                        </p>
+                        <p
+                          className="text-[0.58rem]"
+                          style={{
+                            color: "var(--cd)",
+                            fontFamily: "DM Mono, monospace",
+                          }}
+                        >
+                          {readingTime(related.content)}
+                        </p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Filters */}
-      <div
-        className="flex gap-6 py-3 border-b"
-        style={{ borderColor: "rgba(224,217,188,0.07)" }}
-      >
-        {FILTERS.map((f) => (
-          <button
-            key={f}
-            onClick={() => handleFilterChange(f)}
-            className="text-[0.55rem] uppercase tracking-wider transition-all duration-150 pb-1"
-            style={{
-              fontFamily: "DM Mono, monospace",
-              color: activeFilter === f ? "var(--c)" : "rgba(224,217,188,0.3)",
-              background: "transparent",
-              border: "none",
-              borderBottom:
-                activeFilter === f
-                  ? "1px solid var(--c)"
-                  : "1px solid transparent",
-              cursor: pointerCursor,
-            }}
-          >
-            {f}
-          </button>
-        ))}
-
-        {/* Count — shows visible out of filtered */}
-        <span
-          className="ml-auto text-[0.55rem]"
+      {/* Back to top */}
+      {showBackToTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-8 right-8 text-[0.55rem] uppercase tracking-widest px-3 py-2 border transition-all duration-150"
           style={{
-            color: "rgba(224,217,188,0.2)",
             fontFamily: "DM Mono, monospace",
-          }}
-        >
-          {visible.length} / {filtered.length}
-        </span>
-      </div>
-
-      {/* States */}
-      {loading && (
-        <p
-          className="py-8"
-          style={{
+            borderColor: "rgba(224,217,188,0.2)",
             color: "var(--cd)",
-            fontFamily: "DM Mono, monospace",
-            fontSize: "0.8rem",
+            background: "var(--gd)",
+            cursor: pointerCursor,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "var(--c)";
+            e.currentTarget.style.color = "var(--c)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "rgba(224,217,188,0.2)";
+            e.currentTarget.style.color = "var(--cd)";
           }}
         >
-          fetching posts...
-        </p>
-      )}
-      {error && (
-        <p
-          className="py-8"
-          style={{
-            color: "var(--cd)",
-            fontFamily: "DM Mono, monospace",
-            fontSize: "0.8rem",
-          }}
-        >
-          could not load posts — check your Substack URL
-        </p>
-      )}
-      {!loading && !error && posts.length === 0 && (
-        <p
-          className="py-8"
-          style={{
-            color: "var(--cd)",
-            fontFamily: "DM Mono, monospace",
-            fontSize: "0.8rem",
-          }}
-        >
-          no posts yet
-        </p>
-      )}
-
-      {/* Rows */}
-      {!loading &&
-        !error &&
-        visible.map((post, i) => (
-          <ProjectRow key={post.slug} post={post} index={i} />
-        ))}
-
-      {/* No results */}
-      {!loading && !error && filtered.length === 0 && posts.length > 0 && (
-        <p
-          className="py-8"
-          style={{
-            color: "var(--cd)",
-            fontFamily: "DM Mono, monospace",
-            fontSize: "0.8rem",
-          }}
-        >
-          project not found
-        </p>
-      )}
-
-      {/* Load more */}
-      {!loading && !error && remaining > 0 && (
-        <div
-          className="py-4 border-b"
-          style={{ borderColor: "rgba(224,217,188,0.07)" }}
-        >
-          <button
-            onClick={() => setVisibleCount((v) => v + LOAD_MORE_COUNT)}
-            className="uppercase tracking-wider px-3 py-1.5 border transition-all duration-150"
-            style={{
-              fontFamily: "DM Mono, monospace",
-              fontSize: "0.6rem",
-              borderColor: "rgba(224,217,188,0.15)",
-              color: "var(--cd)",
-              background: "transparent",
-              cursor: pointerCursor,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "var(--c)";
-              e.currentTarget.style.color = "var(--c)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(224,217,188,0.15)";
-              e.currentTarget.style.color = "var(--cd)";
-            }}
-          >
-            + {Math.min(LOAD_MORE_COUNT, remaining)} more
-          </button>
-        </div>
+          ↑ top
+        </button>
       )}
     </div>
   );

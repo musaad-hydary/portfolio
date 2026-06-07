@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import type { SubstackPost } from "../utils/rss";
 
 interface Props {
@@ -10,8 +9,6 @@ interface Props {
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 
 export default function ProjectRow({ post, index }: Props) {
-  const [imgLoaded, setImgLoaded] = useState(false);
-
   return (
     <Link
       to={`/projects/${post.slug}`}
@@ -26,32 +23,21 @@ export default function ProjectRow({ post, index }: Props) {
       }
       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
     >
-      {/* Thumbnail with skeleton */}
+      {/* Thumbnail — no skeleton, just lazy load */}
       <div
-        className="overflow-hidden border-r relative"
+        className="overflow-hidden border-r"
         style={{
           width: "64px",
           height: "52px",
           borderColor: "rgba(224,217,188,0.07)",
         }}
       >
-        {/* Skeleton — shows until image loads */}
-        {!imgLoaded && (
-          <div
-            className="absolute inset-0"
-            style={{ background: "rgba(224,217,188,0.05)" }}
-          />
-        )}
         <img
           src={post.image}
           alt={post.title}
           loading="lazy"
-          onLoad={() => setImgLoaded(true)}
-          className="w-full h-full object-cover block transition-opacity duration-300"
-          style={{
-            filter: "saturate(0.2) brightness(0.45) sepia(0.4)",
-            opacity: imgLoaded ? 1 : 0,
-          }}
+          className="w-full h-full object-cover block"
+          style={{ filter: "saturate(0.2) brightness(0.45) sepia(0.4)" }}
         />
       </div>
 
