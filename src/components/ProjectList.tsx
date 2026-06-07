@@ -5,10 +5,15 @@ import ProjectRow from "./ProjectRow";
 
 const INITIAL_COUNT = 5;
 const LOAD_MORE_COUNT = 5;
+const FILTERS = ["all", "engineering", "music"] as const;
+type Filter = (typeof FILTERS)[number];
+
+const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 
 export default function ProjectList() {
   const [posts, setPosts] = useState<SubstackPost[]>([]);
   const [search, setSearch] = useState("");
+  const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -25,15 +30,31 @@ export default function ProjectList() {
       });
   }, []);
 
-  const filtered = posts.filter((post) =>
-    post.title.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filtered = posts.filter((post) => {
+    const matchesSearch = post.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    const matchesFilter =
+      activeFilter === "all" || post.category === activeFilter;
+    return matchesSearch && matchesFilter;
+  });
+
   const visible = filtered.slice(0, visibleCount);
   const remaining = filtered.length - visibleCount;
 
+  function handleFilterChange(f: Filter) {
+    setActiveFilter(f);
+    setVisibleCount(INITIAL_COUNT);
+  }
+
+  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    setSearch(e.target.value);
+    setVisibleCount(INITIAL_COUNT);
+  }
+
   return (
     <div>
-      {/* search */}
+      {/* Search */}
       <div
         className="border-b"
         style={{ borderColor: "rgba(224,217,188,0.07)" }}
@@ -42,10 +63,7 @@ export default function ProjectList() {
           type="text"
           placeholder="> search projects..."
           value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setVisibleCount(INITIAL_COUNT);
-          }}
+          onChange={handleSearch}
           className="w-full bg-transparent border-none outline-none py-4"
           style={{
             color: "var(--c)",
@@ -57,20 +75,45 @@ export default function ProjectList() {
         />
       </div>
 
-      {/* count */}
-      <div className="flex justify-end pt-2 pb-2">
+      {/* Filters */}
+      <div
+        className="flex gap-6 py-3 border-b"
+        style={{ borderColor: "rgba(224,217,188,0.07)" }}
+      >
+        {FILTERS.map((f) => (
+          <button
+            key={f}
+            onClick={() => handleFilterChange(f)}
+            className="text-[0.55rem] uppercase tracking-wider transition-all duration-150 pb-1"
+            style={{
+              fontFamily: "DM Mono, monospace",
+              color: activeFilter === f ? "var(--c)" : "rgba(224,217,188,0.3)",
+              background: "transparent",
+              border: "none",
+              borderBottom:
+                activeFilter === f
+                  ? "1px solid var(--c)"
+                  : "1px solid transparent",
+              cursor: pointerCursor,
+            }}
+          >
+            {f}
+          </button>
+        ))}
+
+        {/* Count — shows visible out of filtered */}
         <span
-          className="text-[0.6rem]"
+          className="ml-auto text-[0.55rem]"
           style={{
             color: "rgba(224,217,188,0.2)",
             fontFamily: "DM Mono, monospace",
           }}
         >
-          {visible.length} / {posts.length}
+          {visible.length} / {filtered.length}
         </span>
       </div>
 
-      {/* states */}
+      {/* States */}
       {loading && (
         <p
           className="py-8"
@@ -108,7 +151,7 @@ export default function ProjectList() {
         </p>
       )}
 
-      {/* rows */}
+      {/* Rows */}
       {!loading &&
         !error &&
         visible.map((post, i) => (
@@ -129,7 +172,7 @@ export default function ProjectList() {
         </p>
       )}
 
-      {/* load more */}
+      {/* Load more */}
       {!loading && !error && remaining > 0 && (
         <div
           className="py-4 border-b"
@@ -144,6 +187,7 @@ export default function ProjectList() {
               borderColor: "rgba(224,217,188,0.15)",
               color: "var(--cd)",
               background: "transparent",
+              cursor: pointerCursor,
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = "var(--c)";
@@ -154,7 +198,7 @@ export default function ProjectList() {
               e.currentTarget.style.color = "var(--cd)";
             }}
           >
-            + more
+            + {Math.min(LOAD_MORE_COUNT, remaining)} more
           </button>
         </div>
       )}
