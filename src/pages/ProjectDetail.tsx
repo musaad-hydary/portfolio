@@ -10,13 +10,11 @@ import Nav from "../components/Nav";
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 
-// scores posts by title word overlap + category match
 function getRelated(
   current: SubstackPost,
   all: SubstackPost[],
 ): SubstackPost[] {
   const currentWords = current.title.toLowerCase().split(/\s+/);
-
   return all
     .filter((p) => p.slug !== current.slug)
     .map((p) => {
@@ -40,6 +38,11 @@ export default function ProjectDetail() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
+  // scroll to top on new article
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
+
   useEffect(() => {
     if (!slug) return;
     fetchPostBySlug(slug)
@@ -53,7 +56,6 @@ export default function ProjectDetail() {
       });
   }, [slug]);
 
-  // fetch related posts using scoring
   useEffect(() => {
     if (!post) return;
     fetchPosts().then((all) => {
@@ -61,7 +63,6 @@ export default function ProjectDetail() {
     });
   }, [post]);
 
-  // scroll progress + back to top
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
