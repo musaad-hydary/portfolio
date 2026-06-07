@@ -59,6 +59,7 @@ body {
 .prose h3 {
   font-size: 1.2rem;
 }
+
 .prose p {
   font-size: 0.9rem;
   line-height: 2;
@@ -68,24 +69,41 @@ body {
   font-family: "DM Mono", monospace;
   font-weight: 300;
 }
+
 .prose a {
   color: var(--c);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
 .prose img {
   width: 100%;
   margin: 2rem 0;
 }
+
 .prose strong {
   font-weight: 400;
   color: var(--c);
   opacity: 1;
 }
+
 .prose pre,
 .prose code {
   font-family: "DM Mono", monospace;
   font-size: 0.75rem;
   background: rgba(224, 217, 188, 0.06);
   padding: 0.2rem 0.4rem;
+}
+
+.prose pre {
+  position: relative;
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre;
+  padding: 1rem;
+}
+
+.prose code {
+  word-break: break-word;
+  white-space: pre-wrap;
 }
