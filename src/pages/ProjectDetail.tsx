@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   fetchPostBySlug,
@@ -35,8 +35,10 @@ export default function ProjectDetail() {
   const [relatedPosts, setRelatedPosts] = useState<SubstackPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
+
+  // ref for progress bar — avoids re-renders on scroll
+  const progressRef = useRef<HTMLDivElement>(null);
 
   // scroll to top on new article
   useEffect(() => {
@@ -63,15 +65,19 @@ export default function ProjectDetail() {
     });
   }, [post]);
 
+  // update progress bar directly via DOM — no React re-render on scroll
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      if (progressRef.current) {
+        progressRef.current.style.width = `${progress}%`;
+      }
       setShowBackToTop(scrollTop > 400);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -80,11 +86,12 @@ export default function ProjectDetail() {
       className="min-h-screen w-full"
       style={{ background: "var(--gd)", color: "var(--c)" }}
     >
-      {/* Scroll progress bar — GPU composited, no transition-all */}
+      {/* Scroll progress bar */}
       <div
+        ref={progressRef}
         className="fixed top-0 left-0 z-[60] h-[2px]"
         style={{
-          width: `${scrollProgress}%`,
+          width: "0%",
           background: "var(--c)",
           opacity: 0.4,
           willChange: "width",
