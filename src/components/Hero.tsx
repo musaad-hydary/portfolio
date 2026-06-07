@@ -30,7 +30,7 @@ export default function Hero() {
             fontWeight: 300,
           }}
         >
-          computer engineer, software dev, & music producer
+          computer engineer & music producer
         </span>
 
         <span
