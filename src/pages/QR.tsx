@@ -1,0 +1,86 @@
+import { useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
+
+const options = [
+  { label: "portfolio", value: "https://musaadhydary.com" },
+  { label: "linkedin", value: "https://linkedin.com/in/musaad-hydary" },
+  { label: "github", value: "https://github.com/musaad-hydary" },
+  { label: "substack", value: "https://musaadh.substack.com" },
+];
+
+export default function QRPage() {
+  const [active, setActive] = useState(0);
+
+  return (
+    <div
+      className="min-h-screen flex flex-col items-center justify-center px-8"
+      style={{ background: "var(--gd)", color: "var(--c)" }}
+    >
+      <div className="flex flex-col items-center gap-10 w-full max-w-[320px]">
+        {/* Name */}
+        <h1
+          style={{
+            fontFamily: "Dreamer, serif",
+            color: "var(--c)",
+            fontSize: "clamp(1.8rem, 8vw, 4rem)",
+            lineHeight: 1,
+            letterSpacing: "0.06em",
+            textAlign: "center",
+            whiteSpace: "nowrap",
+          }}
+        >
+          musaad hydary
+        </h1>
+
+        {/* Toggle */}
+        <div className="flex gap-4 flex-wrap justify-center">
+          {options.map((o, i) => (
+            <button
+              key={o.label}
+              onClick={() => setActive(i)}
+              className="text-[0.6rem] uppercase tracking-widest pb-1 transition-all duration-150"
+              style={{
+                fontFamily: "DM Mono, monospace",
+                color: active === i ? "var(--c)" : "rgba(224,217,188,0.3)",
+                background: "transparent",
+                border: "none",
+                borderBottom:
+                  active === i ? "1px solid var(--c)" : "1px solid transparent",
+              }}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+
+        {/* QR Code */}
+        <div
+          style={{
+            background: "var(--c)",
+            padding: "1.5rem",
+            borderRadius: "2px",
+          }}
+        >
+          <QRCodeSVG
+            value={options[active].value}
+            size={220}
+            bgColor="#e8e2c8"
+            fgColor="#2a3b1e"
+            level="H"
+          />
+        </div>
+
+        {/* URL */}
+        <p
+          className="text-[0.6rem] tracking-widest text-center"
+          style={{
+            color: "rgba(224,217,188,0.4)",
+            fontFamily: "DM Mono, monospace",
+          }}
+        >
+          {options[active].value.replace("https://", "")}
+        </p>
+      </div>
+    </div>
+  );
+}
