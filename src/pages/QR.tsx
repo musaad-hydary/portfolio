@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 
 const options = [
-  { label: "website", value: "https://musaadhydary.com" },
+  { label: "portfolio", value: "https://musaadhydary.com" },
   { label: "linkedin", value: "https://linkedin.com/in/musaad-hydary" },
   { label: "github", value: "https://github.com/musaad-hydary" },
   { label: "substack", value: "https://musaadh.substack.com" },
