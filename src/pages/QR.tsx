@@ -2,7 +2,7 @@ import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 
 const options = [
-  { label: "portfolio", value: "https://musaadhydary.com" },
+  { label: "website", value: "https://musaadhydary.com" },
   { label: "linkedin", value: "https://linkedin.com/in/musaad-hydary" },
   { label: "github", value: "https://github.com/musaad-hydary" },
   { label: "substack", value: "https://musaadh.substack.com" },
@@ -22,7 +22,7 @@ export default function QRPage() {
           style={{
             fontFamily: "Dreamer, serif",
             color: "var(--c)",
-            fontSize: "clamp(1.8rem, 8vw, 4rem)",
+            fontSize: "clamp(3rem, 12vw, 6rem)",
             lineHeight: 1,
             letterSpacing: "0.06em",
             textAlign: "center",
