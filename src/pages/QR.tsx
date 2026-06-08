@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 
 const options = [
@@ -17,20 +18,28 @@ export default function QRPage() {
       style={{ background: "var(--gd)", color: "var(--c)" }}
     >
       <div className="flex flex-col items-center gap-10 w-full max-w-[320px]">
-        {/* Name */}
-        <h1
+        {/* Name — links home */}
+        <Link
+          to="/"
           style={{
-            fontFamily: "Dreamer, serif",
-            color: "var(--c)",
-            fontSize: "clamp(3rem, 12vw, 6rem)",
-            lineHeight: 1,
-            letterSpacing: "0.06em",
-            textAlign: "center",
-            whiteSpace: "nowrap",
+            textDecoration: "none",
+            cursor: "url('/cursor-pointer.png') 0 0, pointer",
           }}
         >
-          musaad hydary
-        </h1>
+          <h1
+            style={{
+              fontFamily: "Dreamer, serif",
+              color: "var(--c)",
+              fontSize: "clamp(3rem, 12vw, 6rem)",
+              lineHeight: 1,
+              letterSpacing: "0.06em",
+              textAlign: "center",
+              whiteSpace: "nowrap",
+            }}
+          >
+            musaad hydary
+          </h1>
+        </Link>
 
         {/* Toggle */}
         <div className="flex gap-4 flex-wrap justify-center">
@@ -46,6 +55,7 @@ export default function QRPage() {
                 border: "none",
                 borderBottom:
                   active === i ? "1px solid var(--c)" : "1px solid transparent",
+                cursor: "url('/cursor-pointer.png') 0 0, pointer",
               }}
             >
               {o.label}
@@ -56,7 +66,7 @@ export default function QRPage() {
         {/* QR Code */}
         <div
           style={{
-            background: "var(--c)",
+            background: "#e8e2c8",
             padding: "1.5rem",
             borderRadius: "2px",
           }}
