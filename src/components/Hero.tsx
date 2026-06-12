@@ -51,10 +51,10 @@ export default function Hero() {
           src="/cpu.gif"
           alt="splash"
           style={{
-            width: "70%",
+            width: "80%",
             height: "auto",
             imageRendering: "pixelated",
-            filter: "sepia(0.4) brightness(0.8)",
+            filter: "sepia(0.5) brightness(0.8)",
             marginTop: "-1rem",
           }}
         />
