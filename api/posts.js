@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
     const response = await fetch(
-      "https://musaadh.substack.com/api/v1/posts?limit=100",
+      "https://musaadh.substack.com/api/v1/posts?limit=50",
     );
     const data = await response.json();
     res.setHeader("Access-Control-Allow-Origin", "*");
