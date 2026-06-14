@@ -85,12 +85,36 @@ function inferCategory(
   return "engineering";
 }
 
+// Production: hits our Vercel serverless function (/api/posts) which proxies
+// the Substack API server-side, avoiding CORS and the 20-post RSS cap.
+// Development: hits rss2json directly since /api isn't available on localhost.
 export async function fetchPosts(): Promise<SubstackPost[]> {
-  const res = await fetch(
-    `https://api.rss2json.com/v1/api.json?rss_url=${SUBSTACK_URL}/feed&api_key=${RSS2JSON_KEY}&count=50&t=${Date.now()}`,
-  );
+  const url = import.meta.env.DEV
+    ? `https://api.rss2json.com/v1/api.json?rss_url=${SUBSTACK_URL}/feed&api_key=${RSS2JSON_KEY}&count=50&t=${Date.now()}`
+    : "/api/posts";
+
+  const res = await fetch(url);
   const data = await res.json();
 
+  // Production — Substack API format (array of posts)
+  if (Array.isArray(data)) {
+    return data.map((item: any) => {
+      const slug = item.slug;
+      const content = item.body_html || "";
+      return {
+        title: item.title,
+        slug,
+        url: `${SUBSTACK_URL}/p/${slug}`,
+        date: item.post_date,
+        description: item.subtitle || "",
+        image: item.cover_image || "",
+        content,
+        category: inferCategory(item.title, content),
+      };
+    });
+  }
+
+  // Development — rss2json format
   if (data.status !== "ok" || !data.items) return [];
 
   return data.items.map((item: any) => {
