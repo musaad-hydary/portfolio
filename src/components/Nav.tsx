@@ -23,7 +23,12 @@ const links = [
     external: true,
     icon: "SS",
   },
-  { label: "resume", href: "/resume.pdf", external: true, icon: "CV" },
+  {
+    label: "resume",
+    href: "/musaadhydary-resume.pdf",
+    external: true,
+    icon: "CV",
+  },
 ];
 
 export default function Nav() {
