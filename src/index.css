@@ -107,3 +107,8 @@ body {
   word-break: break-word;
   white-space: pre-wrap;
 }
+
+.subscription-widget-wrap-editor,
+.subscription-widget {
+  display: none;
+}
