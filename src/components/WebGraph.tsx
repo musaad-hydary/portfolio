@@ -18,11 +18,12 @@ const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 const NODE_W = 180;
 const NODE_H = 130;
 const SPEED = 0.04;
+const LINE_DISTANCE = 400;
 
 function MobileGrid({ posts }: { posts: SubstackPost[] }) {
   const navigate = useNavigate();
   return (
-    <div className="grid grid-cols-2 gap-3 py-6">
+    <div className="flex flex-col gap-3 py-6">
       {posts.map((post) => (
         <div
           key={post.slug}
@@ -30,8 +31,8 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
           className="relative overflow-hidden transition-all duration-150 border"
           style={{
             cursor: pointerCursor,
-            aspectRatio: "1",
             borderColor: "rgba(224,217,188,0.15)",
+            width: "100%",
           }}
           onMouseEnter={(e) =>
             (e.currentTarget.style.borderColor = "rgba(224,217,188,0.4)")
@@ -40,22 +41,25 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
             (e.currentTarget.style.borderColor = "rgba(224,217,188,0.15)")
           }
         >
-          <img
-            src={post.image}
-            alt={post.title}
-            className="w-full h-full object-cover"
-          />
+          <div style={{ width: "100%", height: 140, overflow: "hidden" }}>
+            <img
+              src={post.image}
+              alt={post.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
           <div
-            className="absolute bottom-0 left-0 right-0 p-2"
-            style={{ background: "rgba(42,59,30,0.85)" }}
+            className="p-2"
+            style={{
+              background: "var(--gd)",
+              borderTop: "1px solid rgba(224,217,188,0.1)",
+            }}
           >
             <p
               className="text-[0.5rem] uppercase tracking-wider"
-              style={{ color: "var(--c)", fontFamily: "DM Mono, monospace" }}
+              style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace" }}
             >
-              {post.title.length > 24
-                ? post.title.slice(0, 22) + "..."
-                : post.title}
+              {post.title}
             </p>
           </div>
         </div>
@@ -66,6 +70,7 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
 
 function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const nodesRef = useRef<Node[]>([]);
   const animRef = useRef<number>(0);
   const navigate = useNavigate();
@@ -73,8 +78,13 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    const canvas = canvasRef.current;
+    if (!container || !canvas) return;
     const W = container.offsetWidth;
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
     const els = Array.from(
       container.querySelectorAll(".graph-node"),
@@ -82,36 +92,31 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
 
     const cols = Math.ceil(Math.sqrt(els.length));
     const rows = Math.ceil(els.length / cols);
-
     const cellW = W / cols;
     const cellH = H / rows;
 
     nodesRef.current = els.map((el, i) => {
       const col = i % cols;
       const row = Math.floor(i / cols);
-
-      const x = Math.max(
-        NODE_W / 2,
-        Math.min(
-          W - NODE_W / 2,
-          col * cellW +
-            cellW / 2 +
-            (Math.random() - 0.5) * (cellW - NODE_W) * 0.6,
-        ),
-      );
-      const y = Math.max(
-        NODE_H / 2,
-        Math.min(
-          H - NODE_H / 2,
-          row * cellH +
-            cellH / 2 +
-            (Math.random() - 0.5) * (cellH - NODE_H) * 0.6,
-        ),
-      );
-
       return {
-        x,
-        y,
+        x: Math.max(
+          NODE_W / 2,
+          Math.min(
+            W - NODE_W / 2,
+            col * cellW +
+              cellW / 2 +
+              (Math.random() - 0.5) * (cellW - NODE_W) * 0.6,
+          ),
+        ),
+        y: Math.max(
+          NODE_H / 2,
+          Math.min(
+            H - NODE_H / 2,
+            row * cellH +
+              cellH / 2 +
+              (Math.random() - 0.5) * (cellH - NODE_H) * 0.6,
+          ),
+        ),
         vx: (Math.random() - 0.5) * SPEED,
         vy: (Math.random() - 0.5) * SPEED,
         el,
@@ -119,12 +124,14 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
     });
 
     function draw() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, W, H);
+
       const nodes = nodesRef.current;
 
       nodes.forEach((n) => {
         n.x += n.vx;
         n.y += n.vy;
-
         if (n.x - NODE_W / 2 < 0) {
           n.x = NODE_W / 2;
           n.vx = Math.abs(n.vx);
@@ -141,10 +148,27 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
           n.y = H - NODE_H / 2;
           n.vy = -Math.abs(n.vy);
         }
-
         n.el.style.left = `${n.x - NODE_W / 2}px`;
         n.el.style.top = `${n.y - NODE_H / 2}px`;
       });
+
+      // spider lines
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < LINE_DISTANCE) {
+            const opacity = (1 - dist / LINE_DISTANCE) * 0.15;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(224,217,188,${opacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
 
       animRef.current = requestAnimationFrame(draw);
     }
@@ -158,6 +182,10 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
       ref={containerRef}
       style={{ position: "relative", height: H, overflow: "hidden" }}
     >
+      <canvas
+        ref={canvasRef}
+        style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+      />
       {posts.map((post) => (
         <div
           key={post.slug}
