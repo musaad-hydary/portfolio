@@ -159,12 +159,12 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < LINE_DISTANCE) {
-            const opacity = (1 - dist / LINE_DISTANCE) * 0.15;
+            const opacity = (1 - dist / LINE_DISTANCE) * 0.35;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
             ctx.strokeStyle = `rgba(224,217,188,${opacity})`;
-            ctx.lineWidth = 0.5;
+            ctx.lineWidth = 0.7;
             ctx.stroke();
           }
         }
@@ -201,7 +201,7 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = "rgba(224,217,188,0.5)";
-            e.currentTarget.style.transform = "scale(1.05)";
+            e.currentTarget.style.transform = "scale(1.02)";
             e.currentTarget.style.zIndex = "10";
           }}
           onMouseLeave={(e) => {
