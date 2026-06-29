@@ -19,8 +19,8 @@ const DESIGN_SLUGS = new Set([
   "shellcraft-a-smarter-terminal-overlay",
   "cold-open-bridging-reddit-and-imdb",
   "ch57x-macropad-configurator-for-mac",
-  "pixelv-a-riscv-cpu-in-the-browser",
-  "building-a-conference-management-system-with-php",
+  "pixelv-a-risc-v-cpu-in-the-browser",
+  "building-a-conference-management",
   "glucowatch-a-hybrid-smart-watch-for",
 ]);
 
