@@ -80,50 +80,56 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
     const container = containerRef.current;
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
-    const W = container.offsetWidth;
-    canvas.width = W;
-    canvas.height = H;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
 
-    const els = Array.from(
-      container.querySelectorAll(".graph-node"),
-    ) as HTMLDivElement[];
+    let ctx: CanvasRenderingContext2D | null = null;
 
-    const cols = Math.ceil(Math.sqrt(els.length));
-    const rows = Math.ceil(els.length / cols);
-    const cellW = W / cols;
-    const cellH = H / rows;
+    const init = (W: number) => {
+      canvas.width = W;
+      canvas.height = H;
+      ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-    nodesRef.current = els.map((el, i) => {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-      return {
-        x: Math.max(
-          NODE_W / 2,
-          Math.min(
-            W - NODE_W / 2,
-            col * cellW +
-              cellW / 2 +
-              (Math.random() - 0.5) * (cellW - NODE_W) * 0.6,
+      const els = Array.from(
+        container.querySelectorAll(".graph-node"),
+      ) as HTMLDivElement[];
+      const cols = Math.ceil(Math.sqrt(els.length));
+      const rows = Math.ceil(els.length / cols);
+      const cellW = W / cols;
+      const cellH = H / rows;
+
+      nodesRef.current = els.map((el, i) => {
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+        return {
+          x: Math.max(
+            NODE_W / 2 + 4,
+            Math.min(
+              W - NODE_W / 2 - 4,
+              col * cellW +
+                cellW / 2 +
+                (Math.random() - 0.5) * (cellW - NODE_W) * 0.5,
+            ),
           ),
-        ),
-        y: Math.max(
-          NODE_H / 2,
-          Math.min(
-            H - NODE_H / 2,
-            row * cellH +
-              cellH / 2 +
-              (Math.random() - 0.5) * (cellH - NODE_H) * 0.6,
+          y: Math.max(
+            NODE_H / 2 + 4,
+            Math.min(
+              H - NODE_H / 2 - 4,
+              row * cellH +
+                cellH / 2 +
+                (Math.random() - 0.5) * (cellH - NODE_H) * 0.5,
+            ),
           ),
-        ),
-        vx: (Math.random() - 0.5) * SPEED,
-        vy: (Math.random() - 0.5) * SPEED,
-        el,
-      };
-    });
+          vx: (Math.random() - 0.5) * SPEED,
+          vy: (Math.random() - 0.5) * SPEED,
+          el,
+        };
+      });
 
-    function draw() {
+      cancelAnimationFrame(animRef.current);
+      draw(W);
+    };
+
+    const draw = (W: number) => {
       if (!ctx) return;
       ctx.clearRect(0, 0, W, H);
 
@@ -132,49 +138,59 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
       nodes.forEach((n) => {
         n.x += n.vx;
         n.y += n.vy;
-        if (n.x - NODE_W / 2 < 0) {
-          n.x = NODE_W / 2;
+
+        if (n.x - NODE_W / 2 < 4) {
+          n.x = NODE_W / 2 + 4;
           n.vx = Math.abs(n.vx);
         }
-        if (n.x + NODE_W / 2 > W) {
-          n.x = W - NODE_W / 2;
+        if (n.x + NODE_W / 2 > W - 4) {
+          n.x = W - NODE_W / 2 - 4;
           n.vx = -Math.abs(n.vx);
         }
-        if (n.y - NODE_H / 2 < 0) {
-          n.y = NODE_H / 2;
+        if (n.y - NODE_H / 2 < 4) {
+          n.y = NODE_H / 2 + 4;
           n.vy = Math.abs(n.vy);
         }
-        if (n.y + NODE_H / 2 > H) {
-          n.y = H - NODE_H / 2;
+        if (n.y + NODE_H / 2 > H - 4) {
+          n.y = H - NODE_H / 2 - 4;
           n.vy = -Math.abs(n.vy);
         }
+
         n.el.style.left = `${n.x - NODE_W / 2}px`;
         n.el.style.top = `${n.y - NODE_H / 2}px`;
       });
 
-      // spider lines
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < LINE_DISTANCE) {
-            const opacity = (1 - dist / LINE_DISTANCE) * 0.35;
+            const opacity = (1 - dist / LINE_DISTANCE) * 0.12;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
             ctx.strokeStyle = `rgba(224,217,188,${opacity})`;
-            ctx.lineWidth = 0.7;
+            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         }
       }
 
-      animRef.current = requestAnimationFrame(draw);
-    }
+      animRef.current = requestAnimationFrame(() => draw(W));
+    };
 
-    draw();
-    return () => cancelAnimationFrame(animRef.current);
+    const observer = new ResizeObserver((entries) => {
+      const W = entries[0].contentRect.width;
+      if (W > 0) init(W);
+    });
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(animRef.current);
+    };
   }, [posts]);
 
   return (
@@ -194,19 +210,21 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
           style={{
             position: "absolute",
             width: NODE_W,
+            height: NODE_H,
+            overflow: "hidden",
             cursor: pointerCursor,
             border: "1px solid rgba(224,217,188,0.15)",
-            transition: "border-color 0.2s, transform 0.2s",
+            transition: "border-color 0.2s, filter 0.2s",
             zIndex: 1,
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = "rgba(224,217,188,0.5)";
-            e.currentTarget.style.transform = "scale(1.02)";
+            e.currentTarget.style.filter = "brightness(1.05)";
             e.currentTarget.style.zIndex = "10";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.borderColor = "rgba(224,217,188,0.15)";
-            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.filter = "brightness(1)";
             e.currentTarget.style.zIndex = "1";
           }}
         >
