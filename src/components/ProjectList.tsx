@@ -24,8 +24,6 @@ export default function ProjectList() {
   useEffect(() => {
     fetchPosts()
       .then((data) => {
-        console.log("total posts:", data.length);
-        console.log("design posts:", data.filter((p) => p.isDesign).length);
         setPosts(data);
         setLoading(false);
       })
@@ -61,7 +59,6 @@ export default function ProjectList() {
 
   return (
     <div>
-      {/* Single row — search + filters + toggle */}
       <div
         className="flex items-center gap-4 border-b py-3"
         style={{ borderColor: "rgba(224,217,188,0.07)" }}
@@ -82,7 +79,7 @@ export default function ProjectList() {
           }}
         />
 
-        {/* Category filters — list mode, desktop only */}
+        {/* Category filters */}
         {view === "list" &&
           FILTERS.map((f) => (
             <button
@@ -106,36 +103,49 @@ export default function ProjectList() {
             </button>
           ))}
 
-        {/* Divider */}
         <span
-          className="shrink-0"
+          className="shrink-0 hidden sm:block"
           style={{ color: "rgba(224,217,188,0.1)", fontSize: "0.6rem" }}
         >
           |
         </span>
 
-        {/* View toggle */}
-        {(["list", "design"] as View[]).map((v) => (
-          <button
-            key={v}
-            onClick={() => setView(v)}
-            className="text-[0.55rem] uppercase tracking-wider pb-1 transition-all duration-150 shrink-0"
-            style={{
-              fontFamily: "DM Mono, monospace",
-              color: view === v ? "var(--c)" : "rgba(224,217,188,0.3)",
-              background: "transparent",
-              border: "none",
-              borderBottom:
-                view === v ? "1px solid var(--c)" : "1px solid transparent",
-              cursor: pointerCursor,
-            }}
-          >
-            {v}
-          </button>
-        ))}
+        {/* Toggle */}
+        <div
+          className="flex shrink-0"
+          style={{
+            background: "rgba(224,217,188,0.06)",
+            border: "1px solid rgba(224,217,188,0.1)",
+            borderRadius: "2px",
+            overflow: "hidden",
+          }}
+        >
+          {(["list", "design"] as View[]).map((v) => (
+            <button
+              key={v}
+              onClick={() => setView(v)}
+              className="transition-all duration-200"
+              style={{
+                fontFamily: "DM Mono, monospace",
+                fontSize: "0.48rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                color: view === v ? "var(--gd)" : "rgba(224,217,188,0.35)",
+                background: view === v ? "var(--c)" : "transparent",
+                border: "none",
+                padding: "4px 10px",
+                cursor: pointerCursor,
+                lineHeight: 1,
+                minWidth: "36px",
+                textAlign: "center",
+              }}
+            >
+              {v}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Loading / error */}
       {loading && (
         <p
           className="py-8"
@@ -161,12 +171,10 @@ export default function ProjectList() {
         </p>
       )}
 
-      {/* Design graph */}
       {!loading && !error && view === "design" && (
         <WebGraph posts={designPosts} />
       )}
 
-      {/* List */}
       {!loading && !error && view === "list" && (
         <>
           {posts.length === 0 && (
@@ -199,7 +207,6 @@ export default function ProjectList() {
             </p>
           )}
 
-          {/* Load more + count in same row */}
           {remaining > 0 && (
             <div
               className="flex items-center justify-between py-4 border-b"
