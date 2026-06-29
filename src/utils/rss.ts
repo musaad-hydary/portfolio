@@ -20,6 +20,7 @@ const DESIGN_SLUGS = new Set([
   "cold-open-bridging-reddit-and-imdb",
   "ch57x-macropad-configurator-for-mac",
   "pixelv-a-risc-v-cpu-in-the-browser",
+  "rebuilding-my-portfolio",
   "glucowatch-a-hybrid-smart-watch-for",
 ]);
 
