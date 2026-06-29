@@ -18,7 +18,6 @@ const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 const NODE_W = 200;
 const NODE_H = 160;
 const SPEED = 0.04;
-const PADDING = 8;
 
 function MobileGrid({ posts }: { posts: SubstackPost[] }) {
   const navigate = useNavigate();
@@ -70,7 +69,7 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
   const nodesRef = useRef<Node[]>([]);
   const animRef = useRef<number>(0);
   const navigate = useNavigate();
-  const H = 500;
+  const H = 600;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -81,34 +80,35 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
       container.querySelectorAll(".graph-node"),
     ) as HTMLDivElement[];
 
+    const cols = Math.ceil(Math.sqrt(els.length));
+    const rows = Math.ceil(els.length / cols);
+
+    // use extra padding so cells are large enough that cards never start overlapping
+    const cellW = (W - NODE_W * 2) / cols;
+    const cellH = (H - NODE_H * 2) / rows;
+
     nodesRef.current = els.map((el, i) => {
-      const cols = Math.ceil(Math.sqrt(els.length));
-      const rows = Math.ceil(els.length / cols);
       const col = i % cols;
       const row = Math.floor(i / cols);
-      const cellW = (W - NODE_W - PADDING * 2) / cols;
-      const cellH = (H - NODE_H - PADDING * 2) / rows;
       return {
         x: Math.max(
-          PADDING + NODE_W / 2,
+          NODE_W / 2,
           Math.min(
-            W - PADDING - NODE_W / 2,
-            PADDING +
-              NODE_W / 2 +
+            W - NODE_W / 2,
+            NODE_W +
               col * cellW +
               cellW / 2 +
-              (Math.random() - 0.5) * cellW * 0.9,
+              (Math.random() - 0.5) * cellW * 0.3,
           ),
         ),
         y: Math.max(
-          PADDING + NODE_H / 2,
+          NODE_H / 2,
           Math.min(
-            H - PADDING - NODE_H / 2,
-            PADDING +
-              NODE_H / 2 +
+            H - NODE_H / 2,
+            NODE_H +
               row * cellH +
               cellH / 2 +
-              (Math.random() - 0.5) * cellH * 0.9,
+              (Math.random() - 0.5) * cellH * 0.3,
           ),
         ),
         vx: (Math.random() - 0.5) * SPEED,
@@ -124,20 +124,20 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
         n.x += n.vx;
         n.y += n.vy;
 
-        if (n.x - NODE_W / 2 < PADDING) {
-          n.x = PADDING + NODE_W / 2;
+        if (n.x - NODE_W / 2 < 0) {
+          n.x = NODE_W / 2;
           n.vx = Math.abs(n.vx);
         }
-        if (n.x + NODE_W / 2 > W - PADDING) {
-          n.x = W - PADDING - NODE_W / 2;
+        if (n.x + NODE_W / 2 > W) {
+          n.x = W - NODE_W / 2;
           n.vx = -Math.abs(n.vx);
         }
-        if (n.y - NODE_H / 2 < PADDING) {
-          n.y = PADDING + NODE_H / 2;
+        if (n.y - NODE_H / 2 < 0) {
+          n.y = NODE_H / 2;
           n.vy = Math.abs(n.vy);
         }
-        if (n.y + NODE_H / 2 > H - PADDING) {
-          n.y = H - PADDING - NODE_H / 2;
+        if (n.y + NODE_H / 2 > H) {
+          n.y = H - NODE_H / 2;
           n.vy = -Math.abs(n.vy);
         }
 
@@ -181,7 +181,6 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
             e.currentTarget.style.zIndex = "1";
           }}
         >
-          {/* Image */}
           <div
             style={{ width: NODE_W, height: NODE_H - 28, overflow: "hidden" }}
           >
@@ -196,8 +195,6 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
               }}
             />
           </div>
-
-          {/* Title */}
           <div
             style={{
               padding: "0.4rem 0.5rem",
