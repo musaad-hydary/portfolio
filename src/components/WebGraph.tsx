@@ -15,8 +15,8 @@ interface Node {
 }
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
-const NODE_W = 140;
-const NODE_H = 100;
+const NODE_W = 180;
+const NODE_H = 130;
 const SPEED = 0.04;
 
 function MobileGrid({ posts }: { posts: SubstackPost[] }) {
@@ -30,7 +30,7 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
           className="relative overflow-hidden transition-all duration-150 border"
           style={{
             cursor: pointerCursor,
-            aspectRatio: "4/3",
+            aspectRatio: "1",
             borderColor: "rgba(224,217,188,0.15)",
           }}
           onMouseEnter={(e) =>
@@ -83,34 +83,35 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
     const cols = Math.ceil(Math.sqrt(els.length));
     const rows = Math.ceil(els.length / cols);
 
-    // use extra padding so cells are large enough that cards never start overlapping
-    const cellW = (W - NODE_W * 2) / cols;
-    const cellH = (H - NODE_H * 2) / rows;
+    const cellW = W / cols;
+    const cellH = H / rows;
 
     nodesRef.current = els.map((el, i) => {
       const col = i % cols;
       const row = Math.floor(i / cols);
+
+      const x = Math.max(
+        NODE_W / 2,
+        Math.min(
+          W - NODE_W / 2,
+          col * cellW +
+            cellW / 2 +
+            (Math.random() - 0.5) * (cellW - NODE_W) * 0.6,
+        ),
+      );
+      const y = Math.max(
+        NODE_H / 2,
+        Math.min(
+          H - NODE_H / 2,
+          row * cellH +
+            cellH / 2 +
+            (Math.random() - 0.5) * (cellH - NODE_H) * 0.6,
+        ),
+      );
+
       return {
-        x: Math.max(
-          NODE_W / 2,
-          Math.min(
-            W - NODE_W / 2,
-            NODE_W +
-              col * cellW +
-              cellW / 2 +
-              (Math.random() - 0.5) * cellW * 0.3,
-          ),
-        ),
-        y: Math.max(
-          NODE_H / 2,
-          Math.min(
-            H - NODE_H / 2,
-            NODE_H +
-              row * cellH +
-              cellH / 2 +
-              (Math.random() - 0.5) * cellH * 0.3,
-          ),
-        ),
+        x,
+        y,
         vx: (Math.random() - 0.5) * SPEED,
         vy: (Math.random() - 0.5) * SPEED,
         el,
