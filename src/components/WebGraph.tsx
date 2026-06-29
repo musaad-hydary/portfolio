@@ -15,8 +15,8 @@ interface Node {
 }
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
-const NODE_W = 200;
-const NODE_H = 160;
+const NODE_W = 140;
+const NODE_H = 100;
 const SPEED = 0.04;
 
 function MobileGrid({ posts }: { posts: SubstackPost[] }) {
@@ -69,7 +69,7 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
   const nodesRef = useRef<Node[]>([]);
   const animRef = useRef<number>(0);
   const navigate = useNavigate();
-  const H = 600;
+  const H = 500;
 
   useEffect(() => {
     const container = containerRef.current;
