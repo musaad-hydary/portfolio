@@ -7,12 +7,23 @@ export interface SubstackPost {
   image: string;
   content: string;
   category: "engineering" | "music" | "all";
+  isDesign: boolean;
 }
 
 const SUBSTACK_URL = "https://musaadh.substack.com";
 const RSS2JSON_KEY = import.meta.env.VITE_RSS2JSON_KEY;
 
-// infers category from post title and content using keyword scoring
+const DESIGN_SLUGS = new Set([
+  "crate-digging-but-make-it-an-app",
+  "the-ps1-look-in-your-browser",
+  "shellcraft-a-smarter-terminal-overlay",
+  "cold-open-bridging-reddit-and-imdb",
+  "ch57x-macropad-configurator-for-mac",
+  "pixelv-a-riscv-cpu-in-the-browser",
+  "building-a-conference-management-system-with-php",
+  "glucowatch-a-hybrid-smart-watch-for",
+]);
+
 function inferCategory(
   title: string,
   content: string,
@@ -85,9 +96,6 @@ function inferCategory(
   return "engineering";
 }
 
-// Production: hits our Vercel serverless function (/api/posts) which proxies
-// the Substack API server-side, avoiding CORS and the 20-post RSS cap.
-// Development: hits rss2json directly since /api isn't available on localhost.
 export async function fetchPosts(): Promise<SubstackPost[]> {
   const url = import.meta.env.DEV
     ? `https://api.rss2json.com/v1/api.json?rss_url=${SUBSTACK_URL}/feed&api_key=${RSS2JSON_KEY}&count=50&t=${Date.now()}`
@@ -96,7 +104,6 @@ export async function fetchPosts(): Promise<SubstackPost[]> {
   const res = await fetch(url);
   const data = await res.json();
 
-  // Production — Substack API format (array of posts)
   if (Array.isArray(data)) {
     return data.map((item: any) => {
       const slug = item.slug;
@@ -110,11 +117,11 @@ export async function fetchPosts(): Promise<SubstackPost[]> {
         image: item.cover_image || "",
         content,
         category: inferCategory(item.title, content),
+        isDesign: DESIGN_SLUGS.has(slug),
       };
     });
   }
 
-  // Development — rss2json format
   if (data.status !== "ok" || !data.items) return [];
 
   return data.items.map((item: any) => {
@@ -130,6 +137,7 @@ export async function fetchPosts(): Promise<SubstackPost[]> {
       image: item.thumbnail || item.enclosure?.link || "",
       content,
       category: inferCategory(item.title, content),
+      isDesign: DESIGN_SLUGS.has(slug),
     };
   });
 }
@@ -141,7 +149,6 @@ export async function fetchPostBySlug(
   return posts.find((p) => p.slug === slug) ?? null;
 }
 
-// estimates reading time based on average 200 words per minute
 export function readingTime(content: string): string {
   const words = content.replace(/<[^>]+>/g, "").split(/\s+/).length;
   const minutes = Math.ceil(words / 200);
