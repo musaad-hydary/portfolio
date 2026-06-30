@@ -6,6 +6,7 @@ import WebGraph from "./WebGraph";
 
 const INITIAL_COUNT = 5;
 const LOAD_MORE_COUNT = 5;
+const DESIGN_INITIAL = 5;
 const FILTERS = ["all", "engineering", "music"] as const;
 type Filter = (typeof FILTERS)[number];
 type View = "list" | "design";
@@ -18,8 +19,16 @@ export default function ProjectList() {
   const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [view, setView] = useState<View>("list");
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+  const [designVisible, setDesignVisible] = useState(DESIGN_INITIAL);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     fetchPosts()
@@ -34,6 +43,10 @@ export default function ProjectList() {
   }, []);
 
   const designPosts = posts.filter((p) => p.isDesign);
+  const visibleDesignPosts = isMobile
+    ? designPosts.slice(0, designVisible)
+    : designPosts;
+  const designRemaining = designPosts.length - designVisible;
 
   const filtered = posts.filter((post) => {
     const matchesSearch = post.title
@@ -59,11 +72,11 @@ export default function ProjectList() {
 
   return (
     <div>
+      {/* Single row — search + desktop filters + toggle */}
       <div
         className="flex items-center gap-4 border-b py-3"
         style={{ borderColor: "rgba(224,217,188,0.07)" }}
       >
-        {/* Search */}
         <input
           type="text"
           placeholder="> search..."
@@ -79,7 +92,7 @@ export default function ProjectList() {
           }}
         />
 
-        {/* Category filters */}
+        {/* Desktop filters — list mode only */}
         {view === "list" &&
           FILTERS.map((f) => (
             <button
@@ -112,7 +125,7 @@ export default function ProjectList() {
 
         {/* Toggle */}
         <div
-          className="flex shrink-0"
+          className="flex items-center shrink-0"
           style={{
             background: "rgba(224,217,188,0.06)",
             border: "1px solid rgba(224,217,188,0.1)",
@@ -133,6 +146,7 @@ export default function ProjectList() {
                 color: view === v ? "var(--gd)" : "rgba(224,217,188,0.35)",
                 background: view === v ? "var(--c)" : "transparent",
                 border: "none",
+                borderRadius: "2px",
                 padding: "4px 10px",
                 cursor: pointerCursor,
                 lineHeight: 1,
@@ -146,6 +160,46 @@ export default function ProjectList() {
         </div>
       </div>
 
+      {/* Mobile filters — label left, buttons right, list mode only */}
+      {view === "list" && (
+        <div
+          className="flex items-center justify-between gap-4 sm:hidden border-b py-3"
+          style={{ borderColor: "rgba(224,217,188,0.07)" }}
+        >
+          <span
+            className="text-[0.55rem] uppercase tracking-wider shrink-0"
+            style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace" }}
+          >
+            filters
+          </span>
+
+          <div className="flex items-center gap-4 overflow-x-auto">
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                onClick={() => handleFilterChange(f)}
+                className="text-[0.55rem] uppercase tracking-wider pb-1 transition-all duration-150 shrink-0"
+                style={{
+                  fontFamily: "DM Mono, monospace",
+                  color:
+                    activeFilter === f ? "var(--c)" : "rgba(224,217,188,0.3)",
+                  background: "transparent",
+                  border: "none",
+                  borderBottom:
+                    activeFilter === f
+                      ? "1px solid var(--c)"
+                      : "1px solid transparent",
+                  cursor: pointerCursor,
+                }}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Loading / error */}
       {loading && (
         <p
           className="py-8"
@@ -171,10 +225,45 @@ export default function ProjectList() {
         </p>
       )}
 
+      {/* Design graph */}
       {!loading && !error && view === "design" && (
-        <WebGraph posts={designPosts} />
+        <>
+          <WebGraph posts={visibleDesignPosts} />
+
+          {/* Mobile load more for design */}
+          {isMobile && designRemaining > 0 && (
+            <div
+              className="py-4 border-b"
+              style={{ borderColor: "rgba(224,217,188,0.07)" }}
+            >
+              <button
+                onClick={() => setDesignVisible((v) => v + DESIGN_INITIAL)}
+                className="uppercase tracking-wider px-3 py-1.5 border transition-all duration-150"
+                style={{
+                  fontFamily: "DM Mono, monospace",
+                  fontSize: "0.6rem",
+                  borderColor: "rgba(224,217,188,0.15)",
+                  color: "var(--cd)",
+                  background: "transparent",
+                  cursor: pointerCursor,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--c)";
+                  e.currentTarget.style.color = "var(--c)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(224,217,188,0.15)";
+                  e.currentTarget.style.color = "var(--cd)";
+                }}
+              >
+                + {Math.min(DESIGN_INITIAL, designRemaining)} more
+              </button>
+            </div>
+          )}
+        </>
       )}
 
+      {/* List */}
       {!loading && !error && view === "list" && (
         <>
           {posts.length === 0 && (

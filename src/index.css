@@ -34,6 +34,11 @@ textarea {
     text !important;
 }
 
+input::placeholder {
+  color: var(--cd);
+  opacity: 1;
+}
+
 html,
 body {
   background-color: #2a3b1e;
@@ -106,9 +111,4 @@ body {
 .prose code {
   word-break: break-word;
   white-space: pre-wrap;
-}
-
-.subscription-widget-wrap-editor,
-.subscription-widget {
-  display: none;
 }

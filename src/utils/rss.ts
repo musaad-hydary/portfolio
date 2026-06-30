@@ -22,6 +22,7 @@ const DESIGN_SLUGS = new Set([
   "pixelv-a-risc-v-cpu-in-the-browser",
   "rebuilding-my-portfolio",
   "glucowatch-a-hybrid-smart-watch-for",
+  "from-loose-disc-to-print-ready-pdf",
 ]);
 
 function inferCategory(
