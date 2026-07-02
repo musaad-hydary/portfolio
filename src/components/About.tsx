@@ -52,7 +52,7 @@ export default function About() {
           systems and full-stack development. i like building things at every
           level of the stack, from firmware up to the user interface. in my free
           time i make lofi beats with Ableton, read slice-of-life novels, and
-          play Balatro.
+          play Kirby Air Riders.
         </p>
       </div>
 
