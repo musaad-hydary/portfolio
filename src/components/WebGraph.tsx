@@ -15,9 +15,9 @@ interface Node {
 }
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
-const NODE_W = 180;
-const NODE_H = 130;
-const SPEED = 0.02;
+const NODE_W = 215;
+const NODE_H = 160;
+const SPEED = 0.01;
 const LINE_DISTANCE = 400;
 
 function MobileGrid({ posts }: { posts: SubstackPost[] }) {
