@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import GitHubContributions from "./GitHubContributions";
 
 const STACK = [
   // Languages
@@ -70,6 +71,8 @@ export default function About() {
     return () => observer.disconnect();
   }, []);
 
+  const [rightView, setRightView] = useState<"stack" | "graph">("stack");
+
   const verb = mrRobotActive ? "watch" : "play";
   const gameName = mrRobotActive ? "Mr. Robot" : kirbyActive ? "Balatro" : "Kirby Air Riders";
   const buttonLabel = discoActive ? "party" : elioActive ? "travel" : <>{verb} <span className="kirby-hint">{gameName}</span></>;
@@ -133,38 +136,75 @@ export default function About() {
 
       {/* right side */}
       <div className="sm:pl-10">
-        <p
-          className="text-[0.65rem] uppercase tracking-[0.15em] mb-4"
-          style={{
-            color: "var(--col-muted)",
-            fontFamily: "DM Mono, monospace",
-          }}
-        >
-          tech stack
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {STACK.map((s) => (
-            <span
-              key={s}
-              className="text-[0.58rem] tracking-wider px-2.5 py-1 border cursor-default transition-all duration-150"
-              style={{
-                color: "var(--cd)",
-                borderColor: "var(--bdr)",
-                fontFamily: "DM Mono, monospace",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--c)";
-                e.currentTarget.style.borderColor = "var(--col-muted)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "var(--cd)";
-                e.currentTarget.style.borderColor = "var(--bdr)";
-              }}
-            >
-              {s}
-            </span>
-          ))}
+        {/* Header row with toggle */}
+        <div className={`flex items-center justify-between ${rightView === "stack" ? "mb-4" : "mb-2"}`}>
+          <p
+            className="text-[0.65rem] uppercase tracking-[0.15em]"
+            style={{ color: "var(--col-muted)", fontFamily: "DM Mono, monospace" }}
+          >
+            {rightView === "stack" ? "tech stack" : "github"}
+          </p>
+          <div
+            className="flex items-center"
+            style={{
+              background: "var(--bg-surface)",
+              border: "1px solid var(--bdr)",
+              borderRadius: "2px",
+              overflow: "hidden",
+            }}
+          >
+            {(["stack", "graph"] as const).map((v) => (
+              <button
+                key={v}
+                onClick={() => setRightView(v)}
+                style={{
+                  fontFamily: "DM Mono, monospace",
+                  fontSize: "0.45rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  color: rightView === v ? "var(--gd)" : "var(--col-muted-hi)",
+                  background: rightView === v ? "var(--c)" : "transparent",
+                  border: "none",
+                  borderRadius: "2px",
+                  padding: "3px 8px",
+                  lineHeight: 1,
+                  minWidth: "32px",
+                  textAlign: "center",
+                }}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {rightView === "stack" ? (
+          <div className="flex flex-wrap gap-1.5">
+            {STACK.map((s) => (
+              <span
+                key={s}
+                className="text-[0.58rem] tracking-wider px-2.5 py-1 border cursor-default transition-all duration-150"
+                style={{
+                  color: "var(--cd)",
+                  borderColor: "var(--bdr)",
+                  fontFamily: "DM Mono, monospace",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--c)";
+                  e.currentTarget.style.borderColor = "var(--col-muted)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--cd)";
+                  e.currentTarget.style.borderColor = "var(--bdr)";
+                }}
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <GitHubContributions username="musaad-hydary" />
+        )}
       </div>
     </div>
   );
