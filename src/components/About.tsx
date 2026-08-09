@@ -77,7 +77,7 @@ export default function About() {
             fontFamily: "DM Mono, monospace",
           }}
         >
-          stack
+          tech stack
         </p>
         <div className="flex flex-wrap gap-1.5">
           {STACK.map((s) => (
