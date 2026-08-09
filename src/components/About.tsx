@@ -51,11 +51,15 @@ export default function About() {
   const [elioActive, setElioActive] = useState(
     () => document.documentElement.classList.contains("elio-mode")
   );
+  const [discoActive, setDiscoActive] = useState(
+    () => document.documentElement.classList.contains("disco-mode")
+  );
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setMrRobotActive(document.documentElement.classList.contains("mr-robot-mode"));
       setDeusExActive(document.documentElement.classList.contains("deus-ex-mode"));
       setElioActive(document.documentElement.classList.contains("elio-mode"));
+      setDiscoActive(document.documentElement.classList.contains("disco-mode"));
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => observer.disconnect();
@@ -63,6 +67,7 @@ export default function About() {
 
   const verb = mrRobotActive ? "watch" : "play";
   const gameName = mrRobotActive ? "Mr. Robot" : kirbyActive ? "Balatro" : "Kirby Air Riders";
+  const buttonLabel = discoActive ? "party" : elioActive ? "travel" : <>{verb} <span className="kirby-hint">{gameName}</span></>;
 
   return (
     <div
@@ -113,7 +118,7 @@ export default function About() {
                   display: "inline",
                 }}
               >
-                {elioActive ? "travel" : <>{verb} <span className="kirby-hint">{gameName}</span></>}
+                {buttonLabel}
               </button>
               .
             </>

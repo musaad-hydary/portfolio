@@ -187,6 +187,45 @@ html.deus-ex-mode {
   --hint-line-hover: rgba(10,4,0,0.50);
 }
 
+@keyframes disco-rotate {
+  from { filter: hue-rotate(0deg) saturate(1.8); }
+  to   { filter: hue-rotate(360deg) saturate(1.8); }
+}
+
+html.disco-mode,
+html.disco-mode body {
+  background-color: #cc2222;
+  color: #ffffff;
+}
+
+html.disco-mode {
+  animation: disco-rotate 5s linear infinite;
+
+  --gd: #cc2222;
+  --c:  #ffffff;
+  --cd: #ffcccc;
+
+  --col-muted:    rgba(255,255,255,0.35);
+  --col-muted-hi: rgba(255,255,255,0.40);
+  --col-ghost:    rgba(255,255,255,0.25);
+  --col-faintest: rgba(255,255,255,0.15);
+
+  --bdr-faint:  rgba(255,255,255,0.08);
+  --bdr:        rgba(255,255,255,0.15);
+  --bdr-med:    rgba(255,255,255,0.20);
+  --bdr-mod:    rgba(255,255,255,0.30);
+
+  --bg-hover:   rgba(255,255,255,0.05);
+  --bg-dim:     rgba(255,255,255,0.08);
+  --bg-surface: rgba(255,255,255,0.10);
+
+  --modal-overlay: rgba(204,34,34,0.88);
+
+  --canvas-rgb: 255,255,255;
+  --bdr-hi: rgba(255,255,255,0.50);
+  --hint-line-hover: rgba(255,255,255,0.60);
+}
+
 html.elio-mode .tint-img {
   filter: grayscale(1) sepia(1) hue-rotate(200deg) saturate(3) brightness(0.75) !important;
 }
