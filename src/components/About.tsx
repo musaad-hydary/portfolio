@@ -48,10 +48,14 @@ export default function About() {
   const [deusExActive, setDeusExActive] = useState(
     () => document.documentElement.classList.contains("deus-ex-mode")
   );
+  const [elioActive, setElioActive] = useState(
+    () => document.documentElement.classList.contains("elio-mode")
+  );
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setMrRobotActive(document.documentElement.classList.contains("mr-robot-mode"));
       setDeusExActive(document.documentElement.classList.contains("deus-ex-mode"));
+      setElioActive(document.documentElement.classList.contains("elio-mode"));
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => observer.disconnect();
@@ -109,7 +113,7 @@ export default function About() {
                   display: "inline",
                 }}
               >
-                {verb} <span className="kirby-hint">{gameName}</span>
+                {elioActive ? "travel" : <>{verb} <span className="kirby-hint">{gameName}</span></>}
               </button>
               .
             </>

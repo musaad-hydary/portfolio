@@ -187,6 +187,43 @@ html.deus-ex-mode {
   --hint-line-hover: rgba(10,4,0,0.50);
 }
 
+html.elio-mode .tint-img {
+  filter: grayscale(1) sepia(1) hue-rotate(200deg) saturate(3) brightness(0.75) !important;
+}
+
+html.elio-mode,
+html.elio-mode body {
+  background-color: #1a3a7a;
+  color: #eaecf2;
+}
+
+html.elio-mode {
+  --gd: #1a3a7a;
+  --c:  #eaecf2;
+  --cd: #8090b8;
+
+  --col-muted:    rgba(234,236,242,0.40);
+  --col-muted-hi: rgba(234,236,242,0.35);
+  --col-ghost:    rgba(234,236,242,0.25);
+  --col-faintest: rgba(234,236,242,0.15);
+
+  --bdr-faint:  rgba(234,236,242,0.08);
+  --bdr:        rgba(234,236,242,0.12);
+  --bdr-med:    rgba(234,236,242,0.18);
+  --bdr-mod:    rgba(234,236,242,0.28);
+
+  --bg-hover:   rgba(234,236,242,0.04);
+  --bg-dim:     rgba(234,236,242,0.06);
+  --bg-surface: rgba(234,236,242,0.08);
+
+  --modal-overlay: rgba(26,58,122,0.88);
+
+  --canvas-rgb: 234,236,242;
+  --bdr-hi: rgba(234,236,242,0.45);
+
+  --hint-line-hover: rgba(234,236,242,0.50);
+}
+
 .prose h1,
 .prose h2,
 .prose h3 {

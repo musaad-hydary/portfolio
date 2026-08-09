@@ -57,6 +57,7 @@ export default function ProjectList() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
   const [mrRobot, setMrRobot] = useState(false);
   const [deusEx, setDeusEx] = useState(false);
+  const [elio, setElio] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
@@ -105,20 +106,33 @@ export default function ProjectList() {
 
     if (lower === "mr robot") {
       const next = !mrRobot;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode");
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode");
       if (next) document.documentElement.classList.add("mr-robot-mode");
       setMrRobot(next);
       setDeusEx(false);
+      setElio(false);
       setSearch("");
       return;
     }
 
     if (lower === "deus ex") {
       const next = !deusEx;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode");
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode");
       if (next) document.documentElement.classList.add("deus-ex-mode");
       setDeusEx(next);
       setMrRobot(false);
+      setElio(false);
+      setSearch("");
+      return;
+    }
+
+    if (lower === "elio") {
+      const next = !elio;
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode");
+      if (next) document.documentElement.classList.add("elio-mode");
+      setElio(next);
+      setMrRobot(false);
+      setDeusEx(false);
       setSearch("");
       return;
     }
