@@ -200,7 +200,7 @@ export default function ProjectList() {
 
         {/* Toggle */}
         <div
-          className="flex items-center shrink-0"
+          className={`flex items-center shrink-0${view === "design" ? " ml-auto" : ""}`}
           style={{
             background: "var(--bg-surface)",
             border: "1px solid var(--bdr)",
