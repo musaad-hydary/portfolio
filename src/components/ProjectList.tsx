@@ -148,20 +148,22 @@ export default function ProjectList() {
         className="flex items-center gap-4 border-b py-3"
         style={{ borderColor: "var(--bdr-faint)" }}
       >
-        <input
-          type="text"
-          placeholder="> search..."
-          value={search}
-          onChange={handleSearch}
-          className="bg-transparent border-none outline-none flex-1 min-w-0"
-          style={{
-            color: "var(--c)",
-            fontFamily: "DM Mono, monospace",
-            fontWeight: 300,
-            fontSize: "0.75rem",
-            letterSpacing: "0.04em",
-          }}
-        />
+        {view === "list" && (
+          <input
+            type="text"
+            placeholder="> search..."
+            value={search}
+            onChange={handleSearch}
+            className="bg-transparent border-none outline-none flex-1 min-w-0"
+            style={{
+              color: "var(--c)",
+              fontFamily: "DM Mono, monospace",
+              fontWeight: 300,
+              fontSize: "0.75rem",
+              letterSpacing: "0.04em",
+            }}
+          />
+        )}
 
         {/* Desktop filters — list mode only */}
         {view === "list" &&
@@ -187,12 +189,14 @@ export default function ProjectList() {
             </button>
           ))}
 
-        <span
-          className="shrink-0 hidden sm:block"
-          style={{ color: "var(--col-faintest)", fontSize: "0.6rem" }}
-        >
-          |
-        </span>
+        {view === "list" && (
+          <span
+            className="shrink-0 hidden sm:block"
+            style={{ color: "var(--col-faintest)", fontSize: "0.6rem" }}
+          >
+            |
+          </span>
+        )}
 
         {/* Toggle */}
         <div
