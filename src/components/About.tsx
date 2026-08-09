@@ -63,8 +63,8 @@ export default function About() {
           i'm a computer engineer based in Toronto with experience in embedded
           systems and full-stack development. i like building things at every
           level of the stack, from firmware up to the user interface. in my free
-          time i make lofi beats with Ableton, read slice-of-life novels, and
-          play Kirby Air Riders.
+          time i make lofi beats with ableton, read slice-of-life novels, and
+          play kirby air riders.
         </p>
       </div>
 
