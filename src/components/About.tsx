@@ -13,6 +13,8 @@ const STACK = [
   "React Native",
   "GraphQL",
   "Redux",
+  "Docker",
+  "Kubernetes",
   "Arduino",
   "Figma",
 ];
