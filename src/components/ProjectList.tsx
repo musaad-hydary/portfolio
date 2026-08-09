@@ -78,7 +78,9 @@ export default function ProjectList() {
       });
   }, []);
 
-  const designPosts = posts.filter((p) => p.isDesign);
+  const designPosts = posts.filter(
+    (p) => p.isDesign && p.title.toLowerCase().includes(search.toLowerCase())
+  );
   const visibleDesignPosts = isMobile
     ? designPosts.slice(0, designVisible)
     : designPosts;
@@ -164,25 +166,23 @@ export default function ProjectList() {
     <div>
       {/* Single row — search + desktop filters + toggle */}
       <div
-        className={`flex items-center gap-4 py-3${view === "list" ? " border-b" : ""}`}
+        className="flex items-center gap-4 py-3 border-b"
         style={{ borderColor: "var(--bdr-faint)" }}
       >
-        {view === "list" && (
-          <input
-            type="text"
-            placeholder="> search..."
-            value={search}
-            onChange={handleSearch}
-            className="bg-transparent border-none outline-none flex-1 min-w-0"
-            style={{
-              color: "var(--c)",
-              fontFamily: "DM Mono, monospace",
-              fontWeight: 300,
-              fontSize: "0.75rem",
-              letterSpacing: "0.04em",
-            }}
-          />
-        )}
+        <input
+          type="text"
+          placeholder="> search..."
+          value={search}
+          onChange={handleSearch}
+          className="bg-transparent border-none outline-none flex-1 min-w-0"
+          style={{
+            color: "var(--c)",
+            fontFamily: "DM Mono, monospace",
+            fontWeight: 300,
+            fontSize: "0.75rem",
+            letterSpacing: "0.04em",
+          }}
+        />
 
         {/* Desktop filters — list mode only */}
         {view === "list" &&
@@ -208,18 +208,16 @@ export default function ProjectList() {
             </button>
           ))}
 
-        {view === "list" && (
-          <span
-            className="shrink-0 hidden sm:block"
-            style={{ color: "var(--col-faintest)", fontSize: "0.6rem" }}
-          >
-            |
-          </span>
-        )}
+        <span
+          className="shrink-0 hidden sm:block"
+          style={{ color: "var(--col-faintest)", fontSize: "0.6rem" }}
+        >
+          |
+        </span>
 
         {/* Toggle */}
         <div
-          className={`flex items-center shrink-0${view === "design" ? " ml-auto" : ""}`}
+          className="flex items-center shrink-0"
           style={{
             background: "var(--bg-surface)",
             border: "1px solid var(--bdr)",
@@ -310,43 +308,59 @@ export default function ProjectList() {
         </p>
       )}
 
-      {/* Design graph */}
+      {/* Design graph — always mounted so positions survive filtering */}
       {!loading && !error && view === "design" && (
         <>
-          <WebGraph posts={visibleDesignPosts} />
-
-          {/* Mobile load more for design */}
-          {isMobile && designRemaining > 0 && (
-            <div
-              className="py-4 border-b"
-              style={{ borderColor: "var(--bdr-faint)" }}
+          {designPosts.length === 0 ? (
+            <p
+              className="py-8"
+              style={{
+                color: "var(--cd)",
+                fontFamily: "DM Mono, monospace",
+                fontSize: "0.8rem",
+              }}
             >
-              <button
-                onClick={() => setDesignVisible((v) => v + DESIGN_INITIAL)}
-                className="uppercase tracking-wider px-3 py-1.5 border transition-all duration-150"
-                style={{
-                  fontFamily: "DM Mono, monospace",
-                  fontSize: "0.6rem",
-                  borderColor: "var(--bdr-med)",
-                  color: "var(--cd)",
-                  background: "transparent",
-                  cursor: pointerCursor,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "var(--c)";
-                  e.currentTarget.style.color = "var(--c)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "var(--bdr-med)";
-                  e.currentTarget.style.color = "var(--cd)";
-                }}
-              >
-                + {Math.min(DESIGN_INITIAL, designRemaining)} more
-              </button>
-            </div>
+              no results found
+            </p>
+          ) : (
+            <>
+              <WebGraph posts={visibleDesignPosts} paused={search.length > 0} />
+
+              {/* Mobile load more for design */}
+              {isMobile && designRemaining > 0 && (
+                <div
+                  className="py-4 border-b"
+                  style={{ borderColor: "var(--bdr-faint)" }}
+                >
+                  <button
+                    onClick={() => setDesignVisible((v) => v + DESIGN_INITIAL)}
+                    className="uppercase tracking-wider px-3 py-1.5 border transition-all duration-150"
+                    style={{
+                      fontFamily: "DM Mono, monospace",
+                      fontSize: "0.6rem",
+                      borderColor: "var(--bdr-med)",
+                      color: "var(--cd)",
+                      background: "transparent",
+                      cursor: pointerCursor,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "var(--c)";
+                      e.currentTarget.style.color = "var(--c)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "var(--bdr-med)";
+                      e.currentTarget.style.color = "var(--cd)";
+                    }}
+                  >
+                    + {Math.min(DESIGN_INITIAL, designRemaining)} more
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </>
       )}
+
 
       {/* List */}
       {!loading && !error && view === "list" && (

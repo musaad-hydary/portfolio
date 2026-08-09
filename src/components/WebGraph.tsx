@@ -4,6 +4,7 @@ import type { SubstackPost } from "../utils/rss";
 
 interface Props {
   posts: SubstackPost[];
+  paused?: boolean;
 }
 
 interface Node {
@@ -11,10 +12,13 @@ interface Node {
   y: number;
   vx: number;
   vy: number;
+  slug: string;
   el: HTMLDivElement;
 }
 
+
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
+const savedPositions: Record<string, { x: number; y: number; vx: number; vy: number }> = {};
 const NODE_W = 215;
 const NODE_H = 160;
 const SPEED = 0.01;
@@ -68,12 +72,17 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
   );
 }
 
-function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
+function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const nodesRef = useRef<Node[]>([]);
   const animRef = useRef<number>(0);
+  const pausedRef = useRef(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    pausedRef.current = paused ?? false;
+  }, [paused]);
   const H = 500;
 
   useEffect(() => {
@@ -98,29 +107,28 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
       const cellH = H / rows;
 
       nodesRef.current = els.map((el, i) => {
+        const slug = posts[i]?.slug ?? String(i);
+        const saved = savedPositions[slug];
         const col = i % cols;
         const row = Math.floor(i / cols);
         return {
-          x: Math.max(
+          x: saved?.x ?? Math.max(
             NODE_W / 2 + 4,
             Math.min(
               W - NODE_W / 2 - 4,
-              col * cellW +
-                cellW / 2 +
-                (Math.random() - 0.5) * (cellW - NODE_W) * 0.5,
+              col * cellW + cellW / 2 + (Math.random() - 0.5) * (cellW - NODE_W) * 0.5,
             ),
           ),
-          y: Math.max(
+          y: saved?.y ?? Math.max(
             NODE_H / 2 + 4,
             Math.min(
               H - NODE_H / 2 - 4,
-              row * cellH +
-                cellH / 2 +
-                (Math.random() - 0.5) * (cellH - NODE_H) * 0.5,
+              row * cellH + cellH / 2 + (Math.random() - 0.5) * (cellH - NODE_H) * 0.5,
             ),
           ),
-          vx: (Math.random() - 0.5) * SPEED,
-          vy: (Math.random() - 0.5) * SPEED,
+          vx: saved?.vx ?? (Math.random() - 0.5) * SPEED,
+          vy: saved?.vy ?? (Math.random() - 0.5) * SPEED,
+          slug,
           el,
         };
       });
@@ -139,24 +147,28 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
       const nodes = nodesRef.current;
 
       nodes.forEach((n) => {
-        n.x += n.vx;
-        n.y += n.vy;
+        if (!pausedRef.current) {
+          n.x += n.vx;
+          n.y += n.vy;
 
-        if (n.x - NODE_W / 2 < 4) {
-          n.x = NODE_W / 2 + 4;
-          n.vx = Math.abs(n.vx);
-        }
-        if (n.x + NODE_W / 2 > W - 4) {
-          n.x = W - NODE_W / 2 - 4;
-          n.vx = -Math.abs(n.vx);
-        }
-        if (n.y - NODE_H / 2 < 4) {
-          n.y = NODE_H / 2 + 4;
-          n.vy = Math.abs(n.vy);
-        }
-        if (n.y + NODE_H / 2 > H - 4) {
-          n.y = H - NODE_H / 2 - 4;
-          n.vy = -Math.abs(n.vy);
+          if (n.x - NODE_W / 2 < 4) {
+            n.x = NODE_W / 2 + 4;
+            n.vx = Math.abs(n.vx);
+          }
+          if (n.x + NODE_W / 2 > W - 4) {
+            n.x = W - NODE_W / 2 - 4;
+            n.vx = -Math.abs(n.vx);
+          }
+          if (n.y - NODE_H / 2 < 4) {
+            n.y = NODE_H / 2 + 4;
+            n.vy = Math.abs(n.vy);
+          }
+          if (n.y + NODE_H / 2 > H - 4) {
+            n.y = H - NODE_H / 2 - 4;
+            n.vy = -Math.abs(n.vy);
+          }
+
+          savedPositions[n.slug] = { x: n.x, y: n.y, vx: n.vx, vy: n.vy };
         }
 
         n.el.style.left = `${n.x - NODE_W / 2}px`;
@@ -277,7 +289,7 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
   );
 }
 
-export default function WebGraph({ posts }: Props) {
+export default function WebGraph({ posts, paused }: Props) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   useEffect(() => {
@@ -287,5 +299,5 @@ export default function WebGraph({ posts }: Props) {
   }, []);
 
   if (isMobile) return <MobileGrid posts={posts} />;
-  return <DesktopGraph posts={posts} />;
+  return <DesktopGraph posts={posts} paused={paused} />;
 }
