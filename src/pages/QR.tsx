@@ -50,7 +50,7 @@ export default function QRPage() {
               className="text-[0.6rem] uppercase tracking-widest pb-1 transition-all duration-150"
               style={{
                 fontFamily: "DM Mono, monospace",
-                color: active === i ? "var(--c)" : "rgba(224,217,188,0.3)",
+                color: active === i ? "var(--c)" : "var(--col-muted)",
                 background: "transparent",
                 border: "none",
                 borderBottom:
@@ -84,7 +84,7 @@ export default function QRPage() {
         <p
           className="text-[0.6rem] tracking-widest text-center"
           style={{
-            color: "rgba(224,217,188,0.4)",
+            color: "var(--col-muted-hi)",
             fontFamily: "DM Mono, monospace",
           }}
         >

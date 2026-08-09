@@ -3,7 +3,7 @@ export default function Hero() {
     <div
       className="flex flex-col py-6 border-b sm:grid sm:gap-0"
       style={{
-        borderColor: "rgba(224,217,188,0.1)",
+        borderColor: "var(--bdr)",
         gridTemplateColumns: "1fr 220px",
       }}
     >
@@ -36,7 +36,7 @@ export default function Hero() {
         <span
           style={{
             fontFamily: "DM Mono, monospace",
-            color: "rgba(224,217,188,0.3)",
+            color: "var(--col-muted)",
             fontSize: "0.65rem",
             letterSpacing: "0.1em",
           }}

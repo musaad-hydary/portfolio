@@ -135,13 +135,13 @@ export default function ProjectDetail() {
         {/* Post */}
         {post && (
           <div>
-            <div className="py-8 border-b border-[rgba(224,217,188,0.1)]">
+            <div className="py-8 border-b border-[var(--bdr)]">
               {/* Date · reading time */}
               <div className="flex items-center gap-2 mb-4">
                 <p
                   className="text-[0.55rem] uppercase tracking-widest"
                   style={{
-                    color: "rgba(224,217,188,0.3)",
+                    color: "var(--col-muted)",
                     fontFamily: "DM Mono, monospace",
                   }}
                 >
@@ -153,7 +153,7 @@ export default function ProjectDetail() {
                 </p>
                 <span
                   style={{
-                    color: "rgba(224,217,188,0.2)",
+                    color: "var(--col-ghost)",
                     fontFamily: "DM Mono, monospace",
                     fontSize: "0.55rem",
                   }}
@@ -163,7 +163,7 @@ export default function ProjectDetail() {
                 <p
                   className="text-[0.55rem] uppercase tracking-widest"
                   style={{
-                    color: "rgba(224,217,188,0.3)",
+                    color: "var(--col-muted)",
                     fontFamily: "DM Mono, monospace",
                   }}
                 >
@@ -216,11 +216,11 @@ export default function ProjectDetail() {
 
             {/* Related posts */}
             {relatedPosts.length > 0 && (
-              <div className="border-t border-[rgba(224,217,188,0.1)] py-8">
+              <div className="border-t border-[var(--bdr)] py-8">
                 <p
                   className="text-[0.55rem] uppercase tracking-widest mb-6"
                   style={{
-                    color: "rgba(224,217,188,0.3)",
+                    color: "var(--col-muted)",
                     fontFamily: "DM Mono, monospace",
                   }}
                 >
@@ -285,7 +285,7 @@ export default function ProjectDetail() {
           className="fixed bottom-8 right-8 text-[0.55rem] uppercase tracking-widest px-3 py-2 border transition-all duration-150"
           style={{
             fontFamily: "DM Mono, monospace",
-            borderColor: "rgba(224,217,188,0.2)",
+            borderColor: "var(--col-ghost)",
             color: "var(--cd)",
             background: "var(--gd)",
             cursor: pointerCursor,
@@ -295,7 +295,7 @@ export default function ProjectDetail() {
             e.currentTarget.style.color = "var(--c)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "rgba(224,217,188,0.2)";
+            e.currentTarget.style.borderColor = "var(--col-ghost)";
             e.currentTarget.style.color = "var(--cd)";
           }}
         >

@@ -39,7 +39,7 @@ export default function Nav() {
       <nav
         className="fixed top-0 z-50 border-b w-full"
         style={{
-          borderColor: "rgba(224,217,188,0.1)",
+          borderColor: "var(--bdr)",
           background: "var(--gd)",
         }}
       >

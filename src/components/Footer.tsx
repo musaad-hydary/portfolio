@@ -4,7 +4,7 @@ export default function Footer() {
       <p
         className="text-[0.55rem] tracking-wider"
         style={{
-          color: "rgba(224,217,188,0.2)",
+          color: "var(--col-ghost)",
           fontFamily: "DM Mono, monospace",
         }}
       >

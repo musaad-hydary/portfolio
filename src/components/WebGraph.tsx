@@ -31,14 +31,14 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
           className="relative overflow-hidden transition-all duration-150 border"
           style={{
             cursor: pointerCursor,
-            borderColor: "rgba(224,217,188,0.15)",
+            borderColor: "var(--bdr-med)",
             width: "100%",
           }}
           onMouseEnter={(e) =>
-            (e.currentTarget.style.borderColor = "rgba(224,217,188,0.4)")
+            (e.currentTarget.style.borderColor = "var(--bdr-hi)")
           }
           onMouseLeave={(e) =>
-            (e.currentTarget.style.borderColor = "rgba(224,217,188,0.15)")
+            (e.currentTarget.style.borderColor = "var(--bdr-med)")
           }
         >
           <div style={{ width: "100%", height: 140, overflow: "hidden" }}>
@@ -52,7 +52,7 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
             className="p-2"
             style={{
               background: "var(--gd)",
-              borderTop: "1px solid rgba(224,217,188,0.1)",
+              borderTop: "1px solid var(--bdr)",
             }}
           >
             <p
@@ -132,6 +132,9 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
     const draw = (W: number) => {
       if (!ctx) return;
       ctx.clearRect(0, 0, W, H);
+      const canvasRgb = getComputedStyle(document.documentElement)
+        .getPropertyValue("--canvas-rgb")
+        .trim();
 
       const nodes = nodesRef.current;
 
@@ -170,7 +173,7 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(224,217,188,${opacity})`;
+            ctx.strokeStyle = `rgba(${canvasRgb},${opacity})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -213,17 +216,17 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
             height: NODE_H,
             overflow: "hidden",
             cursor: pointerCursor,
-            border: "1px solid rgba(224,217,188,0.15)",
+            border: "1px solid var(--bdr-med)",
             transition: "border-color 0.2s, filter 0.2s",
             zIndex: 1,
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "rgba(224,217,188,0.5)";
+            e.currentTarget.style.borderColor = "var(--bdr-hi)";
             e.currentTarget.style.filter = "brightness(1.05)";
             e.currentTarget.style.zIndex = "10";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "rgba(224,217,188,0.15)";
+            e.currentTarget.style.borderColor = "var(--bdr-med)";
             e.currentTarget.style.filter = "brightness(1)";
             e.currentTarget.style.zIndex = "1";
           }}
@@ -246,7 +249,7 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
             style={{
               padding: "0.4rem 0.5rem",
               background: "var(--gd)",
-              borderTop: "1px solid rgba(224,217,188,0.1)",
+              borderTop: "1px solid var(--bdr)",
               height: 28,
               display: "flex",
               alignItems: "center",

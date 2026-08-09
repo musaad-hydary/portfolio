@@ -18,11 +18,11 @@ export default function ProjectRow({ post, index }: Props) {
       className="grid items-center border-b transition-colors duration-150"
       style={{
         gridTemplateColumns: "64px 52px 1fr auto",
-        borderColor: "rgba(224,217,188,0.07)",
+        borderColor: "var(--bdr-faint)",
         cursor: pointerCursor,
       }}
       onMouseEnter={(e) =>
-        (e.currentTarget.style.background = "rgba(224,217,188,0.02)")
+        (e.currentTarget.style.background = "var(--bg-hover)")
       }
       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
     >
@@ -32,14 +32,14 @@ export default function ProjectRow({ post, index }: Props) {
         style={{
           width: "64px",
           height: "52px",
-          borderColor: "rgba(224,217,188,0.07)",
+          borderColor: "var(--bdr-faint)",
         }}
       >
         {/* Skeleton — shows until image loads */}
         {!imgLoaded && (
           <div
             className="absolute inset-0"
-            style={{ background: "rgba(224,217,188,0.05)" }}
+            style={{ background: "var(--bg-dim)" }}
           />
         )}
         <img
@@ -59,7 +59,7 @@ export default function ProjectRow({ post, index }: Props) {
       <span
         className="text-center text-[0.52rem] tracking-wider"
         style={{
-          color: "rgba(224,217,188,0.2)",
+          color: "var(--col-ghost)",
           fontFamily: "DM Mono, monospace",
         }}
       >

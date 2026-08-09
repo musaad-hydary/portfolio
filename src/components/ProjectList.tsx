@@ -75,7 +75,7 @@ export default function ProjectList() {
       {/* Single row — search + desktop filters + toggle */}
       <div
         className="flex items-center gap-4 border-b py-3"
-        style={{ borderColor: "rgba(224,217,188,0.07)" }}
+        style={{ borderColor: "var(--bdr-faint)" }}
       >
         <input
           type="text"
@@ -102,7 +102,7 @@ export default function ProjectList() {
               style={{
                 fontFamily: "DM Mono, monospace",
                 color:
-                  activeFilter === f ? "var(--c)" : "rgba(224,217,188,0.3)",
+                  activeFilter === f ? "var(--c)" : "var(--col-muted)",
                 background: "transparent",
                 border: "none",
                 borderBottom:
@@ -118,7 +118,7 @@ export default function ProjectList() {
 
         <span
           className="shrink-0 hidden sm:block"
-          style={{ color: "rgba(224,217,188,0.1)", fontSize: "0.6rem" }}
+          style={{ color: "var(--col-faintest)", fontSize: "0.6rem" }}
         >
           |
         </span>
@@ -127,8 +127,8 @@ export default function ProjectList() {
         <div
           className="flex items-center shrink-0"
           style={{
-            background: "rgba(224,217,188,0.06)",
-            border: "1px solid rgba(224,217,188,0.1)",
+            background: "var(--bg-surface)",
+            border: "1px solid var(--bdr)",
             borderRadius: "2px",
             overflow: "hidden",
           }}
@@ -143,7 +143,7 @@ export default function ProjectList() {
                 fontSize: "0.48rem",
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
-                color: view === v ? "var(--gd)" : "rgba(224,217,188,0.35)",
+                color: view === v ? "var(--gd)" : "var(--col-muted-hi)",
                 background: view === v ? "var(--c)" : "transparent",
                 border: "none",
                 borderRadius: "2px",
@@ -164,7 +164,7 @@ export default function ProjectList() {
       {view === "list" && (
         <div
           className="flex items-center justify-between gap-4 sm:hidden border-b py-3"
-          style={{ borderColor: "rgba(224,217,188,0.07)" }}
+          style={{ borderColor: "var(--bdr-faint)" }}
         >
           <span
             className="text-[0.55rem] uppercase tracking-wider shrink-0"
@@ -182,7 +182,7 @@ export default function ProjectList() {
                 style={{
                   fontFamily: "DM Mono, monospace",
                   color:
-                    activeFilter === f ? "var(--c)" : "rgba(224,217,188,0.3)",
+                    activeFilter === f ? "var(--c)" : "var(--col-muted)",
                   background: "transparent",
                   border: "none",
                   borderBottom:
@@ -234,7 +234,7 @@ export default function ProjectList() {
           {isMobile && designRemaining > 0 && (
             <div
               className="py-4 border-b"
-              style={{ borderColor: "rgba(224,217,188,0.07)" }}
+              style={{ borderColor: "var(--bdr-faint)" }}
             >
               <button
                 onClick={() => setDesignVisible((v) => v + DESIGN_INITIAL)}
@@ -242,7 +242,7 @@ export default function ProjectList() {
                 style={{
                   fontFamily: "DM Mono, monospace",
                   fontSize: "0.6rem",
-                  borderColor: "rgba(224,217,188,0.15)",
+                  borderColor: "var(--bdr-med)",
                   color: "var(--cd)",
                   background: "transparent",
                   cursor: pointerCursor,
@@ -252,7 +252,7 @@ export default function ProjectList() {
                   e.currentTarget.style.color = "var(--c)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(224,217,188,0.15)";
+                  e.currentTarget.style.borderColor = "var(--bdr-med)";
                   e.currentTarget.style.color = "var(--cd)";
                 }}
               >
@@ -299,7 +299,7 @@ export default function ProjectList() {
           {remaining > 0 && (
             <div
               className="flex items-center justify-between py-4 border-b"
-              style={{ borderColor: "rgba(224,217,188,0.07)" }}
+              style={{ borderColor: "var(--bdr-faint)" }}
             >
               <button
                 onClick={() => setVisibleCount((v) => v + LOAD_MORE_COUNT)}
@@ -307,7 +307,7 @@ export default function ProjectList() {
                 style={{
                   fontFamily: "DM Mono, monospace",
                   fontSize: "0.6rem",
-                  borderColor: "rgba(224,217,188,0.15)",
+                  borderColor: "var(--bdr-med)",
                   color: "var(--cd)",
                   background: "transparent",
                   cursor: pointerCursor,
@@ -317,7 +317,7 @@ export default function ProjectList() {
                   e.currentTarget.style.color = "var(--c)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(224,217,188,0.15)";
+                  e.currentTarget.style.borderColor = "var(--bdr-med)";
                   e.currentTarget.style.color = "var(--cd)";
                 }}
               >
@@ -327,7 +327,7 @@ export default function ProjectList() {
               <span
                 className="text-[0.55rem] tabular-nums"
                 style={{
-                  color: "rgba(224,217,188,0.2)",
+                  color: "var(--col-ghost)",
                   fontFamily: "DM Mono, monospace",
                 }}
               >

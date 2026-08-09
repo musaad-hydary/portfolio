@@ -40,7 +40,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
       <div
         className="fixed inset-0 z-50"
         style={{
-          background: "rgba(42,59,30,0.85)",
+          background: "var(--modal-overlay)",
           backdropFilter: "blur(4px)",
         }}
         onClick={handleClose}
@@ -54,7 +54,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
           left: "50%",
           transform: "translate(-50%, -50%)",
           background: "var(--gd)",
-          borderColor: "rgba(224,217,188,0.25)",
+          borderColor: "var(--bdr-mod)",
           width: "90%",
           maxWidth: "480px",
           minHeight: "300px",
@@ -156,7 +156,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   required
                   className="bg-transparent border-b outline-none py-2 text-[0.75rem]"
                   style={{
-                    borderColor: "rgba(224,217,188,0.25)",
+                    borderColor: "var(--bdr-mod)",
                     color: "var(--c)",
                     fontFamily: "DM Mono, monospace",
                   }}
@@ -180,7 +180,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   required
                   className="bg-transparent border-b outline-none py-2 text-[0.75rem]"
                   style={{
-                    borderColor: "rgba(224,217,188,0.25)",
+                    borderColor: "var(--bdr-mod)",
                     color: "var(--c)",
                     fontFamily: "DM Mono, monospace",
                   }}
@@ -204,7 +204,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   rows={4}
                   className="bg-transparent border-b outline-none py-2 text-[0.75rem] resize-none"
                   style={{
-                    borderColor: "rgba(224,217,188,0.25)",
+                    borderColor: "var(--bdr-mod)",
                     color: "var(--c)",
                     fontFamily: "DM Mono, monospace",
                   }}
@@ -217,7 +217,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 disabled={loading}
                 className="mt-2 text-[0.6rem] uppercase tracking-widest px-4 py-2 border transition-all duration-150 self-start"
                 style={{
-                  borderColor: "rgba(224,217,188,0.25)",
+                  borderColor: "var(--bdr-mod)",
                   color: loading ? "var(--cd)" : "var(--c)",
                   background: "transparent",
                   fontFamily: "DM Mono, monospace",
@@ -227,7 +227,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   e.currentTarget.style.borderColor = "var(--c)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(224,217,188,0.25)";
+                  e.currentTarget.style.borderColor = "var(--bdr-mod)";
                 }}
               >
                 {loading ? "sending..." : "send"}

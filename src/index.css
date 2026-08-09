@@ -12,6 +12,27 @@
   --gd: #2a3b1e;
   --c: #e8e2c8;
   --cd: #b0a882;
+
+  /* dynamic palette — all rgba(224,217,188,...) values live here */
+  --col-muted:    rgba(224,217,188,0.30);
+  --col-muted-hi: rgba(224,217,188,0.35);
+  --col-ghost:    rgba(224,217,188,0.20);
+  --col-faintest: rgba(224,217,188,0.10);
+
+  --bdr-faint:  rgba(224,217,188,0.07);
+  --bdr:        rgba(224,217,188,0.10);
+  --bdr-med:    rgba(224,217,188,0.15);
+  --bdr-mod:    rgba(224,217,188,0.25);
+
+  --bg-hover:   rgba(224,217,188,0.02);
+  --bg-dim:     rgba(224,217,188,0.05);
+  --bg-surface: rgba(224,217,188,0.06);
+
+  --modal-overlay: rgba(42,59,30,0.85);
+
+  /* canvas / strong-hover */
+  --canvas-rgb: 224,217,188;
+  --bdr-hi: rgba(224,217,188,0.45);
 }
 
 * {
@@ -45,6 +66,39 @@ body {
   color: #ddd8b8;
   overflow-x: hidden;
   width: 100%;
+}
+
+html.kirby-mode,
+html.kirby-mode body {
+  background-color: #9c3d5c;
+  color: #faeee0;
+}
+
+html.kirby-mode {
+  --gd: #9c3d5c;
+  --c:  #faeee0;
+  --cd: #d4a0b0;
+
+  --col-muted:    rgba(250,238,224,0.40);
+  --col-muted-hi: rgba(250,238,224,0.35);
+  --col-ghost:    rgba(250,238,224,0.25);
+  --col-faintest: rgba(250,238,224,0.15);
+
+  --bdr-faint:  rgba(250,238,224,0.08);
+  --bdr:        rgba(250,238,224,0.12);
+  --bdr-med:    rgba(250,238,224,0.18);
+  --bdr-mod:    rgba(250,238,224,0.30);
+
+  --bg-hover:   rgba(250,238,224,0.04);
+  --bg-dim:     rgba(250,238,224,0.06);
+  --bg-surface: rgba(250,238,224,0.08);
+
+  --modal-overlay: rgba(156,61,92,0.85);
+
+  --canvas-rgb: 250,238,224;
+  --bdr-hi: rgba(250,238,224,0.45);
+
+  --hint-line-hover: rgba(42,59,30,0.75);
 }
 
 .prose h1,
@@ -96,7 +150,7 @@ body {
 .prose code {
   font-family: "DM Mono", monospace;
   font-size: 0.75rem;
-  background: rgba(224, 217, 188, 0.06);
+  background: var(--bg-surface);
   padding: 0.2rem 0.4rem;
 }
 
@@ -111,6 +165,21 @@ body {
 .prose code {
   word-break: break-word;
   white-space: pre-wrap;
+}
+
+.kirby-hint {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+}
+button:hover .kirby-hint {
+  text-decoration-color: var(--hint-line-hover);
+}
+
+:root {
+  --hint-line-hover: rgba(255,105,180,0.38);
 }
 
 .subscription-widget-wrap-editor,

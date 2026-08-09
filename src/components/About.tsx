@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const STACK = [
   // Languages
   "TypeScript",
@@ -29,23 +31,36 @@ const STACK = [
 ];
 
 export default function About() {
+  const [kirbyActive, setKirbyActive] = useState(
+    () => document.documentElement.classList.contains("kirby-mode")
+  );
+
+  function toggleKirby() {
+    const next = !kirbyActive;
+    document.documentElement.classList.toggle("kirby-mode", next);
+    localStorage.setItem("theme", next ? "kirby" : "green");
+    setKirbyActive(next);
+  }
+
+  const gameName = kirbyActive ? "Balatro" : "Kirby Air Riders";
+
   return (
     <div
       className="flex flex-col gap-8 py-12 border-b sm:grid sm:gap-0"
       style={{
-        borderColor: "rgba(224,217,188,0.1)",
+        borderColor: "var(--bdr)",
         gridTemplateColumns: "1fr 1fr",
       }}
     >
       {/* left side */}
       <div
         className="sm:border-r sm:pr-10"
-        style={{ borderColor: "rgba(224,217,188,0.07)" }}
+        style={{ borderColor: "var(--bdr-faint)" }}
       >
         <p
           className="text-[0.65rem] uppercase tracking-[0.15em] mb-4"
           style={{
-            color: "rgba(224,217,188,0.3)",
+            color: "var(--col-muted)",
             fontFamily: "DM Mono, monospace",
           }}
         >
@@ -62,8 +77,23 @@ export default function About() {
           i'm a computer engineer based in Toronto with experience in embedded
           systems and full-stack development. i like building things at every
           level of the stack, from firmware up to the user interface. in my free
-          time i make lofi beats with ableton, read slice-of-life novels, and
-          play kirby air riders.
+          time i make lofi beats with Ableton, read slice-of-life novels, and{" "}
+          <button
+            onClick={toggleKirby}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              fontFamily: "DM Mono, monospace",
+              fontSize: "inherit",
+              color: "var(--cd)",
+              display: "inline",
+            }}
+          >
+            play <span className="kirby-hint">{gameName}</span>
+          </button>
+          .
         </p>
       </div>
 
@@ -72,7 +102,7 @@ export default function About() {
         <p
           className="text-[0.65rem] uppercase tracking-[0.15em] mb-4"
           style={{
-            color: "rgba(224,217,188,0.3)",
+            color: "var(--col-muted)",
             fontFamily: "DM Mono, monospace",
           }}
         >
@@ -85,16 +115,16 @@ export default function About() {
               className="text-[0.58rem] tracking-wider px-2.5 py-1 border cursor-default transition-all duration-150"
               style={{
                 color: "var(--cd)",
-                borderColor: "rgba(224,217,188,0.1)",
+                borderColor: "var(--bdr)",
                 fontFamily: "DM Mono, monospace",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = "var(--c)";
-                e.currentTarget.style.borderColor = "rgba(224,217,188,0.3)";
+                e.currentTarget.style.borderColor = "var(--col-muted)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.color = "var(--cd)";
-                e.currentTarget.style.borderColor = "rgba(224,217,188,0.1)";
+                e.currentTarget.style.borderColor = "var(--bdr)";
               }}
             >
               {s}
