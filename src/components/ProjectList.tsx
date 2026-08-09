@@ -58,7 +58,7 @@ export default function ProjectList() {
   const [mrRobot, setMrRobot] = useState(false);
   const [deusEx, setDeusEx] = useState(false);
   const [elio, setElio] = useState(false);
-  const [disco, setDisco] = useState(() => document.documentElement.classList.contains("disco-mode"));
+  const [disco, setDisco] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
@@ -145,7 +145,6 @@ export default function ProjectList() {
       const next = !disco;
       document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode");
       if (next) document.documentElement.classList.add("disco-mode");
-      localStorage.setItem("theme", next ? "disco" : "green");
       setDisco(next);
       setMrRobot(false);
       setDeusEx(false);
