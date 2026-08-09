@@ -157,7 +157,7 @@ html.deus-ex-mode body {
 }
 
 html.deus-ex-mode .tint-img {
-  filter: grayscale(1) sepia(1) hue-rotate(-15deg) saturate(2.5) brightness(0.7) !important;
+  filter: grayscale(1) sepia(1) hue-rotate(-8deg) saturate(1.8) brightness(0.7) !important;
 }
 
 html.deus-ex-mode {
