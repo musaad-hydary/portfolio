@@ -47,6 +47,13 @@ select {
   cursor: url("/cursor-pointer.png") 8 1, pointer !important;
 }
 
+a *,
+button *,
+[role="button"] *,
+label[for] * {
+  cursor: inherit !important;
+}
+
 input,
 textarea {
   cursor: url("/cursor-text.png") 0 0, text !important;
