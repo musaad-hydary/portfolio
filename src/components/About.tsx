@@ -1,20 +1,30 @@
 const STACK = [
+  // Languages
   "TypeScript",
   "JavaScript",
-  "Node.js",
   "Python",
-  "C/C++",
+  "C",
+  "C++",
   "Java",
-  "HTML5",
-  "Tailwind CSS",
   "SQL",
   "Verilog",
+
+  // Frontend
   "React",
   "React Native",
-  "GraphQL",
+  "HTML5",
+  "Tailwind CSS",
   "Redux",
+
+  // Backend
+  "Node.js",
+  "GraphQL",
+
+  // DevOps & Tools
   "Docker",
   "Kubernetes",
+
+  // Hardware & Design
   "Arduino",
   "Figma",
 ];
