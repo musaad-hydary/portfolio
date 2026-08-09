@@ -145,7 +145,7 @@ export default function ProjectList() {
     <div>
       {/* Single row — search + desktop filters + toggle */}
       <div
-        className="flex items-center gap-4 border-b py-3"
+        className={`flex items-center gap-4 py-3${view === "list" ? " border-b" : ""}`}
         style={{ borderColor: "var(--bdr-faint)" }}
       >
         {view === "list" && (
