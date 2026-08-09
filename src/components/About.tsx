@@ -32,15 +32,15 @@ const STACK = [
 ];
 
 export default function About() {
-  const [kirbyActive, setKirbyActive] = useState(
-    () => document.documentElement.classList.contains("kirby-mode")
+  const [kirbyActive, setKirbyActive] = useState(() =>
+    document.documentElement.classList.contains("kirby-mode"),
   );
 
   function toggleKirby() {
     const next = !kirbyActive;
     document.documentElement.classList.toggle("kirby-mode", next);
     const specialActive = ["mr-robot-mode", "deus-ex-mode", "elio-mode"].some(
-      (c) => document.documentElement.classList.contains(c)
+      (c) => document.documentElement.classList.contains(c),
     );
     if (!specialActive) {
       localStorage.setItem("theme", next ? "kirby" : "green");
@@ -48,34 +48,53 @@ export default function About() {
     setKirbyActive(next);
   }
 
-  const [mrRobotActive, setMrRobotActive] = useState(
-    () => document.documentElement.classList.contains("mr-robot-mode")
+  const [mrRobotActive, setMrRobotActive] = useState(() =>
+    document.documentElement.classList.contains("mr-robot-mode"),
   );
-  const [deusExActive, setDeusExActive] = useState(
-    () => document.documentElement.classList.contains("deus-ex-mode")
+  const [deusExActive, setDeusExActive] = useState(() =>
+    document.documentElement.classList.contains("deus-ex-mode"),
   );
-  const [elioActive, setElioActive] = useState(
-    () => document.documentElement.classList.contains("elio-mode")
+  const [elioActive, setElioActive] = useState(() =>
+    document.documentElement.classList.contains("elio-mode"),
   );
-  const [discoActive, setDiscoActive] = useState(
-    () => document.documentElement.classList.contains("disco-mode")
+  const [discoActive, setDiscoActive] = useState(() =>
+    document.documentElement.classList.contains("disco-mode"),
   );
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      setMrRobotActive(document.documentElement.classList.contains("mr-robot-mode"));
-      setDeusExActive(document.documentElement.classList.contains("deus-ex-mode"));
+      setMrRobotActive(
+        document.documentElement.classList.contains("mr-robot-mode"),
+      );
+      setDeusExActive(
+        document.documentElement.classList.contains("deus-ex-mode"),
+      );
       setElioActive(document.documentElement.classList.contains("elio-mode"));
       setDiscoActive(document.documentElement.classList.contains("disco-mode"));
     });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
     return () => observer.disconnect();
   }, []);
 
   const [rightView, setRightView] = useState<"stack" | "graph">("stack");
 
   const verb = mrRobotActive ? "watch" : "play";
-  const gameName = mrRobotActive ? "Mr. Robot" : kirbyActive ? "Balatro" : "Kirby Air Riders";
-  const buttonLabel = discoActive ? "party" : elioActive ? "travel" : <>{verb} <span className="kirby-hint">{gameName}</span></>;
+  const gameName = mrRobotActive
+    ? "Mr. Robot"
+    : kirbyActive
+      ? "Balatro"
+      : "Kirby Air Riders";
+  const buttonLabel = discoActive ? (
+    "party"
+  ) : elioActive ? (
+    "travel"
+  ) : (
+    <>
+      {verb} <span className="kirby-hint">{gameName}</span>
+    </>
+  );
 
   return (
     <div
@@ -107,12 +126,15 @@ export default function About() {
             lineHeight: 1.6,
           }}
         >
-          {deusExActive ? "i never asked for this." : (
+          {deusExActive ? (
+            "i never asked for this."
+          ) : (
             <>
-              i'm a computer engineer based in Toronto with experience in embedded
-              systems and full-stack development. i like building things at every
-              level of the stack, from firmware up to the user interface. in my free
-              time i make lofi beats with Ableton, read slice-of-life novels, and{" "}
+              i'm a computer engineer based in Toronto with experience in
+              embedded systems and full-stack development. i like building
+              things at every level of the stack, from firmware up to the user
+              interface. in my free time i make lofi beats with Ableton, read
+              slice-of-life novels, and{" "}
               <button
                 onClick={toggleKirby}
                 style={{
@@ -137,12 +159,17 @@ export default function About() {
       {/* right side */}
       <div className="sm:pl-10">
         {/* Header row with toggle */}
-        <div className={`flex items-center justify-between ${rightView === "stack" ? "mb-4" : "mb-2"}`}>
+        <div
+          className={`flex items-center justify-between ${rightView === "stack" ? "mb-4" : "mb-2"}`}
+        >
           <p
             className="text-[0.65rem] uppercase tracking-[0.15em]"
-            style={{ color: "var(--col-muted)", fontFamily: "DM Mono, monospace" }}
+            style={{
+              color: "var(--col-muted)",
+              fontFamily: "DM Mono, monospace",
+            }}
           >
-            {rightView === "stack" ? "tech stack" : "github"}
+            {rightView === "stack" ? "technologies" : "github"}
           </p>
           <div
             className="flex items-center"
