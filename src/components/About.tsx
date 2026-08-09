@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const STACK = [
   // Languages
@@ -42,7 +42,23 @@ export default function About() {
     setKirbyActive(next);
   }
 
-  const gameName = kirbyActive ? "Balatro" : "Kirby Air Riders";
+  const [mrRobotActive, setMrRobotActive] = useState(
+    () => document.documentElement.classList.contains("mr-robot-mode")
+  );
+  const [deusExActive, setDeusExActive] = useState(
+    () => document.documentElement.classList.contains("deus-ex-mode")
+  );
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setMrRobotActive(document.documentElement.classList.contains("mr-robot-mode"));
+      setDeusExActive(document.documentElement.classList.contains("deus-ex-mode"));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const verb = mrRobotActive ? "watch" : "play";
+  const gameName = mrRobotActive ? "Mr. Robot" : kirbyActive ? "Balatro" : "Kirby Air Riders";
 
   return (
     <div
@@ -74,26 +90,30 @@ export default function About() {
             lineHeight: 1.6,
           }}
         >
-          i'm a computer engineer based in Toronto with experience in embedded
-          systems and full-stack development. i like building things at every
-          level of the stack, from firmware up to the user interface. in my free
-          time i make lofi beats with Ableton, read slice-of-life novels, and{" "}
-          <button
-            onClick={toggleKirby}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              cursor: "pointer",
-              fontFamily: "DM Mono, monospace",
-              fontSize: "inherit",
-              color: "var(--cd)",
-              display: "inline",
-            }}
-          >
-            play <span className="kirby-hint">{gameName}</span>
-          </button>
-          .
+          {deusExActive ? "i never asked for this." : (
+            <>
+              i'm a computer engineer based in Toronto with experience in embedded
+              systems and full-stack development. i like building things at every
+              level of the stack, from firmware up to the user interface. in my free
+              time i make lofi beats with Ableton, read slice-of-life novels, and{" "}
+              <button
+                onClick={toggleKirby}
+                style={{
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  fontFamily: "DM Mono, monospace",
+                  fontSize: "inherit",
+                  color: "var(--cd)",
+                  display: "inline",
+                }}
+              >
+                {verb} <span className="kirby-hint">{gameName}</span>
+              </button>
+              .
+            </>
+          )}
         </p>
       </div>
 

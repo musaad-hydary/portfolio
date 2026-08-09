@@ -68,6 +68,7 @@ export default function Nav() {
             <img
               src="/cpu.gif"
               alt="logo"
+              className="tint-img"
               style={{
                 width: "42px",
                 height: "auto",

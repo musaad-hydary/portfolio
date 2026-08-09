@@ -36,23 +36,30 @@
 }
 
 * {
-  cursor:
-    url("/cursor.png") 0 0,
-    auto !important;
+  cursor: url("/cursor.png") 0 0, auto;
 }
 
 a,
-button {
-  cursor:
-    url("/cursor-pointer.png") 0 0,
-    pointer !important;
+button,
+[role="button"],
+label[for],
+select {
+  cursor: url("/cursor-pointer.png") 8 1, pointer !important;
 }
 
 input,
 textarea {
-  cursor:
-    url("/cursor-text.png") 0 0,
-    text !important;
+  cursor: url("/cursor-text.png") 0 0, text !important;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+.skeleton {
+  background: var(--bdr-faint);
+  animation: pulse 1.8s ease-in-out infinite;
 }
 
 input::placeholder {
@@ -99,6 +106,85 @@ html.kirby-mode {
   --bdr-hi: rgba(250,238,224,0.45);
 
   --hint-line-hover: rgba(42,59,30,0.75);
+}
+
+html.mr-robot-mode,
+html.mr-robot-mode body {
+  background-color: #0a0a0a;
+  color: #00ff41;
+}
+
+html.mr-robot-mode .tint-img {
+  filter: grayscale(1) sepia(1) hue-rotate(90deg) saturate(4) brightness(0.75) !important;
+}
+
+html.mr-robot-mode .kirby-hint,
+html.deus-ex-mode .kirby-hint {
+  text-decoration-color: transparent !important;
+}
+
+html.mr-robot-mode {
+  --gd: #0a0a0a;
+  --c:  #00ff41;
+  --cd: #00b32c;
+
+  --col-muted:    rgba(0,255,65,0.40);
+  --col-muted-hi: rgba(0,255,65,0.35);
+  --col-ghost:    rgba(0,255,65,0.25);
+  --col-faintest: rgba(0,255,65,0.15);
+
+  --bdr-faint:  rgba(0,255,65,0.08);
+  --bdr:        rgba(0,255,65,0.15);
+  --bdr-med:    rgba(0,255,65,0.20);
+  --bdr-mod:    rgba(0,255,65,0.30);
+
+  --bg-hover:   rgba(0,255,65,0.04);
+  --bg-dim:     rgba(0,255,65,0.06);
+  --bg-surface: rgba(0,255,65,0.08);
+
+  --modal-overlay: rgba(10,10,10,0.92);
+
+  --canvas-rgb: 0,255,65;
+  --bdr-hi: rgba(0,255,65,0.50);
+
+  --hint-line-hover: rgba(0,255,65,0.50);
+}
+
+html.deus-ex-mode,
+html.deus-ex-mode body {
+  background-color: #a06800;
+  color: #0a0400;
+}
+
+html.deus-ex-mode .tint-img {
+  filter: grayscale(1) sepia(1) brightness(0.65) !important;
+}
+
+html.deus-ex-mode {
+  --gd: #a06800;
+  --c:  #0a0400;
+  --cd: #2e1800;
+
+  --col-muted:    rgba(10,4,0,0.45);
+  --col-muted-hi: rgba(10,4,0,0.40);
+  --col-ghost:    rgba(10,4,0,0.28);
+  --col-faintest: rgba(10,4,0,0.18);
+
+  --bdr-faint:  rgba(10,4,0,0.10);
+  --bdr:        rgba(10,4,0,0.16);
+  --bdr-med:    rgba(10,4,0,0.22);
+  --bdr-mod:    rgba(10,4,0,0.32);
+
+  --bg-hover:   rgba(10,4,0,0.05);
+  --bg-dim:     rgba(10,4,0,0.07);
+  --bg-surface: rgba(10,4,0,0.09);
+
+  --modal-overlay: rgba(138,88,0,0.88);
+
+  --canvas-rgb: 10,4,0;
+  --bdr-hi: rgba(10,4,0,0.50);
+
+  --hint-line-hover: rgba(10,4,0,0.50);
 }
 
 .prose h1,

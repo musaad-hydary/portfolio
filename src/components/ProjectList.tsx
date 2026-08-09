@@ -11,7 +11,39 @@ const FILTERS = ["all", "engineering", "music"] as const;
 type Filter = (typeof FILTERS)[number];
 type View = "list" | "design";
 
-const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
+const pointerCursor = "url('/cursor-pointer.png') 8 1, pointer";
+
+function SkeletonRow() {
+  return (
+    <div
+      className="grid items-center border-b"
+      style={{
+        gridTemplateColumns: "64px 52px 1fr auto",
+        borderColor: "var(--bdr-faint)",
+      }}
+    >
+      {/* thumbnail — same 64×52 with border-r */}
+      <div
+        className="skeleton border-r"
+        style={{ width: 64, height: 52, borderColor: "var(--bdr-faint)" }}
+      />
+
+      {/* number — matches text-[0.52rem] centered */}
+      <div className="flex justify-center">
+        <div className="skeleton" style={{ width: 14, height: 8, borderRadius: 1 }} />
+      </div>
+
+      {/* title + description — mirrors px-4 py-4 + mb-1.5 spacing */}
+      <div className="px-4 py-4">
+        <div className="skeleton mb-1.5" style={{ width: "55%", height: 14, borderRadius: 1 }} />
+        <div className="skeleton" style={{ width: "35%", height: 9, borderRadius: 1 }} />
+      </div>
+
+      {/* arrow — invisible ↗ holds the auto column width */}
+      <span className="pr-4 text-sm" style={{ opacity: 0 }}>↗</span>
+    </div>
+  );
+}
 
 export default function ProjectList() {
   const [posts, setPosts] = useState<SubstackPost[]>([]);
@@ -23,6 +55,8 @@ export default function ProjectList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+  const [mrRobot, setMrRobot] = useState(false);
+  const [deusEx, setDeusEx] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
@@ -66,7 +100,30 @@ export default function ProjectList() {
   }
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
-    setSearch(e.target.value);
+    const val = e.target.value;
+    const lower = val.toLowerCase().trim();
+
+    if (lower === "mr robot") {
+      const next = !mrRobot;
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode");
+      if (next) document.documentElement.classList.add("mr-robot-mode");
+      setMrRobot(next);
+      setDeusEx(false);
+      setSearch("");
+      return;
+    }
+
+    if (lower === "deus ex") {
+      const next = !deusEx;
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode");
+      if (next) document.documentElement.classList.add("deus-ex-mode");
+      setDeusEx(next);
+      setMrRobot(false);
+      setSearch("");
+      return;
+    }
+
+    setSearch(val);
     setVisibleCount(INITIAL_COUNT);
   }
 
@@ -200,18 +257,9 @@ export default function ProjectList() {
       )}
 
       {/* Loading / error */}
-      {loading && (
-        <p
-          className="py-8"
-          style={{
-            color: "var(--cd)",
-            fontFamily: "DM Mono, monospace",
-            fontSize: "0.8rem",
-          }}
-        >
-          fetching posts...
-        </p>
-      )}
+      {loading && Array.from({ length: INITIAL_COUNT }).map((_, i) => (
+        <SkeletonRow key={i} />
+      ))}
       {error && (
         <p
           className="py-8"

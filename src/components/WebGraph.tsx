@@ -45,7 +45,7 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
             <img
               src={post.image}
               alt={post.title}
-              className="w-full h-full object-cover"
+              className="tint-img w-full h-full object-cover"
             />
           </div>
           <div
@@ -237,6 +237,7 @@ function DesktopGraph({ posts }: { posts: SubstackPost[] }) {
             <img
               src={post.image}
               alt={post.title}
+              className="tint-img"
               style={{
                 width: "100%",
                 height: "100%",

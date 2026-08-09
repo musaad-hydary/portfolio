@@ -50,6 +50,7 @@ export default function Hero() {
         <img
           src="/cpu.gif"
           alt="splash"
+          className="tint-img"
           style={{
             width: "80%",
             height: "auto",

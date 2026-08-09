@@ -7,7 +7,7 @@ interface Props {
   index: number;
 }
 
-const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
+const pointerCursor = "url('/cursor-pointer.png') 8 1, pointer";
 
 export default function ProjectRow({ post, index }: Props) {
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -47,7 +47,7 @@ export default function ProjectRow({ post, index }: Props) {
           alt={post.title}
           loading="lazy"
           onLoad={() => setImgLoaded(true)}
-          className="w-full h-full object-cover block transition-opacity duration-300"
+          className="tint-img w-full h-full object-cover block transition-opacity duration-300"
           style={{
             filter: "saturate(0.2) brightness(0.45) sepia(0.4)",
             opacity: imgLoaded ? 1 : 0,
