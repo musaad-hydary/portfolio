@@ -7,7 +7,6 @@ const STACK = [
   "C++",
   "Java",
   "SQL",
-  "Verilog",
 
   // Frontend
   "React",
