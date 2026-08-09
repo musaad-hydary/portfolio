@@ -38,7 +38,12 @@ export default function About() {
   function toggleKirby() {
     const next = !kirbyActive;
     document.documentElement.classList.toggle("kirby-mode", next);
-    localStorage.setItem("theme", next ? "kirby" : "green");
+    const specialActive = ["mr-robot-mode", "deus-ex-mode", "elio-mode"].some(
+      (c) => document.documentElement.classList.contains(c)
+    );
+    if (!specialActive) {
+      localStorage.setItem("theme", next ? "kirby" : "green");
+    }
     setKirbyActive(next);
   }
 

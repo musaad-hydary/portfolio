@@ -55,9 +55,9 @@ export default function ProjectList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
-  const [mrRobot, setMrRobot] = useState(false);
-  const [deusEx, setDeusEx] = useState(false);
-  const [elio, setElio] = useState(false);
+  const [mrRobot, setMrRobot] = useState(() => document.documentElement.classList.contains("mr-robot-mode"));
+  const [deusEx, setDeusEx] = useState(() => document.documentElement.classList.contains("deus-ex-mode"));
+  const [elio, setElio] = useState(() => document.documentElement.classList.contains("elio-mode"));
   const [disco, setDisco] = useState(false);
 
   useEffect(() => {
@@ -109,6 +109,7 @@ export default function ProjectList() {
       const next = !mrRobot;
       document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode");
       if (next) document.documentElement.classList.add("mr-robot-mode");
+      localStorage.setItem("theme", next ? "mr-robot" : "green");
       setMrRobot(next);
       setDeusEx(false);
       setElio(false);
@@ -121,6 +122,7 @@ export default function ProjectList() {
       const next = !deusEx;
       document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode");
       if (next) document.documentElement.classList.add("deus-ex-mode");
+      localStorage.setItem("theme", next ? "deus-ex" : "green");
       setDeusEx(next);
       setMrRobot(false);
       setElio(false);
@@ -133,6 +135,7 @@ export default function ProjectList() {
       const next = !elio;
       document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode");
       if (next) document.documentElement.classList.add("elio-mode");
+      localStorage.setItem("theme", next ? "elio" : "green");
       setElio(next);
       setMrRobot(false);
       setDeusEx(false);
