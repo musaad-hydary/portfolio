@@ -199,14 +199,18 @@ html.deus-ex-mode {
   to   { filter: hue-rotate(360deg) saturate(1.8); }
 }
 
-html.disco-mode {
+html.disco-mode,
+html.disco-mode body {
   background-color: #000000;
   color: #ffffff;
 }
 
-html.disco-mode body {
+html.disco-mode body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
   background-color: #cc2222;
-  color: #ffffff;
+  z-index: -1;
 }
 
 html.disco-mode {
