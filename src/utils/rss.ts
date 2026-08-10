@@ -6,6 +6,7 @@ export interface SubstackPost {
   description: string;
   image: string;
   content: string;
+  plainContent: string;
   category: "engineering" | "music" | "all";
   isDesign: boolean;
 }
@@ -105,6 +106,8 @@ export async function fetchPosts(): Promise<SubstackPost[]> {
   const res = await fetch(url);
   const data = await res.json();
 
+  const stripHtml = (html: string) => html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
   if (Array.isArray(data)) {
     return data.map((item: any) => {
       const slug = item.slug;
@@ -117,6 +120,7 @@ export async function fetchPosts(): Promise<SubstackPost[]> {
         description: item.subtitle || "",
         image: item.cover_image || "",
         content,
+        plainContent: stripHtml(content),
         category: inferCategory(item.title, content),
         isDesign: DESIGN_SLUGS.has(slug),
       };
@@ -137,6 +141,7 @@ export async function fetchPosts(): Promise<SubstackPost[]> {
         item.description.replace(/<[^>]+>/g, "").slice(0, 120) + "...",
       image: item.thumbnail || item.enclosure?.link || "",
       content,
+      plainContent: stripHtml(content),
       category: inferCategory(item.title, content),
       isDesign: DESIGN_SLUGS.has(slug),
     };

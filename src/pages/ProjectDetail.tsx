@@ -48,6 +48,33 @@ export default function ProjectDetail() {
   useEffect(() => {
     if (!post) return;
     fetchPosts().then((all) => setRelatedPosts(getRelated(post, all)));
+
+    const setMeta = (sel: string, val: string) => {
+      const el = document.querySelector<HTMLMetaElement>(sel);
+      if (el) el.content = val;
+    };
+    const prev = document.title;
+    document.title = `${post.title} — musaad hydary`;
+    setMeta('meta[property="og:title"]', post.title);
+    setMeta('meta[property="og:description"]', post.description);
+    setMeta('meta[property="og:image"]', post.image);
+    setMeta('meta[property="og:url"]', post.url);
+    setMeta('meta[property="og:type"]', "article");
+    setMeta('meta[name="twitter:title"]', post.title);
+    setMeta('meta[name="twitter:description"]', post.description);
+    setMeta('meta[name="twitter:image"]', post.image);
+
+    return () => {
+      document.title = prev;
+      setMeta('meta[property="og:title"]', "Musaad Hydary");
+      setMeta('meta[property="og:description"]', "Computer engineer, software dev, & music producer based in Toronto.");
+      setMeta('meta[property="og:image"]', "https://musaadhydary.com/og-image.png");
+      setMeta('meta[property="og:url"]', "https://musaadhydary.com");
+      setMeta('meta[property="og:type"]', "website");
+      setMeta('meta[name="twitter:title"]', "Musaad Hydary");
+      setMeta('meta[name="twitter:description"]', "Computer engineer, software dev, & music producer based in Toronto.");
+      setMeta('meta[name="twitter:image"]', "https://musaadhydary.com/og-image.png");
+    };
   }, [post]);
 
   useEffect(() => {

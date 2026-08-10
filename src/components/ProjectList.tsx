@@ -78,20 +78,25 @@ export default function ProjectList() {
       });
   }, []);
 
-  const designPosts = posts.filter(
-    (p) => p.isDesign && p.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const q = search.toLowerCase().trim();
+
+  const designPosts = posts.filter((p) => {
+    if (!p.isDesign) return false;
+    if (!q) return true;
+    const titleMatch = p.title.toLowerCase().includes(q);
+    const bodyMatch = q.length >= 3 && p.plainContent.toLowerCase().includes(q);
+    return titleMatch || bodyMatch;
+  });
   const visibleDesignPosts = isMobile
     ? designPosts.slice(0, designVisible)
     : designPosts;
   const designRemaining = designPosts.length - designVisible;
-
   const filtered = posts.filter((post) => {
-    const matchesSearch = post.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesFilter =
-      activeFilter === "all" || post.category === activeFilter;
+    if (!q) return true;
+    const titleMatch = post.title.toLowerCase().includes(q);
+    const bodyMatch = q.length >= 3 && post.plainContent.toLowerCase().includes(q);
+    const matchesSearch = titleMatch || bodyMatch;
+    const matchesFilter = activeFilter === "all" || post.category === activeFilter;
     return matchesSearch && matchesFilter;
   });
 
