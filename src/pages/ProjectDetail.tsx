@@ -89,7 +89,7 @@ export default function ProjectDetail() {
       {/* Scroll progress bar */}
       <div
         ref={progressRef}
-        className="fixed top-0 left-0 z-[60] h-[2px]"
+        className="fixed top-0 left-0 z-[60] h-[4px]"
         style={{
           width: "0%",
           background: "var(--c)",
