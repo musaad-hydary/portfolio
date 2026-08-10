@@ -10,6 +10,32 @@ import Nav from "../components/Nav";
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 
+function ShareButton({ url, title }: { url: string; title: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title, url }); } catch {}
+      return;
+    }
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <button
+      onClick={handleShare}
+      className="text-[0.6rem] uppercase tracking-widest transition-colors duration-150"
+      style={{ color: copied ? "var(--c)" : "var(--cd)", fontFamily: "DM Mono, monospace", background: "transparent", border: "none", cursor: pointerCursor }}
+      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
+      onMouseLeave={(e) => (e.currentTarget.style.color = copied ? "var(--c)" : "var(--cd)")}
+    >
+      {copied ? "copied ✓" : "share"}
+    </button>
+  );
+}
+
 function getRelated(current: SubstackPost, all: SubstackPost[]): SubstackPost[] {
   const currentWords = current.title.toLowerCase().split(/\s+/);
   return all
@@ -142,17 +168,21 @@ export default function ProjectDetail() {
                 {post.title}
               </h1>
 
-              <a
-                href={post.url}
-                target="_blank"
-                rel="noreferrer"
-                className="text-[0.6rem] uppercase tracking-widest transition-colors duration-150"
-                style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace", cursor: pointerCursor }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--cd)")}
-              >
-                read on substack ↗
-              </a>
+              <div className="flex items-center gap-4">
+                <ShareButton url={post.url} title={post.title} />
+                <span style={{ color: "var(--col-muted)", fontFamily: "DM Mono, monospace", fontSize: "0.7rem" }}>·</span>
+                <a
+                  href={post.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[0.6rem] uppercase tracking-widest transition-colors duration-150"
+                  style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace", cursor: pointerCursor }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--cd)")}
+                >
+                  read on substack ↗
+                </a>
+              </div>
             </div>
 
             <div
