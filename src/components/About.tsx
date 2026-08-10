@@ -186,17 +186,20 @@ export default function About() {
                 onClick={() => setRightView(v)}
                 style={{
                   fontFamily: "DM Mono, monospace",
-                  fontSize: "0.45rem",
+                  fontSize: "0.48rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.08em",
                   color: rightView === v ? "var(--gd)" : "var(--col-muted-hi)",
                   background: rightView === v ? "var(--c)" : "transparent",
                   border: "none",
                   borderRadius: "2px",
-                  padding: "3px 8px",
+                  padding: "4px 9px",
                   lineHeight: 1,
-                  minWidth: "32px",
+                  minWidth: "36px",
                   textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 {v}
