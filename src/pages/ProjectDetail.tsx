@@ -168,9 +168,9 @@ export default function ProjectDetail() {
                 {post.title}
               </h1>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
                 <ShareButton url={post.url} title={post.title} />
-                <span style={{ color: "var(--col-muted)", fontFamily: "DM Mono, monospace", fontSize: "0.7rem" }}>·</span>
+                <span style={{ color: "var(--col-ghost)", fontFamily: "DM Mono, monospace", fontSize: "0.55rem" }}>·</span>
                 <a
                   href={post.url}
                   target="_blank"
