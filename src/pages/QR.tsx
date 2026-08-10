@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 
@@ -9,8 +9,26 @@ const options = [
   { label: "substack", value: "https://musaadh.substack.com" },
 ];
 
+function useThemeColors() {
+  const read = () => ({
+    bg: getComputedStyle(document.documentElement).getPropertyValue("--gd").trim(),
+    fg: getComputedStyle(document.documentElement).getPropertyValue("--c").trim(),
+  });
+
+  const [colors, setColors] = useState(read);
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => setColors(read()));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  return colors;
+}
+
 export default function QRPage() {
   const [active, setActive] = useState(0);
+  const { bg, fg } = useThemeColors();
 
   return (
     <div
@@ -66,7 +84,7 @@ export default function QRPage() {
         {/* QR Code */}
         <div
           style={{
-            background: "#e8e2c8",
+            background: bg,
             padding: "1.5rem",
             borderRadius: "2px",
           }}
@@ -74,8 +92,8 @@ export default function QRPage() {
           <QRCodeSVG
             value={options[active].value}
             size={220}
-            bgColor="#e8e2c8"
-            fgColor="#2a3b1e"
+            bgColor={bg}
+            fgColor={fg}
             level="H"
           />
         </div>
