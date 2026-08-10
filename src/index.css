@@ -159,7 +159,7 @@ html.mr-robot-mode {
 
 html.deus-ex-mode,
 html.deus-ex-mode body {
-  background-color: #a06800;
+  background-color: #ba7c00;
   color: #0a0400;
 }
 
@@ -168,7 +168,7 @@ html.deus-ex-mode .tint-img {
 }
 
 html.deus-ex-mode {
-  --gd: #a06800;
+  --gd: #ba7c00;
   --c:  #0a0400;
   --cd: #2e1800;
 
@@ -199,7 +199,11 @@ html.deus-ex-mode {
   to   { filter: hue-rotate(360deg) saturate(1.8); }
 }
 
-html.disco-mode,
+html.disco-mode {
+  background-color: #000000;
+  color: #ffffff;
+}
+
 html.disco-mode body {
   background-color: #cc2222;
   color: #ffffff;
