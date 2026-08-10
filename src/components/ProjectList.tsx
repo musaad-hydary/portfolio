@@ -190,7 +190,7 @@ export default function ProjectList() {
             <button
               key={f}
               onClick={() => handleFilterChange(f)}
-              className="hidden sm:block text-[0.55rem] uppercase tracking-wider pb-1 transition-all duration-150 shrink-0"
+              className="hidden sm:block text-[0.55rem] uppercase tracking-wider transition-all duration-150 shrink-0"
               style={{
                 fontFamily: "DM Mono, monospace",
                 color:
@@ -201,6 +201,7 @@ export default function ProjectList() {
                   activeFilter === f
                     ? "1px solid var(--c)"
                     : "1px solid transparent",
+                paddingBottom: "2px",
                 cursor: pointerCursor,
               }}
             >
@@ -270,7 +271,7 @@ export default function ProjectList() {
               <button
                 key={f}
                 onClick={() => handleFilterChange(f)}
-                className="text-[0.55rem] uppercase tracking-wider pb-1 transition-all duration-150 shrink-0"
+                className="text-[0.55rem] uppercase tracking-wider transition-all duration-150 shrink-0"
                 style={{
                   fontFamily: "DM Mono, monospace",
                   color:
@@ -281,6 +282,7 @@ export default function ProjectList() {
                     activeFilter === f
                       ? "1px solid var(--c)"
                       : "1px solid transparent",
+                  paddingBottom: "1px",
                   cursor: pointerCursor,
                 }}
               >
