@@ -84,7 +84,7 @@ export default function ProjectList() {
   const q = search.toLowerCase().trim();
 
   useEffect(() => {
-    if (q !== "konami") return;
+    if (q !== "secret") return;
     const id = setInterval(() => setDiscoHue((h) => (h + 3) % 360), 40);
     return () => clearInterval(id);
   }, [q]);
@@ -187,7 +187,7 @@ export default function ProjectList() {
     }
 
     setSearch(val);
-    if (lower !== "konami") setVisibleCount(INITIAL_COUNT);
+    if (lower !== "secret") setVisibleCount(INITIAL_COUNT);
   }
 
   return (
@@ -213,7 +213,7 @@ export default function ProjectList() {
         />
 
         {/* Desktop filters — list mode only, hidden on help */}
-        {view === "list" && q !== "konami" &&
+        {view === "list" && q !== "secret" &&
           FILTERS.map((f) => (
             <button
               key={f}
@@ -237,7 +237,7 @@ export default function ProjectList() {
             </button>
           ))}
 
-        {q !== "konami" && (
+        {q !== "secret" && (
           <span
             className="shrink-0 hidden sm:block"
             style={{ color: "var(--col-faintest)", fontSize: "0.6rem" }}
@@ -247,7 +247,7 @@ export default function ProjectList() {
         )}
 
         {/* Toggle */}
-        {q !== "konami" && <div
+        {q !== "secret" && <div
           className="flex items-center shrink-0"
           style={{
             background: "var(--bg-surface)",
@@ -284,7 +284,7 @@ export default function ProjectList() {
       </div>
 
       {/* Mobile filters — label left, buttons right, list mode only */}
-      {view === "list" && q !== "konami" && (
+      {view === "list" && q !== "secret" && (
         <div
           className="flex items-center justify-between gap-4 sm:hidden border-b py-3"
           style={{ borderColor: "var(--bdr-faint)" }}
@@ -324,7 +324,7 @@ export default function ProjectList() {
       )}
 
       {/* Help easter egg */}
-      {q === "konami" && (
+      {q === "secret" && (
         <div>
           {[
             { cmd: "elio",       desc: "deep blue",       bg: "#1a3a7a",                  fg: "#eaecf2", muted: "rgba(234,236,242,0.55)", border: "rgba(234,236,242,0.12)" },
@@ -351,10 +351,10 @@ export default function ProjectList() {
       )}
 
       {/* Loading / error */}
-      {search.toLowerCase().trim() !== "konami" && loading && Array.from({ length: INITIAL_COUNT }).map((_, i) => (
+      {search.toLowerCase().trim() !== "secret" && loading && Array.from({ length: INITIAL_COUNT }).map((_, i) => (
         <SkeletonRow key={i} />
       ))}
-      {search.toLowerCase().trim() !== "konami" && error && (
+      {search.toLowerCase().trim() !== "secret" && error && (
         <p
           className="py-8"
           style={{
@@ -368,7 +368,7 @@ export default function ProjectList() {
       )}
 
       {/* Design graph — always mounted so positions survive filtering */}
-      {search.toLowerCase().trim() !== "konami" && !loading && !error && view === "design" && (
+      {search.toLowerCase().trim() !== "secret" && !loading && !error && view === "design" && (
         <>
           {designPosts.length === 0 ? (
             <p
@@ -422,7 +422,7 @@ export default function ProjectList() {
 
 
       {/* List */}
-      {search.toLowerCase().trim() !== "konami" && !loading && !error && view === "list" && (
+      {search.toLowerCase().trim() !== "secret" && !loading && !error && view === "list" && (
         <>
           {posts.length === 0 && (
             <p
