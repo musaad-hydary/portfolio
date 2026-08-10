@@ -83,6 +83,43 @@ body {
   width: 100%;
 }
 
+html.the-office-mode,
+html.the-office-mode body {
+  background-color: #f5f4ee;
+  color: #1c2b4a;
+}
+
+html.the-office-mode .tint-img {
+  filter: grayscale(1) sepia(0.3) hue-rotate(190deg) brightness(0.9) !important;
+}
+
+html.the-office-mode {
+  --gd: #f5f4ee;
+  --c:  #1c2b4a;
+  --cd: #3d5480;
+
+  --col-muted:    rgba(28,43,74,0.40);
+  --col-muted-hi: rgba(28,43,74,0.35);
+  --col-ghost:    rgba(28,43,74,0.22);
+  --col-faintest: rgba(28,43,74,0.12);
+
+  --bdr-faint:  rgba(28,43,74,0.08);
+  --bdr:        rgba(28,43,74,0.13);
+  --bdr-med:    rgba(28,43,74,0.20);
+  --bdr-mod:    rgba(28,43,74,0.30);
+
+  --bg-hover:   rgba(28,43,74,0.04);
+  --bg-dim:     rgba(28,43,74,0.06);
+  --bg-surface: rgba(28,43,74,0.08);
+
+  --modal-overlay: rgba(245,244,238,0.90);
+
+  --canvas-rgb: 28,43,74;
+  --bdr-hi: rgba(28,43,74,0.45);
+
+  --hint-line-hover: rgba(28,43,74,0.50);
+}
+
 html.kirby-mode,
 html.kirby-mode body {
   background-color: #a84464;
@@ -114,6 +151,43 @@ html.kirby-mode {
   --bdr-hi: rgba(250,238,224,0.45);
 
   --hint-line-hover: rgba(42,59,30,0.75);
+}
+
+html.m-reds-mode,
+html.m-reds-mode body {
+  background-color: #b03333;
+  color: #f5ebe8;
+}
+
+html.m-reds-mode .tint-img {
+  filter: grayscale(1) sepia(1) hue-rotate(320deg) saturate(2) brightness(0.75) !important;
+}
+
+html.m-reds-mode {
+  --gd: #b03333;
+  --c:  #f5ebe8;
+  --cd: #e0b8b0;
+
+  --col-muted:    rgba(245,235,232,0.45);
+  --col-muted-hi: rgba(245,235,232,0.40);
+  --col-ghost:    rgba(245,235,232,0.28);
+  --col-faintest: rgba(245,235,232,0.18);
+
+  --bdr-faint:  rgba(245,235,232,0.10);
+  --bdr:        rgba(245,235,232,0.15);
+  --bdr-med:    rgba(245,235,232,0.22);
+  --bdr-mod:    rgba(245,235,232,0.32);
+
+  --bg-hover:   rgba(245,235,232,0.06);
+  --bg-dim:     rgba(245,235,232,0.08);
+  --bg-surface: rgba(245,235,232,0.10);
+
+  --modal-overlay: rgba(140,38,38,0.88);
+
+  --canvas-rgb: 245,235,232;
+  --bdr-hi: rgba(245,235,232,0.50);
+
+  --hint-line-hover: rgba(245,235,232,0.55);
 }
 
 html.mr-robot-mode,

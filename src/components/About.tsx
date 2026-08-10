@@ -37,6 +37,7 @@ export default function About() {
   );
 
   function toggleKirby() {
+    if (theOfficeActive || mrRobotActive || deusExActive || elioActive || discoActive || mRedsActive) return;
     const next = !kirbyActive;
     document.documentElement.classList.toggle("kirby-mode", next);
     const specialActive = ["mr-robot-mode", "deus-ex-mode", "elio-mode"].some(
@@ -60,16 +61,21 @@ export default function About() {
   const [discoActive, setDiscoActive] = useState(() =>
     document.documentElement.classList.contains("disco-mode"),
   );
+  const [theOfficeActive, setTheOfficeActive] = useState(() =>
+    document.documentElement.classList.contains("the-office-mode"),
+  );
+  const [mRedsActive, setMRedsActive] = useState(() =>
+    document.documentElement.classList.contains("m-reds-mode"),
+  );
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      setMrRobotActive(
-        document.documentElement.classList.contains("mr-robot-mode"),
-      );
-      setDeusExActive(
-        document.documentElement.classList.contains("deus-ex-mode"),
-      );
+      setKirbyActive(document.documentElement.classList.contains("kirby-mode"));
+      setMrRobotActive(document.documentElement.classList.contains("mr-robot-mode"));
+      setDeusExActive(document.documentElement.classList.contains("deus-ex-mode"));
       setElioActive(document.documentElement.classList.contains("elio-mode"));
       setDiscoActive(document.documentElement.classList.contains("disco-mode"));
+      setTheOfficeActive(document.documentElement.classList.contains("the-office-mode"));
+      setMRedsActive(document.documentElement.classList.contains("m-reds-mode"));
     });
     observer.observe(document.documentElement, {
       attributes: true,
@@ -83,16 +89,20 @@ export default function About() {
   const verb = mrRobotActive ? "watch" : "play";
   const gameName = mrRobotActive
     ? "Mr. Robot"
-    : kirbyActive
-      ? "Balatro"
-      : "Kirby Air Riders";
-  const buttonLabel = discoActive ? (
+    : theOfficeActive
+      ? "Flonkerton"
+      : kirbyActive
+        ? "Balatro"
+        : "Kirby Air Riders";
+  const buttonLabel = mRedsActive ? (
+    "and dream of corduroy"
+  ) : discoActive ? (
     "party"
   ) : elioActive ? (
     "travel"
   ) : (
     <>
-      {verb} <span className="kirby-hint">{gameName}</span>
+      {verb} <span className={!mrRobotActive && !deusExActive && !elioActive && !discoActive && !theOfficeActive && !mRedsActive ? "kirby-hint" : undefined}>{gameName}</span>
     </>
   );
 

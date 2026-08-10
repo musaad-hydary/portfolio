@@ -59,6 +59,9 @@ export default function ProjectList() {
   const [deusEx, setDeusEx] = useState(() => document.documentElement.classList.contains("deus-ex-mode"));
   const [elio, setElio] = useState(() => document.documentElement.classList.contains("elio-mode"));
   const [disco, setDisco] = useState(false);
+  const [theOffice, setTheOffice] = useState(() => document.documentElement.classList.contains("the-office-mode"));
+  const [mReds, setMReds] = useState(() => document.documentElement.classList.contains("m-reds-mode"));
+  const [discoHue, setDiscoHue] = useState(0);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
@@ -79,6 +82,12 @@ export default function ProjectList() {
   }, []);
 
   const q = search.toLowerCase().trim();
+
+  useEffect(() => {
+    if (q !== "konami") return;
+    const id = setInterval(() => setDiscoHue((h) => (h + 3) % 360), 40);
+    return () => clearInterval(id);
+  }, [q]);
 
   const designPosts = posts.filter((p) => {
     if (!p.isDesign) return false;
@@ -114,57 +123,71 @@ export default function ProjectList() {
 
     if (lower === "mr robot") {
       const next = !mrRobot;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode");
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
       if (next) document.documentElement.classList.add("mr-robot-mode");
       localStorage.setItem("theme", next ? "mr-robot" : "green");
       setMrRobot(next);
-      setDeusEx(false);
-      setElio(false);
-      setDisco(false);
+      setDeusEx(false); setElio(false); setDisco(false); setTheOffice(false); setMReds(false);
       setSearch("");
       return;
     }
 
     if (lower === "deus ex") {
       const next = !deusEx;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode");
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
       if (next) document.documentElement.classList.add("deus-ex-mode");
       localStorage.setItem("theme", next ? "deus-ex" : "green");
       setDeusEx(next);
-      setMrRobot(false);
-      setElio(false);
-      setDisco(false);
+      setMrRobot(false); setElio(false); setDisco(false); setTheOffice(false); setMReds(false);
       setSearch("");
       return;
     }
 
     if (lower === "elio") {
       const next = !elio;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode");
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
       if (next) document.documentElement.classList.add("elio-mode");
       localStorage.setItem("theme", next ? "elio" : "green");
       setElio(next);
-      setMrRobot(false);
-      setDeusEx(false);
-      setDisco(false);
+      setMrRobot(false); setDeusEx(false); setDisco(false); setTheOffice(false); setMReds(false);
       setSearch("");
       return;
     }
 
     if (lower === "disco") {
       const next = !disco;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode");
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
       if (next) document.documentElement.classList.add("disco-mode");
       setDisco(next);
-      setMrRobot(false);
-      setDeusEx(false);
-      setElio(false);
+      setMrRobot(false); setDeusEx(false); setElio(false); setTheOffice(false); setMReds(false);
+      setSearch("");
+      return;
+    }
+
+    if (lower === "the office") {
+      const next = !theOffice;
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
+      if (next) document.documentElement.classList.add("the-office-mode");
+      localStorage.setItem("theme", next ? "the-office" : "green");
+      setTheOffice(next);
+      setMrRobot(false); setDeusEx(false); setElio(false); setDisco(false); setMReds(false);
+      setSearch("");
+      return;
+    }
+
+    if (lower === "m-reds") {
+      const next = !mReds;
+      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
+      if (next) document.documentElement.classList.add("m-reds-mode");
+      localStorage.setItem("theme", next ? "m-reds" : "green");
+      setMReds(next);
+      setMrRobot(false); setDeusEx(false); setElio(false); setDisco(false); setTheOffice(false);
       setSearch("");
       return;
     }
 
     setSearch(val);
-    setVisibleCount(INITIAL_COUNT);
+    if (lower !== "konami") setVisibleCount(INITIAL_COUNT);
   }
 
   return (
@@ -189,8 +212,8 @@ export default function ProjectList() {
           }}
         />
 
-        {/* Desktop filters — list mode only */}
-        {view === "list" &&
+        {/* Desktop filters — list mode only, hidden on help */}
+        {view === "list" && q !== "konami" &&
           FILTERS.map((f) => (
             <button
               key={f}
@@ -214,15 +237,17 @@ export default function ProjectList() {
             </button>
           ))}
 
-        <span
-          className="shrink-0 hidden sm:block"
-          style={{ color: "var(--col-faintest)", fontSize: "0.6rem" }}
-        >
-          |
-        </span>
+        {q !== "konami" && (
+          <span
+            className="shrink-0 hidden sm:block"
+            style={{ color: "var(--col-faintest)", fontSize: "0.6rem" }}
+          >
+            |
+          </span>
+        )}
 
         {/* Toggle */}
-        <div
+        {q !== "konami" && <div
           className="flex items-center shrink-0"
           style={{
             background: "var(--bg-surface)",
@@ -255,11 +280,11 @@ export default function ProjectList() {
               {v}
             </button>
           ))}
-        </div>
+        </div>}
       </div>
 
       {/* Mobile filters — label left, buttons right, list mode only */}
-      {view === "list" && (
+      {view === "list" && q !== "konami" && (
         <div
           className="flex items-center justify-between gap-4 sm:hidden border-b py-3"
           style={{ borderColor: "var(--bdr-faint)" }}
@@ -298,11 +323,38 @@ export default function ProjectList() {
         </div>
       )}
 
+      {/* Help easter egg */}
+      {q === "konami" && (
+        <div>
+          {[
+            { cmd: "elio",       desc: "deep blue",       bg: "#1a3a7a",                  fg: "#eaecf2", muted: "rgba(234,236,242,0.55)", border: "rgba(234,236,242,0.12)" },
+            { cmd: "m-reds",     desc: "muted red",       bg: "#b03333",                  fg: "#f5ebe8", muted: "rgba(245,235,232,0.60)", border: "rgba(245,235,232,0.15)" },
+            { cmd: "the office", desc: "blue ink",        bg: "#f5f4ee",                  fg: "#1c2b4a", muted: "rgba(28,43,74,0.50)",   border: "rgba(28,43,74,0.13)"    },
+            { cmd: "deus ex",    desc: "gold",            bg: "#ba7c00",                        fg: "#0a0400", muted: "rgba(10,4,0,0.45)",      border: "rgba(10,4,0,0.15)"      },
+            { cmd: "mr robot",   desc: "terminal green",  bg: "#0a0a0a",                        fg: "#00ff41", muted: "rgba(0,255,65,0.50)",    border: "rgba(0,255,65,0.12)"    },
+            { cmd: "disco",      desc: "color rotation",  bg: `hsl(${discoHue},75%,38%)`,       fg: "#ffffff", muted: "rgba(255,255,255,0.70)", border: "rgba(255,255,255,0.18)" },
+          ].map(({ cmd, desc, bg, fg, muted, border }) => (
+            <div
+              key={cmd}
+              className="flex items-center justify-between py-4 border-b px-4"
+              style={{ backgroundColor: bg, borderColor: border }}
+            >
+              <span style={{ fontFamily: "DM Mono, monospace", fontSize: "0.72rem", color: fg, letterSpacing: "0.06em" }}>
+                type "{cmd}"
+              </span>
+              <span style={{ fontFamily: "DM Mono, monospace", fontSize: "0.6rem", color: muted, letterSpacing: "0.08em" }}>
+                {desc}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Loading / error */}
-      {loading && Array.from({ length: INITIAL_COUNT }).map((_, i) => (
+      {search.toLowerCase().trim() !== "konami" && loading && Array.from({ length: INITIAL_COUNT }).map((_, i) => (
         <SkeletonRow key={i} />
       ))}
-      {error && (
+      {search.toLowerCase().trim() !== "konami" && error && (
         <p
           className="py-8"
           style={{
@@ -316,7 +368,7 @@ export default function ProjectList() {
       )}
 
       {/* Design graph — always mounted so positions survive filtering */}
-      {!loading && !error && view === "design" && (
+      {search.toLowerCase().trim() !== "konami" && !loading && !error && view === "design" && (
         <>
           {designPosts.length === 0 ? (
             <p
@@ -370,7 +422,7 @@ export default function ProjectList() {
 
 
       {/* List */}
-      {!loading && !error && view === "list" && (
+      {search.toLowerCase().trim() !== "konami" && !loading && !error && view === "list" && (
         <>
           {posts.length === 0 && (
             <p
