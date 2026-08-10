@@ -59,14 +59,6 @@ textarea {
   cursor: url("/cursor-text.png") 0 0, text !important;
 }
 
-@keyframes page-fadein {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.page-fade {
-  animation: page-fadein 0.15s ease-out both;
-}
 
 @keyframes pulse {
   0%, 100% { opacity: 0.5; }

@@ -32,7 +32,7 @@ export default function QRPage() {
 
   return (
     <div
-      className="page-fade min-h-screen flex flex-col items-center justify-center px-8"
+      className="min-h-screen flex flex-col items-center justify-center px-8"
       style={{ background: "var(--gd)", color: "var(--c)" }}
     >
       <div className="flex flex-col items-center gap-10 w-full max-w-[320px]">

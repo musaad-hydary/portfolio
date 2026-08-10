@@ -5,7 +5,7 @@ export default function NotFound() {
 
   return (
     <div
-      className="page-fade min-h-screen flex flex-col items-center justify-center text-center px-7"
+      className="min-h-screen flex flex-col items-center justify-center text-center px-7"
       style={{ background: 'var(--gd)', color: 'var(--c)' }}
     >
       <img

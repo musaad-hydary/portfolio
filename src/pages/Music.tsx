@@ -22,7 +22,7 @@ const pointerCursor = "url('/cursor-pointer.png') 8 1, pointer";
 export default function Music() {
   return (
     <div
-      className="page-fade min-h-screen"
+      className="min-h-screen"
       style={{ background: "var(--gd)", color: "var(--c)" }}
     >
       <Nav />

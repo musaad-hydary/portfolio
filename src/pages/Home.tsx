@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 
 export default function Home() {
   return (
-    <div className="page-fade min-h-screen" style={{ background: 'var(--gd)', color: 'var(--c)' }}>
+    <div className="min-h-screen" style={{ background: 'var(--gd)', color: 'var(--c)' }}>
       <Nav />
       <div className="max-w-[800px] mx-auto px-7 pt-24">
         <Hero />
