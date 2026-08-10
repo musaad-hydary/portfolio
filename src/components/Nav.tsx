@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ContactModal from "./ContactModal";
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
@@ -33,6 +33,8 @@ const links = [
 
 export default function Nav() {
   const [modalOpen, setModalOpen] = useState(false);
+  const location = useLocation();
+  const onMusic = location.pathname === "/music";
 
   return (
     <>
@@ -104,6 +106,22 @@ export default function Nav() {
                 </span>
               </a>
             ))}
+
+            <Link
+              to="/music"
+              className="transition-colors duration-150"
+              style={{
+                color: onMusic ? "var(--c)" : "var(--cd)",
+                fontFamily: "DM Mono, monospace",
+                cursor: pointerCursor,
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = onMusic ? "var(--c)" : "var(--cd)")}
+            >
+              <span className="block sm:hidden text-[0.7rem] tracking-wider">♪</span>
+              <span className="hidden sm:block text-[0.65rem] uppercase tracking-[0.13em]">music</span>
+            </Link>
 
             {/* Contact button — opens modal */}
             <button

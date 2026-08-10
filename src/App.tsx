@@ -4,6 +4,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
 import QR from "./pages/QR";
 import Feed from "./pages/Feed";
+import Music from "./pages/Music";
 
 export default function App() {
   return (
@@ -11,9 +12,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/music" element={<Music />} />
         <Route path="/feed" element={<Feed />} />
-        <Route path="/qr" element={<QR />} />;
+        <Route path="/qr" element={<QR />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

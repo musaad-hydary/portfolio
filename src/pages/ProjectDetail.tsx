@@ -83,7 +83,7 @@ export default function ProjectDetail() {
 
   return (
     <div
-      className="min-h-screen w-full"
+      className="page-fade min-h-screen w-full"
       style={{ background: "var(--gd)", color: "var(--c)" }}
     >
       {/* Scroll progress bar */}
