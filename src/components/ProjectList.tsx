@@ -215,20 +215,34 @@ export default function ProjectList() {
         className="flex items-center gap-4 py-3 border-b"
         style={{ borderColor: "var(--bdr-faint)" }}
       >
-        <input
-          type="text"
-          placeholder="> search..."
-          value={search}
-          onChange={handleSearch}
-          className="bg-transparent border-none outline-none flex-1 min-w-0"
-          style={{
-            color: "var(--c)",
-            fontFamily: "DM Mono, monospace",
-            fontWeight: 300,
-            fontSize: "0.75rem",
-            letterSpacing: "0.04em",
-          }}
-        />
+        <div className="flex items-center flex-1 min-w-0">
+          <span
+            style={{
+              color: "var(--col-muted)",
+              fontFamily: "DM Mono, monospace",
+              fontSize: "0.75rem",
+              marginRight: "0.4em",
+              userSelect: "none",
+              flexShrink: 0,
+            }}
+          >
+            &gt;
+          </span>
+          <input
+            type="text"
+            placeholder="search..."
+            value={search}
+            onChange={handleSearch}
+            className="bg-transparent border-none outline-none flex-1 min-w-0"
+            style={{
+              color: "var(--c)",
+              fontFamily: "DM Mono, monospace",
+              fontWeight: 300,
+              fontSize: "0.75rem",
+              letterSpacing: "0.04em",
+            }}
+          />
+        </div>
 
         {/* Desktop filters — list mode only, hidden on help */}
         {view === "list" && q !== "secret" &&
