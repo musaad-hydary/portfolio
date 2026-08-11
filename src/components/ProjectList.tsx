@@ -358,12 +358,12 @@ export default function ProjectList() {
       {q === "secret" && (
         <div>
           {[
-            { cmd: "elio",       desc: "deep blue",       bg: "#1a3a7a",                  fg: "#eaecf2", muted: "rgba(234,236,242,0.55)", border: "rgba(234,236,242,0.12)" },
+            { cmd: "elio",       desc: "wanderer",        bg: "#1a3a7a",                  fg: "#eaecf2", muted: "rgba(234,236,242,0.55)", border: "rgba(234,236,242,0.12)" },
             { cmd: "m-reds",     desc: "muted red",       bg: "#b03333",                  fg: "#f5ebe8", muted: "rgba(245,235,232,0.60)", border: "rgba(245,235,232,0.15)" },
             { cmd: "the office", desc: "blue ink",        bg: "#f5f4ee",                  fg: "#1c2b4a", muted: "rgba(28,43,74,0.50)",   border: "rgba(28,43,74,0.13)"    },
             { cmd: "deus ex",    desc: "gold",            bg: "#ba7c00",                        fg: "#0a0400", muted: "rgba(10,4,0,0.45)",      border: "rgba(10,4,0,0.15)"      },
-            { cmd: "mr robot",   desc: "terminal green",  bg: "#0a0a0a",                        fg: "#00ff41", muted: "rgba(0,255,65,0.50)",    border: "rgba(0,255,65,0.12)"    },
-            { cmd: "disco",      desc: "color rotation",  bg: `hsl(${discoHue},75%,38%)`,       fg: "#ffffff", muted: "rgba(255,255,255,0.70)", border: "rgba(255,255,255,0.18)" },
+            { cmd: "mr robot",   desc: "terminal",        bg: "#0a0a0a",                        fg: "#00ff41", muted: "rgba(0,255,65,0.50)",    border: "rgba(0,255,65,0.12)"    },
+            { cmd: "disco",      desc: "dance!",          bg: `hsl(${discoHue},75%,38%)`,       fg: "#ffffff", muted: "rgba(255,255,255,0.70)", border: "rgba(255,255,255,0.18)" },
           ].map(({ cmd, desc, bg, fg, muted, border }) => (
             <div
               key={cmd}
