@@ -221,7 +221,7 @@ export default function ProjectList() {
               color: "var(--col-muted)",
               fontFamily: "DM Mono, monospace",
               fontSize: "0.75rem",
-              marginRight: "0.4em",
+              marginRight: "0.65em",
               userSelect: "none",
               flexShrink: 0,
             }}
