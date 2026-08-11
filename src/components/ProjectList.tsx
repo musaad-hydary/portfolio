@@ -345,13 +345,13 @@ export default function ProjectList() {
             { cmd: "the office", desc: "blue ink",        bg: "#f5f4ee",                  fg: "#1c2b4a", muted: "rgba(28,43,74,0.50)",   border: "rgba(28,43,74,0.13)"    },
             { cmd: "deus ex",    desc: "gold",            bg: "#ba7c00",                        fg: "#0a0400", muted: "rgba(10,4,0,0.45)",      border: "rgba(10,4,0,0.15)"      },
             { cmd: "mr robot",   desc: "terminal",        bg: "#0a0a0a",                        fg: "#00ff41", muted: "rgba(0,255,65,0.50)",    border: "rgba(0,255,65,0.12)"    },
-            { cmd: "disco",      desc: "dance!",          bg: `hsl(${discoHue},75%,38%)`,       fg: "#ffffff", muted: "rgba(255,255,255,0.70)", border: "rgba(255,255,255,0.18)" },
+            { cmd: "disco",      desc: "dance!",          bg: "linear-gradient(to right, hsl(0,75%,40%), hsl(60,75%,40%), hsl(120,75%,40%), hsl(180,75%,40%), hsl(240,75%,40%), hsl(300,75%,40%), hsl(360,75%,40%))", fg: "#ffffff", muted: "rgba(255,255,255,0.75)", border: "rgba(255,255,255,0.20)" },
           ].map(({ cmd, desc, bg, fg, muted, border }) => (
             <div
               key={cmd}
               className="flex items-center justify-between py-4 border-b px-4"
               style={{
-                backgroundColor: bg,
+                background: bg,
                 borderColor: border,
                 filter: disco && cmd !== "disco" ? `hue-rotate(${360 - discoHue}deg) saturate(${(1 / 1.8).toFixed(3)})` : undefined,
               }}
