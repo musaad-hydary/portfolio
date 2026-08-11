@@ -23,12 +23,6 @@ const links = [
     external: true,
     icon: "SS",
   },
-  {
-    label: "resume",
-    href: "/musaadhydary-resume.pdf",
-    external: true,
-    icon: "CV",
-  },
 ];
 
 export default function Nav() {
@@ -122,6 +116,19 @@ export default function Nav() {
               <span className="block sm:hidden text-[0.7rem] tracking-wider">♪</span>
               <span className="hidden sm:block text-[0.65rem] uppercase tracking-[0.13em]">music</span>
             </Link>
+
+            <a
+              href="/musaadhydary-resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="transition-colors duration-150"
+              style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace", cursor: pointerCursor }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--cd)")}
+            >
+              <span className="block sm:hidden text-[0.7rem] tracking-wider">CV</span>
+              <span className="hidden sm:block text-[0.65rem] uppercase tracking-[0.13em]">resume</span>
+            </a>
 
             {/* Contact button — opens modal */}
             <button
