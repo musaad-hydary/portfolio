@@ -289,8 +289,6 @@ html.disco-mode body::before {
 }
 
 html.disco-mode {
-  animation: disco-rotate 5s linear infinite;
-
   --gd: #cc2222;
   --c:  #ffffff;
   --cd: #ffcccc;

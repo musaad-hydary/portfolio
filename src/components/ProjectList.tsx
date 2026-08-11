@@ -84,10 +84,28 @@ export default function ProjectList() {
   const q = search.toLowerCase().trim();
 
   useEffect(() => {
-    if (q !== "secret") return;
+    if (!disco) {
+      document.documentElement.style.filter = "";
+      return;
+    }
+    const id = setInterval(() => {
+      setDiscoHue((h) => {
+        const next = (h + 3) % 360;
+        document.documentElement.style.filter = `hue-rotate(${next}deg) saturate(1.8)`;
+        return next;
+      });
+    }, 40);
+    return () => {
+      clearInterval(id);
+      document.documentElement.style.filter = "";
+    };
+  }, [disco]);
+
+  useEffect(() => {
+    if (q !== "secret" || disco) return;
     const id = setInterval(() => setDiscoHue((h) => (h + 3) % 360), 40);
     return () => clearInterval(id);
-  }, [q]);
+  }, [q, disco]);
 
   const designPosts = posts.filter((p) => {
     if (!p.isDesign) return false;
@@ -337,7 +355,11 @@ export default function ProjectList() {
             <div
               key={cmd}
               className="flex items-center justify-between py-4 border-b px-4"
-              style={{ backgroundColor: bg, borderColor: border }}
+              style={{
+                backgroundColor: bg,
+                borderColor: border,
+                filter: disco && cmd !== "disco" ? `hue-rotate(${360 - discoHue}deg) saturate(${(1 / 1.8).toFixed(3)})` : undefined,
+              }}
             >
               <span style={{ fontFamily: "DM Mono, monospace", fontSize: "0.72rem", color: fg, letterSpacing: "0.06em" }}>
                 type "{cmd}"
