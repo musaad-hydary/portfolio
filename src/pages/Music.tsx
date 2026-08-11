@@ -7,15 +7,19 @@ import {
   SiYoutube,
   SiTidal,
   SiBandcamp,
+  SiDeezer,
 } from "react-icons/si";
+import { MdMusicNote } from "react-icons/md";
 
 const platforms = [
-  { label: "apple music", url: "https://music.apple.com/us/artist/musaad/1526694668",          Icon: SiApplemusic },
-  { label: "spotify",     url: "https://open.spotify.com/artist/7yMQXEqgEJHNLdYff22ifb",      Icon: SiSpotify    },
-  { label: "youtube",     url: "https://www.youtube.com/channel/UC1rn-6rTeA9ujknw_alCAsQ",    Icon: SiYoutube    },
-  { label: "tidal",       url: "https://tidal.com/artist/20804914",                            Icon: SiTidal      },
-  { label: "soundcloud",  url: "https://soundcloud.com/mhydary",                               Icon: SiSoundcloud },
-  { label: "bandcamp",    url: "https://musaad.bandcamp.com/",                                 Icon: SiBandcamp   },
+  { label: "apple music",   url: "https://music.apple.com/us/artist/musaad/1526694668",          Icon: SiApplemusic },
+  { label: "spotify",       url: "https://open.spotify.com/artist/7yMQXEqgEJHNLdYff22ifb",      Icon: SiSpotify    },
+  { label: "youtube",       url: "https://www.youtube.com/channel/UC1rn-6rTeA9ujknw_alCAsQ",    Icon: SiYoutube    },
+  { label: "tidal",         url: "https://tidal.com/artist/20804914",                            Icon: SiTidal      },
+  { label: "amazon music",  url: "https://www.amazon.com/music/player/artists/B08FD7YZWJ/musaad", Icon: MdMusicNote },
+  { label: "soundcloud",    url: "https://soundcloud.com/mhydary",                               Icon: SiSoundcloud },
+  { label: "deezer",        url: "https://www.deezer.com/us/artist/103220082",                   Icon: SiDeezer    },
+  { label: "bandcamp",      url: "https://musaad.bandcamp.com/",                                 Icon: SiBandcamp   },
 ];
 
 const pointerCursor = "url('/cursor-pointer.png') 8 1, pointer";
