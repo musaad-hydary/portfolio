@@ -45,11 +45,14 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
             (e.currentTarget.style.borderColor = "var(--bdr-med)")
           }
         >
-          <div style={{ width: "100%", height: 140, overflow: "hidden" }}>
+          <div style={{ width: "100%", height: 140, overflow: "hidden", position: "relative", background: "var(--bdr-faint)" }}>
             <img
               src={post.image}
               alt={post.title}
+              loading="lazy"
               className="w-full h-full object-cover"
+              style={{ opacity: 0, transition: "opacity 0.3s" }}
+              onLoad={(e) => { e.currentTarget.style.opacity = "1"; }}
             />
           </div>
           <div
@@ -244,17 +247,21 @@ function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boole
           }}
         >
           <div
-            style={{ width: NODE_W, height: NODE_H - 28, overflow: "hidden" }}
+            style={{ width: NODE_W, height: NODE_H - 28, overflow: "hidden", position: "relative", background: "var(--bdr-faint)" }}
           >
             <img
               src={post.image}
               alt={post.title}
+              loading="lazy"
               style={{
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
                 display: "block",
+                opacity: 0,
+                transition: "opacity 0.3s",
               }}
+              onLoad={(e) => { e.currentTarget.style.opacity = "1"; }}
             />
           </div>
           <div

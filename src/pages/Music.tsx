@@ -37,6 +37,7 @@ export default function Music() {
             <img
               src="/avatar.jpg"
               alt="musaad"
+              loading="lazy"
               style={{
                 width: "48px",
                 height: "48px",

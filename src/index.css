@@ -436,3 +436,20 @@ button:hover .kirby-hint {
 .subscription-widget {
   display: none;
 }
+
+.prose img {
+  min-height: 120px;
+  transition: opacity 0.3s;
+}
+
+.prose img.img-loading {
+  opacity: 0;
+  background: var(--bdr-faint);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.prose img.img-loaded {
+  opacity: 1;
+  animation: none;
+  background: transparent;
+}

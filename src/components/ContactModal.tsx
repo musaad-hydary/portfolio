@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AnimatedDots from "./AnimatedDots";
 
 interface Props {
   isOpen: boolean;
@@ -230,7 +231,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   e.currentTarget.style.borderColor = "var(--bdr-mod)";
                 }}
               >
-                {loading ? "sending..." : "send"}
+                {loading ? <>sending<AnimatedDots /></> : "send"}
               </button>
             </form>
           </>

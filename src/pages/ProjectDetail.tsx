@@ -8,6 +8,7 @@ import {
 } from "../utils/rss";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import AnimatedDots from "../components/AnimatedDots";
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 
@@ -64,6 +65,22 @@ export default function ProjectDetail() {
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { window.scrollTo(0, 0); }, [slug]);
+
+  const proseRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!post || !proseRef.current) return;
+    const imgs = proseRef.current.querySelectorAll<HTMLImageElement>("img");
+    imgs.forEach((img) => {
+      img.setAttribute("loading", "lazy");
+      if (!img.complete) {
+        img.classList.add("img-loading");
+        img.addEventListener("load", () => {
+          img.classList.remove("img-loading");
+          img.classList.add("img-loaded");
+        }, { once: true });
+      }
+    });
+  }, [post]);
 
   useEffect(() => {
     if (!slug) return;
@@ -138,7 +155,7 @@ export default function ProjectDetail() {
       <div className="max-w-[800px] mx-auto px-7 pt-24">
         {loading && (
           <p className="py-10 text-[0.62rem]" style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace" }}>
-            fetching post...
+            fetching post<AnimatedDots />
           </p>
         )}
         {error && (
@@ -187,6 +204,7 @@ export default function ProjectDetail() {
             </div>
 
             <div
+              ref={proseRef}
               className="py-8 prose"
               style={{ color: "var(--c)", fontFamily: "DM Mono, monospace", overflowX: "auto" }}
               dangerouslySetInnerHTML={{ __html: post.content }}
