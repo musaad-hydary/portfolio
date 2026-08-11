@@ -119,12 +119,11 @@ export default function ProjectList() {
     : designPosts;
   const designRemaining = designPosts.length - designVisible;
   const filtered = posts.filter((post) => {
-    if (!q) return true;
+    const matchesFilter = activeFilter === "all" || post.category === activeFilter;
+    if (!q) return matchesFilter;
     const titleMatch = post.title.toLowerCase().includes(q);
     const bodyMatch = q.length >= 3 && post.plainContent.toLowerCase().includes(q);
-    const matchesSearch = titleMatch || bodyMatch;
-    const matchesFilter = activeFilter === "all" || post.category === activeFilter;
-    return matchesSearch && matchesFilter;
+    return (titleMatch || bodyMatch) && matchesFilter;
   });
 
   const visible = filtered.slice(0, visibleCount);
