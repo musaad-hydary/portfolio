@@ -92,7 +92,7 @@ export default function Nav() {
                   (e.currentTarget.style.color = "var(--cd)")
                 }
               >
-                <span className="block sm:hidden text-[0.7rem] tracking-wider">
+                <span className="block sm:hidden text-[0.7rem] tracking-wider" style={{ padding: "6px 4px" }}>
                   {l.icon}
                 </span>
                 <span className="hidden sm:block text-[0.65rem] uppercase tracking-[0.13em]">
@@ -113,7 +113,7 @@ export default function Nav() {
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
               onMouseLeave={(e) => (e.currentTarget.style.color = onMusic ? "var(--c)" : "var(--cd)")}
             >
-              <span className="block sm:hidden text-[0.7rem] tracking-wider">♪</span>
+              <span className="block sm:hidden text-[0.7rem] tracking-wider" style={{ padding: "6px 4px" }}>♪</span>
               <span className="hidden sm:block text-[0.65rem] uppercase tracking-[0.13em]">music</span>
             </Link>
 
@@ -126,7 +126,7 @@ export default function Nav() {
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "var(--cd)")}
             >
-              <span className="block sm:hidden text-[0.7rem] tracking-wider">CV</span>
+              <span className="block sm:hidden text-[0.7rem] tracking-wider" style={{ padding: "6px 4px" }}>CV</span>
               <span className="hidden sm:block text-[0.65rem] uppercase tracking-[0.13em]">resume</span>
             </a>
 
@@ -144,7 +144,7 @@ export default function Nav() {
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--c)")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "var(--cd)")}
             >
-              <span className="block sm:hidden text-[0.7rem] tracking-wider">
+              <span className="block sm:hidden text-[0.7rem] tracking-wider" style={{ padding: "6px 4px" }}>
                 @
               </span>
               <span className="hidden sm:block text-[0.65rem] uppercase tracking-[0.13em]">
