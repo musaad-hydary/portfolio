@@ -84,28 +84,10 @@ export default function ProjectList() {
   const q = search.toLowerCase().trim();
 
   useEffect(() => {
-    if (!disco) {
-      document.documentElement.style.filter = "";
-      return;
-    }
-    const id = setInterval(() => {
-      setDiscoHue((h) => {
-        const next = (h + 3) % 360;
-        document.documentElement.style.filter = `hue-rotate(${next}deg) saturate(1.8)`;
-        return next;
-      });
-    }, 40);
-    return () => {
-      clearInterval(id);
-      document.documentElement.style.filter = "";
-    };
-  }, [disco]);
-
-  useEffect(() => {
-    if (q !== "secret" || disco) return;
-    const id = setInterval(() => setDiscoHue((h) => (h + 3) % 360), 40);
-    return () => clearInterval(id);
-  }, [q, disco]);
+    const handler = (e: Event) => setDiscoHue((e as CustomEvent).detail);
+    window.addEventListener("disco-hue", handler);
+    return () => window.removeEventListener("disco-hue", handler);
+  }, []);
 
   const designPosts = posts.filter((p) => {
     if (!p.isDesign) return false;
