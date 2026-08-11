@@ -58,7 +58,7 @@ export default function ProjectList() {
   const [mrRobot, setMrRobot] = useState(() => document.documentElement.classList.contains("mr-robot-mode"));
   const [deusEx, setDeusEx] = useState(() => document.documentElement.classList.contains("deus-ex-mode"));
   const [elio, setElio] = useState(() => document.documentElement.classList.contains("elio-mode"));
-  const [disco, setDisco] = useState(false);
+  const [disco, setDisco] = useState(() => document.documentElement.classList.contains("disco-mode"));
   const [theOffice, setTheOffice] = useState(() => document.documentElement.classList.contains("the-office-mode"));
   const [mReds, setMReds] = useState(() => document.documentElement.classList.contains("m-reds-mode"));
   const [discoHue, setDiscoHue] = useState(0);
