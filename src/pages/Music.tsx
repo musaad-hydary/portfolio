@@ -1,4 +1,5 @@
 import Nav from "../components/Nav";
+import Footer from "../components/Footer";
 import {
   SiApplemusic,
   SiSpotify,
@@ -116,6 +117,7 @@ export default function Music() {
         </div>
 
       </div>
+      <Footer />
     </div>
   );
 }

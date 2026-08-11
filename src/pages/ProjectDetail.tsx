@@ -7,6 +7,7 @@ import {
   type SubstackPost,
 } from "../utils/rss";
 import Nav from "../components/Nav";
+import Footer from "../components/Footer";
 
 const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 
@@ -228,6 +229,10 @@ export default function ProjectDetail() {
             )}
           </div>
         )}
+      </div>
+
+      <div className="max-w-[800px] mx-auto px-7">
+        <Footer />
       </div>
 
       {showBackToTop && (
