@@ -31,60 +31,44 @@ const STACK = [
   "Figma",
 ];
 
-export default function About() {
-  const [kirbyActive, setKirbyActive] = useState(() =>
-    document.documentElement.classList.contains("kirby-mode"),
-  );
+const THEME_CLASSES = [
+  "kirby-mode", "mr-robot-mode", "deus-ex-mode",
+  "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode",
+] as const;
+type ThemeClass = typeof THEME_CLASSES[number];
 
-  function toggleKirby() {
-    if (theOfficeActive || mrRobotActive || deusExActive || elioActive || discoActive || mRedsActive) return;
-    const next = !kirbyActive;
-    document.documentElement.classList.toggle("kirby-mode", next);
-    const specialActive = ["mr-robot-mode", "deus-ex-mode", "elio-mode"].some(
-      (c) => document.documentElement.classList.contains(c),
-    );
-    if (!specialActive) {
-      localStorage.setItem("theme", next ? "kirby" : "green");
-    }
-    setKirbyActive(next);
+function getActiveTheme(): ThemeClass | null {
+  for (const t of THEME_CLASSES) {
+    if (document.documentElement.classList.contains(t)) return t;
   }
+  return null;
+}
 
-  const [mrRobotActive, setMrRobotActive] = useState(() =>
-    document.documentElement.classList.contains("mr-robot-mode"),
-  );
-  const [deusExActive, setDeusExActive] = useState(() =>
-    document.documentElement.classList.contains("deus-ex-mode"),
-  );
-  const [elioActive, setElioActive] = useState(() =>
-    document.documentElement.classList.contains("elio-mode"),
-  );
-  const [discoActive, setDiscoActive] = useState(() =>
-    document.documentElement.classList.contains("disco-mode"),
-  );
-  const [theOfficeActive, setTheOfficeActive] = useState(() =>
-    document.documentElement.classList.contains("the-office-mode"),
-  );
-  const [mRedsActive, setMRedsActive] = useState(() =>
-    document.documentElement.classList.contains("m-reds-mode"),
-  );
+export default function About() {
+  const [activeTheme, setActiveTheme] = useState<ThemeClass | null>(getActiveTheme);
+  const [rightView, setRightView] = useState<"stack" | "graph">("stack");
+
   useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setKirbyActive(document.documentElement.classList.contains("kirby-mode"));
-      setMrRobotActive(document.documentElement.classList.contains("mr-robot-mode"));
-      setDeusExActive(document.documentElement.classList.contains("deus-ex-mode"));
-      setElioActive(document.documentElement.classList.contains("elio-mode"));
-      setDiscoActive(document.documentElement.classList.contains("disco-mode"));
-      setTheOfficeActive(document.documentElement.classList.contains("the-office-mode"));
-      setMRedsActive(document.documentElement.classList.contains("m-reds-mode"));
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
+    const observer = new MutationObserver(() => setActiveTheme(getActiveTheme()));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => observer.disconnect();
   }, []);
 
-  const [rightView, setRightView] = useState<"stack" | "graph">("stack");
+  const kirbyActive    = activeTheme === "kirby-mode";
+  const mrRobotActive  = activeTheme === "mr-robot-mode";
+  const deusExActive   = activeTheme === "deus-ex-mode";
+  const elioActive     = activeTheme === "elio-mode";
+  const discoActive    = activeTheme === "disco-mode";
+  const theOfficeActive = activeTheme === "the-office-mode";
+  const mRedsActive    = activeTheme === "m-reds-mode";
+
+  function toggleKirby() {
+    if (activeTheme !== null && !kirbyActive) return;
+    const turningOn = !kirbyActive;
+    document.documentElement.classList.toggle("kirby-mode", turningOn);
+    localStorage.setItem("theme", turningOn ? "kirby" : "green");
+    setActiveTheme(turningOn ? "kirby-mode" : null);
+  }
 
   const verb = mrRobotActive ? "watch" : "play";
   const gameName = mrRobotActive
@@ -102,7 +86,7 @@ export default function About() {
     "travel"
   ) : (
     <>
-      {verb} <span className={!mrRobotActive && !deusExActive && !elioActive && !discoActive && !theOfficeActive && !mRedsActive ? "kirby-hint" : undefined}>{gameName}</span>
+      {verb} <span className={activeTheme === null || kirbyActive ? "kirby-hint" : undefined}>{gameName}</span>
     </>
   );
 

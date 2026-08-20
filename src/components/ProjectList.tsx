@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { fetchPosts } from "../utils/rss";
 import type { SubstackPost } from "../utils/rss";
 import ProjectRow from "./ProjectRow";
@@ -12,6 +13,35 @@ type Filter = (typeof FILTERS)[number];
 type View = "list" | "design";
 
 const pointerCursor = "url('/cursor-pointer.png') 8 1, pointer";
+
+const ALL_THEME_CLASSES = [
+  "mr-robot-mode", "deus-ex-mode", "elio-mode",
+  "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode",
+] as const;
+type ThemeClass = typeof ALL_THEME_CLASSES[number];
+
+const THEME_TRIGGERS: { cmd: string; cls: ThemeClass; storage: string | null }[] = [
+  { cmd: "mr robot",   cls: "mr-robot-mode",   storage: "mr-robot"   },
+  { cmd: "deus ex",    cls: "deus-ex-mode",     storage: "deus-ex"    },
+  { cmd: "elio",       cls: "elio-mode",        storage: "elio"       },
+  { cmd: "disco",      cls: "disco-mode",       storage: null         },
+  { cmd: "the office", cls: "the-office-mode",  storage: "the-office" },
+  { cmd: "m-reds",     cls: "m-reds-mode",      storage: "m-reds"     },
+];
+
+function getActiveThemeFromDOM(): ThemeClass | null {
+  for (const t of ALL_THEME_CLASSES) {
+    if (document.documentElement.classList.contains(t)) return t;
+  }
+  return null;
+}
+
+function matchesQuery(p: SubstackPost, q: string): boolean {
+  return (
+    p.title.toLowerCase().includes(q) ||
+    (q.length >= 3 && p.plainContent.toLowerCase().includes(q))
+  );
+}
 
 function SkeletonRow() {
   return (
@@ -54,34 +84,21 @@ export default function ProjectList() {
   const [designVisible, setDesignVisible] = useState(DESIGN_INITIAL);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
-  const [mrRobot, setMrRobot] = useState(() => document.documentElement.classList.contains("mr-robot-mode"));
-  const [deusEx, setDeusEx] = useState(() => document.documentElement.classList.contains("deus-ex-mode"));
-  const [elio, setElio] = useState(() => document.documentElement.classList.contains("elio-mode"));
-  const [disco, setDisco] = useState(() => document.documentElement.classList.contains("disco-mode"));
-  const [theOffice, setTheOffice] = useState(() => document.documentElement.classList.contains("the-office-mode"));
-  const [mReds, setMReds] = useState(() => document.documentElement.classList.contains("m-reds-mode"));
+  const isMobile = useIsMobile();
+  const [activeTheme, setActiveTheme] = useState<ThemeClass | null>(getActiveThemeFromDOM);
   const [discoHue, setDiscoHue] = useState(0);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 640);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    fetchPosts()
+      .then((data) => { setPosts(data); setLoading(false); })
+      .catch(() => { setError(true); setLoading(false); });
   }, []);
 
   useEffect(() => {
-    fetchPosts()
-      .then((data) => {
-        setPosts(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-      });
+    const observer = new MutationObserver(() => setActiveTheme(getActiveThemeFromDOM()));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
   }, []);
-
-  const q = search.toLowerCase().trim();
 
   useEffect(() => {
     const handler = (e: Event) => setDiscoHue((e as CustomEvent).detail);
@@ -89,25 +106,21 @@ export default function ProjectList() {
     return () => window.removeEventListener("disco-hue", handler);
   }, []);
 
-  const designPosts = posts.filter((p) => {
-    if (!p.isDesign) return false;
-    if (!q) return true;
-    const titleMatch = p.title.toLowerCase().includes(q);
-    const bodyMatch = q.length >= 3 && p.plainContent.toLowerCase().includes(q);
-    return titleMatch || bodyMatch;
-  });
-  const visibleDesignPosts = isMobile
-    ? designPosts.slice(0, designVisible)
-    : designPosts;
-  const designRemaining = designPosts.length - designVisible;
-  const filtered = posts.filter((post) => {
-    const matchesFilter = activeFilter === "all" || post.category === activeFilter;
-    if (!q) return matchesFilter;
-    const titleMatch = post.title.toLowerCase().includes(q);
-    const bodyMatch = q.length >= 3 && post.plainContent.toLowerCase().includes(q);
-    return (titleMatch || bodyMatch) && matchesFilter;
-  });
+  const q = search.toLowerCase().trim();
 
+  const designPosts = useMemo(
+    () => posts.filter((p) => p.isDesign && (!q || matchesQuery(p, q))),
+    [posts, q],
+  );
+  const visibleDesignPosts = isMobile ? designPosts.slice(0, designVisible) : designPosts;
+  const designRemaining = designPosts.length - designVisible;
+
+  const filtered = useMemo(
+    () => posts.filter((p) =>
+      (activeFilter === "all" || p.category === activeFilter) && (!q || matchesQuery(p, q))
+    ),
+    [posts, q, activeFilter],
+  );
   const visible = filtered.slice(0, visibleCount);
   const remaining = filtered.length - visibleCount;
 
@@ -120,67 +133,13 @@ export default function ProjectList() {
     const val = e.target.value;
     const lower = val.toLowerCase().trim();
 
-    if (lower === "mr robot") {
-      const next = !mrRobot;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
-      if (next) document.documentElement.classList.add("mr-robot-mode");
-      localStorage.setItem("theme", next ? "mr-robot" : "green");
-      setMrRobot(next);
-      setDeusEx(false); setElio(false); setDisco(false); setTheOffice(false); setMReds(false);
-      setSearch("");
-      return;
-    }
-
-    if (lower === "deus ex") {
-      const next = !deusEx;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
-      if (next) document.documentElement.classList.add("deus-ex-mode");
-      localStorage.setItem("theme", next ? "deus-ex" : "green");
-      setDeusEx(next);
-      setMrRobot(false); setElio(false); setDisco(false); setTheOffice(false); setMReds(false);
-      setSearch("");
-      return;
-    }
-
-    if (lower === "elio") {
-      const next = !elio;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
-      if (next) document.documentElement.classList.add("elio-mode");
-      localStorage.setItem("theme", next ? "elio" : "green");
-      setElio(next);
-      setMrRobot(false); setDeusEx(false); setDisco(false); setTheOffice(false); setMReds(false);
-      setSearch("");
-      return;
-    }
-
-    if (lower === "disco") {
-      const next = !disco;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
-      if (next) document.documentElement.classList.add("disco-mode");
-      setDisco(next);
-      setMrRobot(false); setDeusEx(false); setElio(false); setTheOffice(false); setMReds(false);
-      setSearch("");
-      return;
-    }
-
-    if (lower === "the office") {
-      const next = !theOffice;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
-      if (next) document.documentElement.classList.add("the-office-mode");
-      localStorage.setItem("theme", next ? "the-office" : "green");
-      setTheOffice(next);
-      setMrRobot(false); setDeusEx(false); setElio(false); setDisco(false); setMReds(false);
-      setSearch("");
-      return;
-    }
-
-    if (lower === "m-reds") {
-      const next = !mReds;
-      document.documentElement.classList.remove("mr-robot-mode", "deus-ex-mode", "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode", "kirby-mode");
-      if (next) document.documentElement.classList.add("m-reds-mode");
-      localStorage.setItem("theme", next ? "m-reds" : "green");
-      setMReds(next);
-      setMrRobot(false); setDeusEx(false); setElio(false); setDisco(false); setTheOffice(false);
+    const trigger = THEME_TRIGGERS.find((t) => t.cmd === lower);
+    if (trigger) {
+      const turningOn = activeTheme !== trigger.cls;
+      ALL_THEME_CLASSES.forEach((c) => document.documentElement.classList.remove(c));
+      if (turningOn) document.documentElement.classList.add(trigger.cls);
+      if (trigger.storage) localStorage.setItem("theme", turningOn ? trigger.storage : "green");
+      setActiveTheme(turningOn ? trigger.cls : null);
       setSearch("");
       return;
     }
@@ -353,7 +312,7 @@ export default function ProjectList() {
               style={{
                 background: bg,
                 borderColor: border,
-                filter: disco && cmd !== "disco" ? `hue-rotate(${360 - discoHue}deg) saturate(${(1 / 1.8).toFixed(3)})` : undefined,
+                filter: activeTheme === "disco-mode" && cmd !== "disco" ? `hue-rotate(${360 - discoHue}deg) saturate(${(1 / 1.8).toFixed(3)})` : undefined,
               }}
             >
               <span style={{ fontFamily: "DM Mono, monospace", fontSize: "0.72rem", color: fg, letterSpacing: "0.06em" }}>
@@ -368,10 +327,10 @@ export default function ProjectList() {
       )}
 
       {/* Loading / error */}
-      {search.toLowerCase().trim() !== "secret" && loading && Array.from({ length: INITIAL_COUNT }).map((_, i) => (
+      {q !== "secret" && loading && Array.from({ length: INITIAL_COUNT }).map((_, i) => (
         <SkeletonRow key={i} />
       ))}
-      {search.toLowerCase().trim() !== "secret" && error && (
+      {q !== "secret" && error && (
         <p
           className="py-8"
           style={{
@@ -385,7 +344,7 @@ export default function ProjectList() {
       )}
 
       {/* Design graph — always mounted so positions survive filtering */}
-      {search.toLowerCase().trim() !== "secret" && !loading && !error && view === "design" && (
+      {q !== "secret" && !loading && !error && view === "design" && (
         <>
           {designPosts.length === 0 ? (
             <p
@@ -396,7 +355,7 @@ export default function ProjectList() {
                 fontSize: "0.8rem",
               }}
             >
-              no results found
+              no results
             </p>
           ) : (
             <>
@@ -439,7 +398,7 @@ export default function ProjectList() {
 
 
       {/* List */}
-      {search.toLowerCase().trim() !== "secret" && !loading && !error && view === "list" && (
+      {q !== "secret" && !loading && !error && view === "list" && (
         <>
           {posts.length === 0 && (
             <p
@@ -467,7 +426,7 @@ export default function ProjectList() {
                 fontSize: "0.8rem",
               }}
             >
-              project not found
+              no results
             </p>
           )}
 

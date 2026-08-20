@@ -14,7 +14,7 @@ const GRID_H = 88;
 // Derive level from the color hex the API scrapes from GitHub's visual graph.
 // The `level` field is 0 for private contributions; `color` is always correct.
 function hexToLevel(color: string | undefined): 0 | 1 | 2 | 3 | 4 {
-  if (!color || color === "#ebedf0" || color === "#161b22" || color === "#ebedf0".toLowerCase()) return 0;
+  if (!color || color === "#ebedf0" || color === "#161b22") return 0;
   const g = parseInt(color.slice(3, 5), 16);
   if (g >= 200) return 1;
   if (g >= 150) return 2;
@@ -31,6 +31,7 @@ function cellColor(day: Day) {
 
 async function fetchYear(username: string, year: number) {
   const r = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=${year}`);
+  if (!r.ok) throw new Error(r.statusText);
   const data = await r.json();
   return data as { total: Record<string, number>; contributions: Day[] };
 }

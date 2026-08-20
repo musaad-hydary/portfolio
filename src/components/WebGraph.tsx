@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { useIsMobile } from "../hooks/useIsMobile";
 import type { SubstackPost } from "../utils/rss";
 
 interface Props {
@@ -13,7 +14,7 @@ interface Node {
   vx: number;
   vy: number;
   slug: string;
-  el: HTMLDivElement;
+  el: HTMLAnchorElement;
 }
 
 
@@ -25,18 +26,19 @@ const SPEED = 0.01;
 const LINE_DISTANCE = 400;
 
 function MobileGrid({ posts }: { posts: SubstackPost[] }) {
-  const navigate = useNavigate();
   return (
     <div className="flex flex-col gap-3 py-6">
       {posts.map((post) => (
-        <div
+        <Link
           key={post.slug}
-          onClick={() => navigate(`/projects/${post.slug}`)}
+          to={`/projects/${post.slug}`}
           className="relative overflow-hidden transition-all duration-150 border"
           style={{
             cursor: pointerCursor,
             borderColor: "var(--bdr-med)",
             width: "100%",
+            display: "block",
+            textDecoration: "none",
           }}
           onMouseEnter={(e) =>
             (e.currentTarget.style.borderColor = "var(--bdr-hi)")
@@ -69,7 +71,7 @@ function MobileGrid({ posts }: { posts: SubstackPost[] }) {
               {post.title}
             </p>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
@@ -81,7 +83,6 @@ function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boole
   const nodesRef = useRef<Node[]>([]);
   const animRef = useRef<number>(0);
   const pausedRef = useRef(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     pausedRef.current = paused ?? false;
@@ -94,6 +95,12 @@ function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boole
     if (!container || !canvas) return;
 
     let ctx: CanvasRenderingContext2D | null = null;
+    let canvasRgb = getComputedStyle(document.documentElement).getPropertyValue("--canvas-rgb").trim();
+
+    const themeObserver = new MutationObserver(() => {
+      canvasRgb = getComputedStyle(document.documentElement).getPropertyValue("--canvas-rgb").trim();
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
     const init = (W: number) => {
       canvas.width = W;
@@ -103,7 +110,7 @@ function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boole
 
       const els = Array.from(
         container.querySelectorAll(".graph-node"),
-      ) as HTMLDivElement[];
+      ) as HTMLAnchorElement[];
       const cols = Math.ceil(Math.sqrt(els.length));
       const rows = Math.ceil(els.length / cols);
       const cellW = W / cols;
@@ -143,9 +150,6 @@ function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boole
     const draw = (W: number) => {
       if (!ctx) return;
       ctx.clearRect(0, 0, W, H);
-      const canvasRgb = getComputedStyle(document.documentElement)
-        .getPropertyValue("--canvas-rgb")
-        .trim();
 
       const nodes = nodesRef.current;
 
@@ -207,6 +211,7 @@ function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boole
 
     return () => {
       observer.disconnect();
+      themeObserver.disconnect();
       cancelAnimationFrame(animRef.current);
     };
   }, [posts]);
@@ -221,10 +226,10 @@ function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boole
         style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
       />
       {posts.map((post) => (
-        <div
+        <Link
           key={post.slug}
+          to={`/projects/${post.slug}`}
           className="graph-node"
-          onClick={() => navigate(`/projects/${post.slug}`)}
           style={{
             position: "absolute",
             width: NODE_W,
@@ -234,6 +239,8 @@ function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boole
             border: "1px solid var(--bdr-med)",
             transition: "border-color 0.2s, filter 0.2s",
             zIndex: 1,
+            textDecoration: "none",
+            display: "block",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = "var(--bdr-hi)";
@@ -290,21 +297,14 @@ function DesktopGraph({ posts, paused }: { posts: SubstackPost[]; paused?: boole
               {post.title}
             </p>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
 }
 
 export default function WebGraph({ posts, paused }: Props) {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 640);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
+  const isMobile = useIsMobile();
   if (isMobile) return <MobileGrid posts={posts} />;
   return <DesktopGraph posts={posts} paused={paused} />;
 }

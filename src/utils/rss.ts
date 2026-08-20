@@ -98,7 +98,41 @@ function inferCategory(
   return "engineering";
 }
 
+function decodeEntities(s: string): string {
+  return s
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&nbsp;/g, " ");
+}
+
+function stripHtml(html: string): string {
+  return decodeEntities(html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
+}
+
+function toPost(
+  slug: string, title: string, url: string, date: string,
+  description: string, image: string, content: string,
+): SubstackPost {
+  return {
+    title, slug, url, date, description, image, content,
+    plainContent: stripHtml(content),
+    category: inferCategory(title, content),
+    isDesign: DESIGN_SLUGS.has(slug),
+  };
+}
+
+let fetchCache: Promise<SubstackPost[]> | null = null;
+
 export async function fetchPosts(): Promise<SubstackPost[]> {
+  if (fetchCache) return fetchCache;
+  fetchCache = doFetchPosts().catch((e) => { fetchCache = null; throw e; });
+  return fetchCache;
+}
+
+async function doFetchPosts(): Promise<SubstackPost[]> {
   const url = import.meta.env.DEV
     ? `https://api.rss2json.com/v1/api.json?rss_url=${SUBSTACK_URL}/feed&api_key=${RSS2JSON_KEY}&count=50&t=${Date.now()}`
     : "/api/posts";
@@ -106,24 +140,18 @@ export async function fetchPosts(): Promise<SubstackPost[]> {
   const res = await fetch(url);
   const data = await res.json();
 
-  const stripHtml = (html: string) => html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-
   if (Array.isArray(data)) {
     return data.map((item: any) => {
       const slug = item.slug;
-      const content = item.body_html || "";
-      return {
-        title: item.title,
+      return toPost(
         slug,
-        url: `${SUBSTACK_URL}/p/${slug}`,
-        date: item.post_date,
-        description: item.subtitle || "",
-        image: item.cover_image || "",
-        content,
-        plainContent: stripHtml(content),
-        category: inferCategory(item.title, content),
-        isDesign: DESIGN_SLUGS.has(slug),
-      };
+        item.title,
+        `${SUBSTACK_URL}/p/${slug}`,
+        item.post_date,
+        item.subtitle || "",
+        item.cover_image || "",
+        item.body_html || "",
+      );
     });
   }
 
@@ -131,28 +159,18 @@ export async function fetchPosts(): Promise<SubstackPost[]> {
 
   return data.items.map((item: any) => {
     const slug = item.link.split("/p/")[1];
-    const content = item.content || "";
-    return {
-      title: item.title,
+    const rawDesc = item.description.replace(/<[^>]+>/g, "");
+    const description = rawDesc.length > 120 ? rawDesc.slice(0, 120).trimEnd() + "…" : rawDesc;
+    return toPost(
       slug,
-      url: item.link,
-      date: item.pubDate,
-      description:
-        item.description.replace(/<[^>]+>/g, "").slice(0, 120) + "...",
-      image: item.thumbnail || item.enclosure?.link || "",
-      content,
-      plainContent: stripHtml(content),
-      category: inferCategory(item.title, content),
-      isDesign: DESIGN_SLUGS.has(slug),
-    };
+      item.title,
+      item.link,
+      item.pubDate,
+      description,
+      item.thumbnail || item.enclosure?.link || "",
+      item.content || "",
+    );
   });
-}
-
-export async function fetchPostBySlug(
-  slug: string,
-): Promise<SubstackPost | null> {
-  const posts = await fetchPosts();
-  return posts.find((p) => p.slug === slug) ?? null;
 }
 
 export function readingTime(content: string): string {

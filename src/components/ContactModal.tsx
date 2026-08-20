@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AnimatedDots from "./AnimatedDots";
 
 interface Props {
@@ -11,11 +11,11 @@ const pointerCursor = "url('/cursor-pointer.png') 0 0, pointer";
 export default function ContactModal({ isOpen, onClose }: Props) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sendError, setSendError] = useState(false);
 
-  function handleClose() {
-    onClose();
-    setTimeout(() => setSubmitted(false), 300);
-  }
+  useEffect(() => {
+    if (isOpen) { setSubmitted(false); setSendError(false); }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -25,14 +25,19 @@ export default function ContactModal({ isOpen, onClose }: Props) {
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    await fetch("https://getform.io/f/b955fc50-0382-4ab9-bea4-19fcec60d47f", {
-      method: "POST",
-      body: data,
-      headers: { Accept: "application/json" },
-    });
-
-    setLoading(false);
-    setSubmitted(true);
+    try {
+      const res = await fetch("https://getform.io/f/b955fc50-0382-4ab9-bea4-19fcec60d47f", {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+      if (!res.ok) throw new Error("bad status");
+      setSubmitted(true);
+    } catch {
+      setSendError(true);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -44,7 +49,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
           background: "var(--modal-overlay)",
           backdropFilter: "blur(4px)",
         }}
-        onClick={handleClose}
+        onClick={onClose}
       />
 
       {/* modal */}
@@ -68,7 +73,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
             {/* close button, x*/}
             <button
-              onClick={handleClose}
+              onClick={onClose}
               className="absolute top-4 right-4 flex items-center justify-center transition-colors duration-150"
               style={{
                 color: "var(--cd)",
@@ -118,7 +123,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 contact
               </p>
               <button
-                onClick={handleClose}
+                onClick={onClose}
                 className="flex items-center justify-center transition-colors duration-150"
                 style={{
                   color: "var(--cd)",
@@ -211,6 +216,12 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   }}
                 />
               </div>
+
+              {sendError && (
+                <p className="text-[0.6rem]" style={{ color: "var(--col-err, #e05c5c)", fontFamily: "DM Mono, monospace" }}>
+                  something went wrong — please try again
+                </p>
+              )}
 
               {/* submit */}
               <button

@@ -84,7 +84,7 @@ export default function ProjectRow({ post, index }: Props) {
             className="text-[0.6rem] uppercase tracking-wider"
             style={{ color: "var(--cd)", fontFamily: "DM Mono, monospace" }}
           >
-            {post.description.slice(0, 60)}
+            {post.description.length > 60 ? post.description.slice(0, 60).trimEnd() + "…" : post.description}
           </span>
         </div>
       </div>

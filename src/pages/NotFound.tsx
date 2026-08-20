@@ -1,8 +1,6 @@
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function NotFound() {
-  const navigate = useNavigate()
-
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center text-center px-7"
@@ -21,15 +19,15 @@ export default function NotFound() {
         page not found.
       </h1>
 
-      <button
-        onClick={() => navigate('/')}
+      <Link
+        to="/"
         className="text-[0.62rem] uppercase tracking-widest px-4 py-2 border transition-all duration-150"
-        style={{ borderColor: 'var(--col-ghost)', color: 'var(--cd)', background: 'transparent', fontFamily: 'DM Mono, monospace' }}
+        style={{ borderColor: 'var(--col-ghost)', color: 'var(--cd)', background: 'transparent', fontFamily: 'DM Mono, monospace', textDecoration: 'none', display: 'inline-block' }}
         onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--c)'; e.currentTarget.style.color = 'var(--c)' }}
         onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--col-ghost)'; e.currentTarget.style.color = 'var(--cd)' }}
       >
         back to home
-      </button>
+      </Link>
     </div>
   )
 }

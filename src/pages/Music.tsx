@@ -110,7 +110,7 @@ export default function Music() {
                 style={{
                   color: "var(--col-muted)",
                   fontSize: "0.85rem",
-                  transition: "transform 0.15s ease, color 0.15s ease",
+                  transition: "color 0.15s ease",
                   paddingRight: "1rem",
                 }}
                 className="group-hover:text-[var(--c)]"
