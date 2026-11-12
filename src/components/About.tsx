@@ -32,10 +32,15 @@ const STACK = [
 ];
 
 const THEME_CLASSES = [
-  "kirby-mode", "mr-robot-mode", "deus-ex-mode",
-  "elio-mode", "disco-mode", "the-office-mode", "m-reds-mode",
+  "kirby-mode",
+  "mr-robot-mode",
+  "deus-ex-mode",
+  "elio-mode",
+  "disco-mode",
+  "the-office-mode",
+  "m-reds-mode",
 ] as const;
-type ThemeClass = typeof THEME_CLASSES[number];
+type ThemeClass = (typeof THEME_CLASSES)[number];
 
 function getActiveTheme(): ThemeClass | null {
   for (const t of THEME_CLASSES) {
@@ -45,22 +50,29 @@ function getActiveTheme(): ThemeClass | null {
 }
 
 export default function About() {
-  const [activeTheme, setActiveTheme] = useState<ThemeClass | null>(getActiveTheme);
+  const [activeTheme, setActiveTheme] = useState<ThemeClass | null>(
+    getActiveTheme,
+  );
   const [rightView, setRightView] = useState<"stack" | "graph">("stack");
 
   useEffect(() => {
-    const observer = new MutationObserver(() => setActiveTheme(getActiveTheme()));
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    const observer = new MutationObserver(() =>
+      setActiveTheme(getActiveTheme()),
+    );
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
     return () => observer.disconnect();
   }, []);
 
-  const kirbyActive    = activeTheme === "kirby-mode";
-  const mrRobotActive  = activeTheme === "mr-robot-mode";
-  const deusExActive   = activeTheme === "deus-ex-mode";
-  const elioActive     = activeTheme === "elio-mode";
-  const discoActive    = activeTheme === "disco-mode";
+  const kirbyActive = activeTheme === "kirby-mode";
+  const mrRobotActive = activeTheme === "mr-robot-mode";
+  const deusExActive = activeTheme === "deus-ex-mode";
+  const elioActive = activeTheme === "elio-mode";
+  const discoActive = activeTheme === "disco-mode";
   const theOfficeActive = activeTheme === "the-office-mode";
-  const mRedsActive    = activeTheme === "m-reds-mode";
+  const mRedsActive = activeTheme === "m-reds-mode";
 
   function toggleKirby() {
     if (activeTheme !== null && !kirbyActive) return;
@@ -86,7 +98,14 @@ export default function About() {
     "travel"
   ) : (
     <>
-      {verb} <span className={activeTheme === null || kirbyActive ? "kirby-hint" : undefined}>{gameName}</span>
+      {verb}{" "}
+      <span
+        className={
+          activeTheme === null || kirbyActive ? "kirby-hint" : undefined
+        }
+      >
+        {gameName}
+      </span>
     </>
   );
 
@@ -127,8 +146,7 @@ export default function About() {
               i'm a computer engineer based in Toronto with experience in
               embedded systems and full-stack development. i like building
               things at every level of the stack, from firmware up to the user
-              interface. in my free time i make lofi beats with Ableton, read
-              slice-of-life novels, and{" "}
+              interface. in my free time i make lofi beats, go bouldering, and{" "}
               <button
                 onClick={toggleKirby}
                 style={{
